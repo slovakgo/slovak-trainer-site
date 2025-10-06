@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slovak Trainer — тренажёры словацкого языка</title>
+<meta name="description" content="Интерактивные тренажёры по словацкому языку: демо, глагол быть, неправильные глаголы, род, фразы, такси, курьеры, уровень A1.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-top:#e8f1f6;
+  --bg-bottom:#f5efe3;
+  --board:#111;
+  --chalk:#ffffff;
+  --accent:#12c3c3;       /* бирюзовые кнопки */
+  --accent-press:#0ea7a7;
+  --orange:#ff8a28;       /* кнопка заказать */
+  --orange-press:#e6781f;
+  --text:#1b1f23;
+  --muted:#6b7280;
+  --ring: 0 0 0 .22rem rgba(18,195,195,.25);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;}
+body{
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom)) fixed;
+  line-height:1.6;
+}
+/* Шапка с мини-доской */
+.header{
+  position:sticky; top:0; z-index:10;
+  backdrop-filter:saturate(1.2) blur(6px);
+  background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.6));
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.container{max-width:1100px; margin:0 auto; padding:16px; }
+.board-wrap{
+  display:flex; align-items:center; gap:16px;
+}
+.board{
+  flex:1 1 auto;
+  max-width:560px;
+  background:var(--board);
+  color:var(--chalk);
+  border-radius:12px;
+  border:6px solid #c08a4a; /* рама */
+  padding:16px 20px;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+.board-title{
+  margin:0;
+  font-weight:800;
+  letter-spacing:.02em;
+  font-size: clamp(18px, 4.5vw, 28px);
+}
+.board-title span:nth-child(1){color:#ff6b6b}
+.board-title span:nth-child(2){color:#8bc5ff}
+.board-title span:nth-child(3){color:#5ed36a}
+.board-title span:nth-child(4){color:#ff6b6b}
+.board-title span:nth-child(5){color:#6ab8ff}
+.board-title span:nth-child(6){color:#6be27d}
+.board-title span:nth-child(7){color:#ffd36a}
+.logo{
+  font-weight:800;
+  white-space:nowrap;
+  font-size: clamp(14px, 2.8vw, 18px);
+  color:#0f766e;
+  background:#ecfeff;
+  border:1px solid #99f6e4;
+  padding:8px 12px;
+  border-radius:999px;
+}
+/* Hero */
+.hero{ padding: 18px 0 6px; }
+.hero h1{
+  margin: 0 0 12px;
+  font-size: clamp(24px, 6.2vw, 40px);
+  line-height:1.2;
+  letter-spacing: .01em;
+}
+.lead{ color:#374151; max-width:70ch; }
+/* Список тренажёров */
+.grid{
+  display:grid; gap:12px;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+@media (min-width:720px){ .grid{grid-template-columns: repeat(3,minmax(0,1fr));} }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  text-decoration:none;
+  border-radius:12px;
+  padding:14px 16px;
+  font-weight:700;
+  border:0;
+  box-shadow:0 1px 0 rgba(0,0,0,.04), 0 8px 14px rgba(0,0,0,.05);
+  transition:.15s transform,.15s filter;
+}
+.btn:active{ transform:translateY(1px) }
+.btn-primary{ background:var(--accent); color:#fff; }
+.btn-primary:hover{ filter:brightness(1.05); box-shadow: var(--ring); }
+.btn-orange{ background:var(--orange); color:#fff;}
+.btn-orange:hover{ filter:brightness(1.05); box-shadow: 0 0 0 .22rem rgba(255,138,40,.22); }
+.badge{ font-size:12px; font-weight:800; padding:.2rem .5rem; border-radius:999px; background:#ecfeff; color:#0f766e; border:1px solid #99f6e4; }
+.section{ padding: 10px 0 6px;}
+.card{
+  background:#fff; border:1px solid rgba(0,0,0,.06);
+  border-radius:var(--radius); padding:16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.06);
+}
+.card h3{ margin:0 0 8px; font-size:clamp(18px,3.8vw,22px) }
+.list{ padding-left:18px; margin:8px 0; }
+.list li{ margin:.25rem 0; }
+.footer{
+  margin-top:22px; padding:18px 0 32px; color:var(--muted); font-size:14px;
+}
+.footer a{ color:#0f766e; font-weight:600; text-decoration:none }
+.footer a:hover{ text-decoration:underline }
+hr.sep{ border:0; height:1px; background:linear-gradient(90deg,transparent,rgba(0,0,0,.12),transparent); margin:16px 0; }
+.kicker{ color:#0f766e; font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:12px; }
+.center{ text-align:center }
+.icon{width:1.15em;height:1.15em;display:inline-block;vertical-align:-.18em}
+/* Modal */
+.dialog-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; padding:16px; z-index:50;}
+.dialog{ background:#fff; width:min(560px,100%); border-radius:16px; padding:18px; box-shadow:0 30px 60px rgba(0,0,0,.2); border:1px solid rgba(0,0,0,.06); }
+.dialog header{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.dialog h3{ margin:0; }
+.close{ background:#f3f4f6; border:0; border-radius:10px; padding:6px 10px; cursor:pointer;}
+.input{ width:100%; padding:12px 14px; border-radius:12px; border:1px solid #d1d5db; outline:none; }
+.input:focus{ border-color:#0ea5a5; box-shadow:var(--ring);}
+textarea.input{ min-height:110px; resize:vertical;}
+.form-row{ display:grid; gap:10px; grid-template-columns:1fr; }
+@media(min-width:560px){ .form-row{ grid-template-columns:1fr 1fr; } }
+.small{ font-size:12px; color:var(--muted);}
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="container board-wrap">
+      <div class="board" aria-label="Мини‑доска">
+        <p class="board-title" aria-hidden="true">
+          <span>S</span><span>L</span><span>O</span><span>V</span><span>E</span><span>N</span><span>ČINA</span>
+        </p>
+        <div class="kicker">тренажёры для изучения словацкого</div>
+      </div>
+      <div class="logo">Slovak Trainer</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Slovak Trainer — учим словацкий легко</h1>
+      <p class="lead">Добро пожаловать в интерактивную школу словацкого языка!</p>
+      <p class="lead">🎉 Мы рады приветствовать вас в проекте, который помогает освоить словацкий язык легко, интересно и с удовольствием!</p>
+      <p>Если вы уже открывали учебник <strong>„Krížom‑krážom. Slovenčina.“</strong>, вы знаете, насколько это живой и увлекательный язык. Но чтобы слова не оставались только на страницах — их нужно применять.</p>
+      <p>✨ Наши умные тренажёры делают процесс обучения простым и эффективным. Они реагируют на ваши ответы, повторяют сложные слова и выражения и помогают запомнить материал навсегда.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section class="section">
+      <div class="kicker">Демо</div>
+      <div class="grid" style="margin:8px 0 12px">
+        <a class="btn btn-primary" href="https://fascinating-faloodeh-3c4ade.netlify.app/" target="_blank" rel="noopener">
+          🌍 Демоверсия: национальности
+        </a>
+        <a class="btn btn-primary" href="#" onclick="openDialog();return false;">📦 Демоверсия: для курьеров</a>
+      </div>
+
+      <div class="kicker">Тренажёры</div>
+      <div class="grid">
+        <a class="btn btn-primary" href="https://tetiana-synytsyna-s-school.teachable.com/purchase?product_id=6482080" target="_blank" rel="noopener">🔤 Глагол быть</a>
+        <a class="btn btn-primary" href="https://tetiana-synytsyna-s-school.teachable.com/l/pdp/11" target="_blank" rel="noopener">📘 Неправильные глаголы</a>
+        <a class="btn btn-primary" href="https://tetiana-synytsyna-s-school.teachable.com/purchase?product_id=6482537" target="_blank" rel="noopener">🚻 Определение рода</a>
+        <a class="btn btn-primary" href="https://tetiana-synytsyna-s-school.teachable.com/purchase?product_id=6482543" target="_blank" rel="noopener">💬 Распространённые фразы</a>
+        <a class="btn btn-primary" href="https://tetiana-synytsyna-s-school.teachable.com/purchase?product_id=6482555" target="_blank" rel="noopener">🚕 Для таксистов</a>
+        <a class="btn btn-primary" href="https://tetiana-synytsyna-s-school.teachable.com/purchase?product_id=6482559" target="_blank" rel="noopener">📦 Для курьеров</a>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>Что внутри каждого тренажёра</h3>
+        <ul class="list">
+          <li>мгновенная подсветка ошибок (красный) и правильных ответов (зеленый);</li>
+          <li>повтор непроработанных заданий до полного усвоения;</li>
+          <li>адаптив под телефон и быстрые сценарии отработки лексики;</li>
+          <li>финальное сообщение: <strong>«Молодец, ты прошёл!»</strong></li>
+        </ul>
+      </div>
+
+      <div class="center" style="margin:16px 0 10px">
+        <button class="btn btn-orange" onclick="openDialog()">🧩 Заказать индивидуальный тренажёр</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="kicker">Полезные ссылки</div>
+      <div class="grid">
+        <a class="btn btn-primary" href="https://youtube.com/@learnslovakwithstories?si=CLODOaWPzWlPcz5F" target="_blank" rel="noopener">▶️ Словацкие истории и сказки</a>
+        <a class="btn btn-primary" href="https://vacuum.name/trainers/numbers" target="_blank" rel="noopener">🔢 Тренажёр чисел по‑словацки</a>
+        <a class="btn btn-primary" href="https://www.instagram.com/slovak_practice?igsh=MW5zdzA2anlpN2h3bg%3D%3D&utm_source=qr" target="_blank" rel="noopener">📷 Instagram: @slovak_practice</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <hr class="sep">
+      <p>Почта для связи: <a href="mailto:slovakgo2000@gmail.com">slovakgo2000@gmail.com</a></p>
+      <p>© 2025 Slovak Trainer. Сделано с любовью к языкам.</p>
+    </footer>
+  </main>
+
+  <!-- Dialog -->
+  <div class="dialog-backdrop" id="dlg">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+      <header>
+        <h3 id="dlgTitle">Заказать индивидуальный тренажёр</h3>
+        <button class="close" onclick="closeDialog()">✕</button>
+      </header>
+      <p class="small">Форма отправит письмо на <strong>slovakgo2000@gmail.com</strong>. Нажмите «Отправить запрос», и откроется почтовое приложение.</p>
+      <div class="form-row">
+        <input class="input" id="name" placeholder="Ваше имя">
+        <input class="input" id="email" type="email" placeholder="Ваш email (для ответа)">
+      </div>
+      <textarea class="input" id="msg" placeholder="Опишите цель (уровень, темы, профессия, дедлайн)…"></textarea>
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:10px">
+        <button class="btn" onclick="closeDialog()">Отмена</button>
+        <a class="btn btn-orange" id="sendLink" href="#">Отправить запрос</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+function openDialog(){
+  const el = document.getElementById('dlg');
+  el.style.display='flex';
+  document.getElementById('name').focus();
+}
+function closeDialog(){ document.getElementById('dlg').style.display='none'; }
+function buildMailto(){
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const msg = document.getElementById('msg').value.trim();
+  const subject = encodeURIComponent('Заказ индивидуального тренажёра — Slovak Trainer');
+  const body = encodeURIComponent(
+    `Имя: ${name || '—'}\nEmail: ${email || '—'}\n\nЗапрос:\n${msg || '—'}\n\nОтправлено со страницы Slovak Trainer.`
+  );
+  return `mailto:slovakgo2000@gmail.com?subject=${subject}&body=${body}`;
+}
+document.getElementById('sendLink').addEventListener('click', function(e){
+  this.href = buildMailto();
+});
+</script>
+</body>
+</html>
