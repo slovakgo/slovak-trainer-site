@@ -338,5 +338,18 @@ document.getElementById('sendLink').addEventListener('click', function(e){
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 </style> 
+  <style>
+/* 1) поднимаем все кнопки/ссылки над возможными перекрывающими слоями */
+a, .btn, .knopka, .knopka-demo, .btn-primary, .btn-warning {
+  position: relative;
+  z-index: 100;
+  pointer-events: auto !important;
+}
+
+/* 2) отключаем «перехват кликов» у любых оверлеев/фоновых слоёв */
+.overlay, .backdrop, [class*="overlay"], [id*="overlay"] {
+  pointer-events: none !important;
+}
+</style>
 </body>
 </html>
