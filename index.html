@@ -221,19 +221,26 @@ body {
     <section class="section">
       <section class="section">
 <style>
-/* поднимаем все ссылки в блоках с кнопками */
-.setka, .setka * { position: relative; z-index: 10; }
-.setka a { pointer-events: auto !important; display: inline-block; }
-
-/* если сверху висит невидимый слой — отключим ему захват кликов */
-[id*="overlay"], [class*="overlay"], .backdrop, .hero-cover, .cover {
-  pointer-events: none !important;
+/* Делаем все кнопки и ссылки кликабельными поверх любых слоёв */
+a.knopka, 
+a.knopka-demo, 
+a.btn, 
+a.btn-warning, 
+a.btn-primary, 
+.setka a, 
+.grid a {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 999 !important;
 }
 
-/* на всякий случай делаем любые элементы-кнопки кликабельными */
-a.knopka, a.knopka-demo, a.btn, a.btn-warning, a.btn-primary {
-  pointer-events: auto !important;
-  position: relative; z-index: 11;
+/* Отключаем перехват кликов любыми невидимыми слоями */
+.overlay, 
+.backdrop, 
+[class*="overlay"], 
+[id*="overlay"], 
+.cover {
+  pointer-events: none !important;
 }
 </style>
 <!-- 💎 Блок демоверсий -->
