@@ -220,18 +220,22 @@ body {
 
     <section class="section">
       <section class="section">
- <div class="kicker">Демо</div>
-<div class="setka" style="gap: 8px 12px;">
-  <a class="knopka knopka-demo" href="https://fascinating-fladoo-834adec.netlify.app" target="_blank" rel="noopener noreferrer">
-    🎧 Демоверсия: национальности
-  </a>
-  <a class="knopka knopka-demo" href="https://quiet-meringue-c2a8f2b.netlify.app" target="_blank" rel="noopener noreferrer">
-    🎧 Демоверсия: для курьеров
-  </a>
-  <a class="knopka knopka-demo" href="https://preeminent-mochi-fb5750.netlify.app" target="_blank" rel="noopener noreferrer">
-    🎯 Демоверсия: Словацкие числа
-  </a>
-</div>
+<style>
+/* поднимаем все ссылки в блоках с кнопками */
+.setka, .setka * { position: relative; z-index: 10; }
+.setka a { pointer-events: auto !important; display: inline-block; }
+
+/* если сверху висит невидимый слой — отключим ему захват кликов */
+[id*="overlay"], [class*="overlay"], .backdrop, .hero-cover, .cover {
+  pointer-events: none !important;
+}
+
+/* на всякий случай делаем любые элементы-кнопки кликабельными */
+a.knopka, a.knopka-demo, a.btn, a.btn-warning, a.btn-primary {
+  pointer-events: auto !important;
+  position: relative; z-index: 11;
+}
+</style>
 
   <div class="kicker">Тренажёры</div>
   <div class="grid">
@@ -351,6 +355,27 @@ a, .btn, .knopka, .knopka-demo, .btn-primary, .btn-warning {
   pointer-events: none !important;
 }
 </style>
+ <!-- 🔹 Блок демоверсий -->
+<div class="kicker">ДЕМО</div>
+<div class="setka" style="gap: 8px 12px;">
+  <a class="knopka knopka-demo"
+     href="https://fascinating-fladoo-834adec.netlify.app/"
+     target="_blank" rel="noopener noreferrer">
+    🎧 Демоверсия: национальности
+  </a>
+
+  <a class="knopka knopka-demo"
+     href="https://quiet-meringue-c2a8f2b.netlify.app/"
+     target="_blank" rel="noopener noreferrer">
+    🎧 Демоверсия: для курьеров
+  </a>
+
+  <a class="knopka knopka-demo"
+     href="https://preeminent-mochi-fb5750.netlify.app/"
+     target="_blank" rel="noopener noreferrer">
+    🎯 Демоверсия: Словацкие числа
+  </a>
+</div> 
   <style>
 /* поднимаем все ссылки в блоках с кнопками */
 .setka, .setka * { position: relative; z-index: 10; }
