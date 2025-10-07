@@ -392,5 +392,40 @@ a.knopka, a.knopka-demo, a.btn, a.btn-warning, a.btn-primary {
   position: relative; z-index: 11;
 }
 </style>
+  <style>
+/* 1) делаем демо-кнопки и блок «Тренажёры» гарантированно кликабельными */
+.setka a,
+a.knopka, a.knopka-demo,
+a.btn, a.btn-primary, a.btn-warning {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10010;       /* выше всего */
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* если у тебя есть контейнер сетки тренажёров (голубые кнопки) */
+.grid, .cards, .trainers, .setka {
+  position: relative;
+  z-index: 10000;       /* поднимаем всю секцию целиком */
+}
+
+/* 2) отключаем «перехват кликов» у верхнего баннера/картинки/бейджа */
+header .card, header .card *,
+header .promo, header .promo *,
+header .hero,  header .hero *,
+header img,    header img * ,
+.top, .top * ,
+.logo, .logo * ,
+.badge, .badge *,
+.poster, .poster * {
+  pointer-events: none !important;   /* баннер виден, но клики проходят сквозь него */
+}
+
+/* на всякий случай для любых overlay/cover-слоёв */
+[id*="overlay"], [class*="overlay"], .backdrop, .cover, .hero-cover {
+  pointer-events: none !important;
+}
+</style>
 </body>
 </html>
