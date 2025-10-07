@@ -220,29 +220,7 @@ body {
 
     <section class="section">
       <section class="section">
-<style>
-/* Делаем все кнопки и ссылки кликабельными поверх любых слоёв */
-a.knopka, 
-a.knopka-demo, 
-a.btn, 
-a.btn-warning, 
-a.btn-primary, 
-.setka a, 
-.grid a {
-  pointer-events: auto !important;
-  position: relative;
-  z-index: 999 !important;
-}
 
-/* Отключаем перехват кликов любыми невидимыми слоями */
-.overlay, 
-.backdrop, 
-[class*="overlay"], 
-[id*="overlay"], 
-.cover {
-  pointer-events: none !important;
-}
-</style>
 <!-- 💎 Блок демоверсий -->
 <div class="kicker">ДЕМО</div>
 <div class="setka" style="gap: 8px 12px;">
@@ -436,5 +414,32 @@ header img,    header img * ,
   pointer-events: none !important;
 }
 </style>
+<style id="click-fix">
+  /* 1) Делаем абсолютно все ссылки кликабельными */
+  a, a * {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 999999 !important;
+    cursor: pointer;
+  }
+
+  /* 2) Поднимаем целые секции с кнопками поверх любых слоёв */
+  .setka, .grid, .section, .kicker,
+  .btn, .btn-primary, .btn-warning,
+  .knopka, .knopka-demo {
+    position: relative !important;
+    z-index: 999990 !important;
+  }
+
+  /* 3) Отключаем перехват кликов у возможных перекрывающих слоёв */
+  [class*="overlay"], [id*="overlay"],
+  .backdrop, .cover, .hero-cover,
+  header .card, header .promo, header .hero,
+  header .logo, header img,
+  header .card *, header .promo *, header .hero *,
+  header .logo *, header img * {
+    pointer-events: none !important;
+  }
+</style>  
 </body>
 </html>
