@@ -369,12 +369,13 @@ a, .btn, .knopka, .knopka-demo, .btn-primary, .btn-warning {
   pointer-events: none !important;
 }
 </style>
- 
+<style>
 /* поднимаем все ссылки в блоках с кнопками */
 .setka, .setka * { position: relative; z-index: 10; }
 .setka a { pointer-events: auto !important; display: inline-block; }
-/* 100% кликабельность для всех ссылок-кнопок (на всякий случай) */
-a.knopka, 
+
+/* 100% кликабельность для всех ссылок-кнопок */
+a.knopka,
 a.knopka-demo,
 .setka a,
 .grid a {
@@ -384,19 +385,8 @@ a.knopka-demo,
 }
 
 /* Визуальная проверка хита (можно потом удалить) */
-.setka a { /* outline: 2px dashed magenta; */ }
-/* если сверху висит невидимый слой — отключим ему захват кликов */
-[id*="overlay"], [class*="overlay"], .backdrop, .hero-cover, .cover {
-  pointer-events: none !important;
-}
+</style> 
 
-/* на всякий случай делаем любые элементы-кнопки кликабельными */
-a.knopka, a.knopka-demo, a.btn, a.btn-warning, a.btn-primary {
-  pointer-events: auto !important;
-  position: relative; z-index: 11;
-}
-</style>
-  <style>
 /* 1) делаем демо-кнопки и блок «Тренажёры» гарантированно кликабельными */
 .setka a,
 a.knopka, a.knopka-demo,
