@@ -65,6 +65,15 @@ document.getElementById('form').addEventListener('submit', (e) => {
   document.getElementById('player').style.display = 'block';
   document.getElementById('form').style.display = 'none';
 });
+  // === Автоматическое открытие тренажёра по параметру t ===
+const urlParams = new URLSearchParams(window.location.search);
+const trainerKey = urlParams.get('t');
+if (trainerKey && TRAINERS[trainerKey]) {
+  document.getElementById('form').style.display = 'none';
+  const iframe = document.getElementById('app');
+  iframe.src = TRAINERS[trainerKey];
+  document.getElementById('player').style.display = 'block';
+}
 </script>
  
 </body>
