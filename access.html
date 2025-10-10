@@ -2,70 +2,50 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Доступ к тренажёру</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ввод кода доступа</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 16px}
-    .card{border:1px solid #e5e7eb;border-radius:12px;padding:20px}
-    input,button{padding:12px;font-size:16px}
-    #player{display:none;margin-top:16px}
-    iframe{width:100%;height:80vh;border:0}
-    .hint{font-size:13px;color:#6b7280;margin-top:8px}
-    .error{color:#c00;display:none;margin-top:8px}
+    body { font-family: sans-serif; background: #f7f7f7; text-align: center; padding-top: 100px; }
+    form { display: inline-block; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input { padding: 10px; font-size: 16px; width: 250px; margin-right: 10px; }
+    button { padding: 10px 20px; font-size: 16px; background: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #005fa3; }
+    .hint { font-size: 13px; color: #555; margin-top: 10px; }
+    #err { display:none; color:red; margin-top:10px; }
+    #player { display:none; }
   </style>
 </head>
 <body>
-  <h1>Ввод кода доступа</h1>
-  <div class="card">
-    <p>Введите персональный код, который пришёл на e-mail после оплаты.</p>
-    <form id="form">
-      <input id="code" type="text" placeholder="например: SLK-8F3K2QZT" required/>
-      <button type="submit">Открыть тренажёр</button>
-      <div class="hint">Код чувствителен к символам латиницы, допускается дефис.</div>
-    </form>
-    <div id="err" class="error">Неверный или уже использованный код.</div>
+  <h2>Ввод кода доступа</h2>
+  <form id="form">
+    <input id="code" type="text" placeholder="например: SLK-TEST01" required/>
+    <button type="submit">Открыть тренажёр</button>
+    <div class="hint">Код чувствителен к символам латиницы, допускается дефис.</div>
+    <div id="err">Неверный или уже использованный код.</div>
+  </form>
 
-    <div id="player">
-      <iframe id="app" allowfullscreen referrerpolicy="no-referrer"></iframe>
-    </div>
+  <div id="player">
+    <iframe id="app" width="100%" height="600px" frameborder="0"></iframe>
   </div>
 
   <script>
-    // 1) ССЫЛКА НА ТРЕНАЖЁР (спрятана в base64)
-    const TRAINER_B64 = "aHR0cHM6Ly9jaGVlcmZ1bC1zZW1vbGluYS0wYzY2YWIubmV0bGlmeS5hcHA=";
-    const TRAINER_URL = atob(TRAINER_B64);
+    const VALID_CODES = new Set(["SLK-TEST01"]);
+    const TRAINER_URL = "https://cheerful-semolina-0c66ab.netlify.app";
 
-    // 2) СПИСОК КОДОВ (временно). Для запуска просто вставь 1–2 тестовых.
-    // Потом сюда можно добавлять коды из SendOwl (экспорт/копипаст).
-    const VALID_CODES = new Set([
-      "SLK-TEST01",
-      "SLK-TEST02"
-    ]);
-
-    // 3) Сессия: 2 часа, «сжигаем» код на этом устройстве.
-    const SESSION_MS = 2 * 60 * 60 * 1000;
-    const usedKey = code => slovakgo:used:${code};
-
-    function markUsed(code){
-      const until = Date.now() + SESSION_MS;
-      localStorage.setItem(usedKey(code), String(until));
+    function markUsed(code) {
+      localStorage.setItem(code, "used");
     }
-    function isUsed(code){
-      const v = Number(localStorage.getItem(usedKey(code)) || 0);
-      if (!v) return false;
-      if (Date.now() > v){ localStorage.removeItem(usedKey(code)); return false; }
-      return true;
+
+    function isUsed(code) {
+      return localStorage.getItem(code) === "used";
     }
 
     document.getElementById('form').addEventListener('submit', (e) => {
       e.preventDefault();
       const code = document.getElementById('code').value.trim().toUpperCase();
-      const err  = document.getElementById('err');
+      const err = document.getElementById('err');
 
-      // быстрая валидация формата (SLK-XXXXXXXX)
-      if (!/^([A-Z0-9-]{6,24})$/.test(code)){ err.style.display='block'; return; }
-
-      if (!VALID_CODES.has(code) || isUsed(code)){
+      if (!VALID_CODES.has(code) || isUsed(code)) {
         err.style.display = 'block';
         return;
       }
