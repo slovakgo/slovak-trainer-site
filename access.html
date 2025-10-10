@@ -28,56 +28,43 @@
     <iframe id="app" width="100%" height="600px" frameborder="0"></iframe>
   </div>
 <script>
-  // === Карта тренажёров по префиксу кода ===
-  const TRAINERS = {
-    VERB:   "https://cheerful-semolina-0c66ab.netlify.app",     // Глагол быть
-    A1:     "https://subtle-cassata-a136cb.netlify.app/",       // Курс A1
-    GEN:    "https://visionary-cupcake-e40cb6.netlify.app/",    // Определение рода
-    PHRA:   "https://warm-taiyaki-f618c4.netlify.app/",         // Распространённые фразы
-    TAXI:   "https://ephemeral-boba-839a6f.netlify.app/",       // Для таксистов
-    IRR:    "https://rad-pixie-066b4e.netlify.app/",            // Неправильные глаголы
-    COURIER:"https://quiet-meringue-c0a2fb.netlify.app/",       // Для курьеров
-  };
+// Карта тренажёров
+const TRAINERS = {
+  VERB:   "https://cheerful-semolina-0c66ab.netlify.app",     // Глагол быть
+  A1:     "https://subtle-cassata-a136cb.netlify.app/",       // Курс A1
+  GEN:    "https://visionary-cupcake-e40cb6.netlify.app/",    // Определение рода
+  PHRA:   "https://warm-taiyaki-f618c4.netlify.app/",         // Распространённые фразы
+  TAXI:   "https://ephemeral-boba-839a6f.netlify.app/",       // Для таксистов
+  IRR:    "https://rad-pixie-066b4e.netlify.app/",            // Неправильные глаголы
+  COURIER:"https://quiet-meringue-c0a2fb.netlify.app/",       // Для курьеров
+};
 
-  // Тестовые коды (для проверки)
-  const VALID_CODES = new Set([
-    "VERB-TEST01",
-    "A1-TEST01",
-    "GEN-TEST01",
-    "PHRA-TEST01",
-    "TAXI-TEST01",
-    "IRR-TEST01",
-    "COURIER-TEST01",
-  ]);
-  // Проверка использованных кодов
-  function markUsed(code){ localStorage.setItem(code, "used"); }
-  function isUsed(code){ return localStorage.getItem(code) === "used"; }
+// читаем ?t= из адресной строки (если пришли с оплаты)
+const qs = new URLSearchParams(location.search);
+const tParam = (qs.get('t') || '').toUpperCase();
 
-  document.getElementById('form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const code = document.getElementById('code').value.trim().toUpperCase();
-    const err = document.getElementById('err');
+document.getElementById('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const code = document.getElementById('code').value.trim().toUpperCase();
+  const err  = document.getElementById('err');
 
-    // Проверим формат и префикс
-    const match = code.match(/^([A-Z0-9]+)-/);
-    if (!match){ err.style.display = 'block'; return; }
+  // Быстрая проверка формата кода: ПРЕФИКС-xxxxxxxx
+  const m = code.match(/^([A-Z0-9]+)-[A-Z0-9-]{2,}$/);
+  if (!m) { err.style.display='block'; return; }
 
-    const prefix = match[1];
-    const url = TRAINERS[prefix];
+  // Ключ тренажёра: приоритет у ?t=..., иначе берём префикс из кода
+  const key = tParam || m[1];
+  const url = TRAINERS[key];
 
-    if (!url  !VALID_CODES.has(code)  isUsed(code)) {
-      err.style.display = 'block';
-      return;
-    }
+  if (!url) { err.style.display='block'; return; }
 
-    err.style.display = 'none';
-    markUsed(code);
-
-    const iframe = document.getElementById('app');
-    iframe.src = url;
-    document.getElementById('player').style.display = 'block';
-    document.getElementById('form').style.display = 'none';
-  });
+  // Успех: показываем iframe с тренажёром
+  err.style.display = 'none';
+  const iframe = document.getElementById('app');
+  iframe.src = url;
+  document.getElementById('player').style.display = 'block';
+  document.getElementById('form').style.display = 'none';
+});
 </script>
  
 </body>
