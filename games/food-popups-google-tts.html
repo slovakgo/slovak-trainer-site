@@ -6,7 +6,7 @@
 <title>Игра: Продукты (SK) · фото + озвучка Google TTS</title>
 <style>
   :root{--ok:#16a34a;--bad:#ef4444;--ink:#1f2937;--muted:#6b7280;--card:#fff;--brand:#00bfa5;}
-  html,body{margin:0;background:transparent;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  html,body{margin:0;background: linear-gradient(135deg, #FFF9DB 0%, #E9F8EE 45%, #FFFFFF 100%);
   .wrap{max-width:1100px;margin:24px auto 56px;padding:0 20px}
   header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:12px 0 10px;flex-wrap:wrap}
   .pill{border:1px solid #e5e7eb;background:#fff;color:#111827;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:600}
@@ -174,6 +174,38 @@ function toast(m){
 
 document.querySelectorAll('#lang .pill').forEach(b=> b.addEventListener('click', ()=> setLang(b.dataset.lang)));
 setLang('ru');
+// --- улучшенная озвучка слова на словацком ---
+function speakSK(text){
+  // 1) пробуем системные голоса
+  const prefer = [
+    'Microsoft Filip',          // Edge/Windows
+    'Google Slovak',            // Chrome
+  ];
+  const voices = (typeof speechSynthesis!=='undefined') ? speechSynthesis.getVoices() : [];
+  let voice = null;
+
+  if (voices && voices.length){
+    voice = voices.find(v => prefer.some(n => v.name && v.name.toLowerCase().includes(n.toLowerCase())))
+         ||  voices.find(v => /sk|slovak/i.test((v.lang||'') + ' ' + (v.name||'')));
+  }
+
+  if (voice){
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'sk-SK';
+    u.voice = voice;
+    u.rate = 0.95;
+    u.pitch = 1.0;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+    return;
+  }
+
+  // 2) запасной вариант — Google TTS
+  const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q='
+              + encodeURIComponent(text) + '&tl=sk-SK&client=gtx';
+  const audio = new Audio(url);
+  audio.play().catch(()=>{});
+}
 </script>
 </body>
 </html>
