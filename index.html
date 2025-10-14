@@ -227,31 +227,57 @@ body {
       <p>Если вы уже открывали учебник <strong>„Krížom‑krážom. Slovenčina.“</strong>, вы знаете, насколько это живой и увлекательный язык. Но чтобы слова не оставались только на страницах — их нужно применять.</p>
       <p>✨ Наши умные тренажёры делают процесс обучения простым и эффективным. Они реагируют на ваши ответы, повторяют сложные слова и выражения и помогают запомнить материал навсегда.</p>
     </section>
-    <!-- 🎯 РАЗДЕЛ ИГР -->
-<section id="games" style="max-width:1100px;margin:56px auto;padding:0 20px;">
-  <h2 style="text-align:center;margin-bottom:24px;">🎮 Интерактивные игры</h2>
+   <!-- БЛОК ИГР -->
+<style>
+  /* аккуратные карточки как в дизайне сайта */
+  .games {max-width:1100px;margin:40px auto 60px;padding:0 20px;}
+  .games h2{font-size:28px;margin:0 0 20px 0;text-align:center}
+  .games-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(260px,1fr));
+    gap:18px;
+  }
+  .game-card{
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 12px 28px rgba(0,0,0,.06);
+    padding:20px 22px;
+  }
+  .game-card h3{margin:0 0 8px 0;font-size:18px}
+  .game-card p{margin:0 0 14px 0;color:#5b6770;line-height:1.35}
+  .btn-play{
+    display:inline-block;
+    background:#51D5B1;            /* твой зелёный */
+    color:#003d37;                  /* тёмный текст как на сайте */
+    font-weight:700;
+    border-radius:12px;
+    padding:10px 18px;
+    text-decoration:none;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn-play:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  @media (max-width:680px){.games-grid{grid-template-columns:1fr}}
+</style>
 
-  <div class="games-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
-    <!-- Игра 1 -->
-    <article style="background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.08);padding:20px;">
-      <h3 style="margin-top:0;">Продукты на словацком</h3>
-      <p style="margin:8px 0 16px;">Флеш-игра с переключением языков (UA/RU/EN). Тренируем названия продуктов.</p>
-      
-    </article>
-<!-- Кнопка "Играть" -->
-<a class="btn btn-green" href="games/food-popups-google-tts.html">Играть</a>
-    <!-- Игра 2 (пример, позже добавишь свою ссылку) -->
-    <article style="background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.08);padding:20px;">
-      <h3 style="margin-top:0;">Фрукты на словацком</h3>
-      <p style="margin:8px 0 16px;">Карточки с фруктами. Поддержка UA/RU/EN.</p>
-      <a href="games/canva-fruits.html" style="display:inline-block;padding:10px 16px;border-radius:8px;background:#1abc9c;color:#fff;text-decoration:none;font-weight:600;">Играть</a>
+<section class="games" id="games">
+  <h2>🎮 Интерактивные игры</h2>
+  <div class="games-grid">
+
+    <article class="game-card">
+      <h3>Продукты на словацком</h3>
+      <p>Флеш-игра с переключением языков (UA/RU/EN). Тренируем названия продуктов.</p>
+      <a class="btn-play" href="/games/food-popups-google-tts.html">Играть</a>
     </article>
 
-    <!-- Игра 3 ... просто копируй блок <article> и меняй ссылку/текст -->
+    <article class="game-card">
+      <h3>Фрукты на словацком</h3>
+      <p>Карточки с фруктами. Поддержка UA/RU/EN.</p>
+      <a class="btn-play" href="/games/fruit-cards.html">Играть</a>
+    </article>
+
   </div>
 </section>
-<!-- /РАЗДЕЛ ИГР -->
-
+<!-- /БЛОК ИГР -->
     <hr class="sep">
 
     <section class="section">
