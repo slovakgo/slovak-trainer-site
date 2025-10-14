@@ -1,9 +1,9 @@
-<!doctype html>
+doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Продукты (SK) — фото + озвучка Google TTS</title>
+  <title>Продукты (SK) — единый голос Google TTS</title>
   <style>
     :root{--ok:#16a34a;--bad:#ef4444;--ink:#1f2937;--muted:#6b7280;--card:#fff;--brand:#00bfa5;}
     html,body{margin:0;background:transparent;color:var(--ink);font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif}
@@ -31,11 +31,11 @@
   <div class="wrap">
     <header>
       <div>
-        <h1>🕹️ Продукты на словацком — фото + Google TTS</h1>
-        <div class="meta"><span class="score" id="score">0 / 0</span> · При верном ответе: озвучка через Google Translate TTS (sk), затем авто-переход</div>
+        <h1>🕹️ Продукты на словацком — единый голос Google TTS</h1>
+        <div class="meta"><span class="score" id="score">0 / 0</span> · При верном ответе: озвучка (Google TTS sk), потом авто-переход</div>
       </div>
       <div>
-        <button class="pill act" data-lang="ru">ru Русский</button>
+        <button class="pill active" data-lang="ru">ru Русский</button>
         <button class="pill" data-lang="ua">ua Українська</button>
         <button class="pill" data-lang="en">en English</button>
       </div>
@@ -49,6 +49,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
+  /* локальные картинки из /games/images */
   const ITEMS = [
     { sk:'chlieb',   ua:'хліб',     ru:'хлеб',      en:'bread',   img:'images/chlieb.jpg' },
     { sk:'mlieko',   ua:'молоко',   ru:'молоко',    en:'milk',    img:'images/mlieko.jpg' },
@@ -69,66 +70,45 @@
 
   const UI = {
     ru:{find:'Найдите слово:',help:'Выберите правильный вариант на словацком',meta:'Язык: Русский'},
-    ua:{find:'Знайди слово:',help:'Oбери правильний варіант слова словацькою',meta:'Мова: Українська'},
+    ua:{find:'Знайди слово:',help:'Обери правильний варіант слова словацькою',meta:'Мова: Українська'},
     en:{find:'Find the word:',help:'Pick the correct Slovak word',meta:'Language: English'}
   };
 
-  let lang='ru',score=0,total=0,current=null;
+  let lang='ru',score=0,total=ITEMS.length,current=null;
 
   function setLang(l){
     lang=l;
-    document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('act',p.dataset.lang===l));
-    startGame();
+    document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.lang===l));
+    document.getElementById('hint').textContent=UI[l].help;
+    start();
   }
 
-  function startGame(){
-    score=0;
-    total=ITEMS.length;
-    document.getElementById('score').textContent=`${score} / ${total}`;
-    newRound();
-  }
+  function start(){ score=0; document.getElementById('score').textContent=`${score} / ${total}`; round(); }
 
-  function newRound(){
+  function round(){
     current=ITEMS[Math.floor(Math.random()*ITEMS.length)];
-    document.getElementById('prompt').textContent=`${UI[lang].find} “${current[lang]}”`;
-    document.getElementById('hint').textContent=UI[lang].help;
-    const grid=document.getElementById('grid');
-    grid.innerHTML='';
-    const opts=[current,...pick(3,ITEMS.filter(x=>x!==current))].sort(()=>Math.random()-.5);
-    opts.forEach(opt=>{
+    document.getElementById('prompt').textContent = `${UI[lang].find} “${current[lang]}”`;
+    const grid=document.getElementById('grid'); grid.innerHTML='';
+    const opts=[current,...shuffle(ITEMS.filter(x=>x!==current)).slice(0,3)];
+    shuffle(opts).forEach(opt=>{
       const el=document.createElement('div');
       el.className='card';
-      el.innerHTML=`<div class="photo"><img src="${opt.img}" alt=""></div><div class="sk">${opt.sk}</div>`;
+      el.innerHTML=`<span class="photo"><img src="${opt.img}" alt=""></span><div class="sk">${opt.sk}</div>`;
       el.onclick=()=>{
-        if(opt.sk===current.sk){
-          el.classList.add('ok');
-          speakSK(current.sk);
-          toast(UI[lang].help);
-          setTimeout(newRound,700);
-        } else {
-          el.classList.add('wrong');
-          setTimeout(()=>el.classList.remove('wrong'),300);
-        }
-        document.getElementById('score').textContent=`${score} / ${total}`;
+        if(opt===current){ el.classList.add('ok'); speakSK(current.sk); setTimeout(round,700); }
+        else { el.classList.add('wrong'); setTimeout(()=>el.classList.remove('wrong'),300); }
       };
       grid.appendChild(el);
     });
   }
 
-  function pick(n,arr){return arr.sort(()=>0.5-Math.random()).slice(0,n);}
+  function shuffle(a){return a.slice().sort(()=>Math.random()-0.5);}
 
-  function toast(m){
-    const t=document.getElementById('toast');
-    t.textContent=m; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),800);
-  }
-
+  /* ЕДИНЫЙ ДЛЯ ВСЕХ ГОЛОС: Google TTS через Audio */
   function speakSK(text){
-    const utter=new SpeechSynthesisUtterance(text);
-    utter.lang='sk-SK';
-    utter.rate=0.9;
-    utter.pitch=1;
-    speechSynthesis.speak(utter);
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=sk&q=${encodeURIComponent(text)}`;
+    const audio = new Audio(url);
+    audio.play().catch(()=>{});
   }
 
   document.querySelectorAll('.pill').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
