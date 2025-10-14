@@ -92,7 +92,7 @@ function pick(n,arr){const a=[...arr];const out=[];while(out.length<n&&a.length)
 
 // --- озвучка через Google Translate TTS (с запасным вариантом speechSynthesis)
 function playTTS_SK(text){
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=sk&client=tw-ob`;
+  const url = https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=sk-SK&client=gtx;
   const audio = new Audio(url);
   audio.play().catch(()=>{
     // fallback — если браузер запретил автоплей / TTS блокируется
