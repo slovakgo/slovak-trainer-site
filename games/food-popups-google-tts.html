@@ -175,36 +175,61 @@ function toast(m){
 document.querySelectorAll('#lang .pill').forEach(b=> b.addEventListener('click', ()=> setLang(b.dataset.lang)));
 setLang('ru');
 // --- улучшенная озвучка слова на словацком ---
-function speakSK(text){
-  // 1) пробуем системные голоса
-  const prefer = [
-    'Microsoft Filip',          // Edge/Windows
-    'Google Slovak',            // Chrome
+// --- улучшенная озвучка слова на словацком ---
+async function speakSK(text){
+  const want = [
+    'microsoft filip',
+    'microsoft laura',
+    'google slovak',
+    'zuzana',
+    'slovak (slovakia)'
   ];
-  const voices = (typeof speechSynthesis!=='undefined') ? speechSynthesis.getVoices() : [];
-  let voice = null;
 
-  if (voices && voices.length){
-    voice = voices.find(v => prefer.some(n => v.name && v.name.toLowerCase().includes(n.toLowerCase())))
-         ||  voices.find(v => /sk|slovak/i.test((v.lang||'') + ' ' + (v.name||'')));
+  function pick(voices){
+    const v = voices || [];
+    const byLang = v.filter(x => (x.lang||'').toLowerCase().startsWith('sk'));
+    if (byLang.length){
+      const name = byLang.find(x => want.some(w => (x.name||'').toLowerCase().includes(w)));
+      return name || byLang[0];
+    }
+    return v.find(x => (x.name||'').toLowerCase().includes('slovak')) || null;
   }
 
-  if (voice){
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'sk-SK';
-    u.voice = voice;
-    u.rate = 0.95;
-    u.pitch = 1.0;
+  async function waitVoices(timeout=2000){
+    const step = 100;
+    let passed = 0;
+    let voices = speechSynthesis.getVoices();
+    while ((!voices || !voices.length) && passed < timeout){
+      await new Promise(r => setTimeout(r, step));
+      voices = speechSynthesis.getVoices();
+      passed += step;
+    }
+    return voices || [];
+  }
+
+  try{
+    if (!('speechSynthesis' in window)) throw new Error('no_speech_api');
     speechSynthesis.cancel();
+
+    const voices = await waitVoices(2500);
+    const voice  = pick(voices);
+
+    if (!voice) throw new Error('no_sk_voice');
+
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang   = 'sk-SK';
+    u.voice  = voice;
+    u.rate   = 0.95;
+    u.pitch  = 1.0;
+    u.volume = 1.0;
+
     speechSynthesis.speak(u);
     return;
+  }catch(e){
+    const url = 'https://translate.google.com/translate_tts?ie=UTF-8&q='
+                + encodeURIComponent(text) + '&tl=sk&client=tw-ob';
+    new Audio(url).play().catch(()=>{});
   }
-
-  // 2) запасной вариант — Google TTS
-  const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q='
-              + encodeURIComponent(text) + '&tl=sk-SK&client=gtx';
-  const audio = new Audio(url);
-  audio.play().catch(()=>{});
 }
 </script>
 </body>
