@@ -1,77 +1,73 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Игра: Продукты (SK) · фото + озвучка Google TTS</title>
-<style>
-  :root{--ok:#16a34a;--bad:#ef4444;--ink:#1f2937;--muted:#6b7280;--card:#fff;--brand:#00bfa5;}
-  html,body{margin:0;background: linear-gradient(135deg, #FFF9DB 0%, #E9F8EE 45%, #FFFFFF 100%);
-  .wrap{max-width:1100px;margin:24px auto 56px;padding:0 20px}
-  header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:12px 0 10px;flex-wrap:wrap}
-  .pill{border:1px solid #e5e7eb;background:#fff;color:#111827;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:600}
-  .pill.active{background:var(--brand);color:#fff;border-color:transparent}
-  h1{font-size:28px;margin:6px 0 2px}
-  .meta{color:var(--muted);margin-top:2px}
-  .prompt{margin:18px 0 6px;font-size:20px;font-weight:700;}
-  .hint{color:var(--muted);font-size:14px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:14px}
-  .card{background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:0 10px 28px rgba(0,0,0,.08);
-        transform:translateY(8px) scale(.98);opacity:0;animation:pop .35s ease forwards;cursor:pointer;user-select:none;position:relative;overflow:hidden}
-  .media{display:grid;place-items:center;height:140px;margin:4px 0 8px}
-  .photo{max-width:100%;max-height:140px;border-radius:10px;display:block}
-  .fallback{font-size:56px;line-height:1;display:none}
-  .sk{font-weight:800;letter-spacing:.2px}
-  .card:hover{transform:translateY(0) scale(1);box-shadow:0 14px 32px rgba(0,0,0,.10)}
-  .card.correct{outline:3px solid var(--ok);box-shadow:0 0 0 4px rgba(22,163,74,.2) inset}
-  .card.wrong{outline:3px solid var(--bad);animation:shake .25s linear}
-  @keyframes pop{to{opacity:1;transform:translateY(0) scale(1)}}
-  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .toolbar{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
-  .score{font-weight:800}
-  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s ease}
-  .toast.show{opacity:1}
-  .small{font-size:12px;color:var(--muted)}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Продукты (SK) — фото + озвучка</title>
+  <!-- избегаем 404 на favicon -->
+  <link rel="icon" href="../favicon-32.png" type="image/png">
+  <style>
+    :root{
+      --ok:#16a34a;--bad:#ef4444;--ink:#1f2937;--muted:#6b7280;--card:#fff;--brand:#00bfa5;
+    }
+    html,body{margin:0;background:transparent;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:1100px;margin:24px auto 56px;padding:0 20px}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:12px 0 10px;flex-wrap:wrap}
+    .pill{border:1px solid #e5e7eb;background:#fff;color:#111827;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:600}
+    .pill.active{background:var(--brand);color:#fff;border-color:transparent}
+    h1{font-size:28px;margin:6px 0 2px}
+    .meta{color:var(--muted);margin-top:2px}
+    .prompt{margin:18px 0 6px;font-size:20px;font-weight:700;}
+    .hint{color:var(--muted);margin-top:2px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin-top:14px}
+    .card{background:var(--card);border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.08);padding:14px 10px 12px;text-align:center}
+    .photo{display:flex;align-items:center;justify-content:center;min-height:120px}
+    .photo img{max-width:120px;max-height:120px;display:block}
+    .title{margin-top:10px;font-weight:700}
+    .ok{outline:3px solid var(--ok)}
+    .wrong{outline:3px solid var(--bad)}
+    .toolbar{display:flex;gap:8px;align-items:center}
+    .score{font-weight:700}
+    .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s}
+    .toast.show{opacity:1}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>🎮 Продукты на словацком — фото + Google TTS</h1>
-      <div class="meta" id="meta"></div>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <div id="lang">
-        <button class="pill" data-lang="ua">🇺🇦 Українська</button>
-        <button class="pill active" data-lang="ru">🇷🇺 Русский</button>
-        <button class="pill" data-lang="en">🇬🇧 English</button>
+  <main class="wrap">
+    <header>
+      <div>
+        <h1>🕹 Продукты на словацком — фото + озвучка</h1>
+        <div class="meta">Язык: <span id="meta">Русский</span></div>
       </div>
+      <div class="toolbar">
+        <button class="pill" data-lang="ua">ua Українська</button>
+        <button class="pill active" data-lang="ru">ru Русский</button>
+        <button class="pill" data-lang="en">en English</button>
+      </div>
+    </header>
+
+    <p class="prompt" id="prompt"></p>
+    <p class="hint" id="hint"></p>
+
+    <div class="grid" id="grid" aria-live="polite"></div>
+
+    <div class="toolbar" style="margin-top:12px">
+      <span class="score" id="score">0 / 0</span>
+      <span class="meta" style="margin-left:10px">При верном ответе: озвучка (SK), затем авто-переход</span>
     </div>
-  </header>
+  </main>
 
-  <div class="prompt" id="prompt"></div>
-  <div class="hint" id="subhint"></div>
-
-  <div class="grid" id="grid"></div>
-
-  <div class="toolbar">
-    <div class="score" id="score">0 / 0</div>
-    <span class="small">При верном ответе: озвучка через Google Translate TTS (sk), затем авто-переход</span>
-  </div>
-</div>
-
-<div class="toast" id="toast">✔</div>
+  <div class="toast" id="toast"></div>
 
 <script>
-// === Данные (фото + эмодзи фолбэк) ===
+/* === данные (локальные картинки из /games/images) === */
 const ITEMS = [
   { sk:'chlieb',   ua:'хліб',     ru:'хлеб',      en:'bread',  img:'images/chlieb.jpg' },
   { sk:'mlieko',   ua:'молоко',   ru:'молоко',    en:'milk',   img:'images/mlieko.jpg' },
   { sk:'jablko',   ua:'яблуко',   ru:'яблоко',    en:'apple',  img:'images/jablko.jpg' },
   { sk:'syr',      ua:'сир',      ru:'сыр',       en:'cheese', img:'images/syr.jpg' },
   { sk:'vajce',    ua:'яйце',     ru:'яйцо',      en:'egg',    img:'images/vajce.jpg' },
-  { sk:'mäso',     ua:'мʼясо',    ru:'мясо',      en:'meat',   img:'images/maso.jpg' },
+  { sk:'mäso',     ua:'м’ясо',    ru:'мясо',      en:'meat',   img:'images/maso.jpg' },
   { sk:'voda',     ua:'вода',     ru:'вода',      en:'water',  img:'images/voda.jpg' },
   { sk:'káva',     ua:'кава',     ru:'кофе',      en:'coffee', img:'images/kava.jpg' },
   { sk:'cukor',    ua:'цукор',    ru:'сахар',     en:'sugar',  img:'images/cukor.jpg' },
@@ -79,159 +75,131 @@ const ITEMS = [
   { sk:'koláč',    ua:'пиріг',    ru:'пирог',     en:'cake',   img:'images/kolac.jpg' },
   { sk:'ryža',     ua:'рис',      ru:'рис',       en:'rice',   img:'images/ryza.jpg' },
   { sk:'soľ',      ua:'сіль',     ru:'соль',      en:'salt',   img:'images/sol.jpg' },
+  { sk:'maslo',    ua:'масло',    ru:'масло',     en:'butter', img:'images/maslo.jpg' },
   { sk:'čaj',      ua:'чай',      ru:'чай',       en:'tea',    img:'images/caj.jpg' },
   { sk:'banán',    ua:'банан',    ru:'банан',     en:'banana', img:'images/banan.jpg' },
   { sk:'polievka', ua:'суп',      ru:'суп',       en:'soup',   img:'images/polievka.jpg' },
+  { sk:'mlieko',   ua:'молоко',   ru:'молоко',    en:'milk',   img:'images/mlieko.jpg' },
+  { sk:'vajce',    ua:'яйце',     ru:'яйцо',      en:'egg',    img:'images/vajce.jpg' },
   { sk:'zemiak',   ua:'картопля', ru:'картофель', en:'potato', img:'images/zemiak.jpg' }
 ];
 
-const UI={
-  ua:{find:'Знайди слово',help:'Обери правильний варіант словацькою',meta:'Мова: Українська'},
-  ru:{find:'Найдите слово',help:'Выберите правильный вариант на словацком',meta:'Язык: Русский'},
-  en:{find:'Find the word',help:'Pick the correct Slovak word',meta:'Language: English'}
+/* === тексты интерфейса === */
+const UI = {
+  ru:{ find:'Найдите слово:',  help:'Выберите правильный вариант на словацком', meta:'Язык: Русский' },
+  ua:{ find:'Знайди слово:',   help:'Обери правильний варіант словацькою',     meta:'Мова: Українська' },
+  en:{ find:'Find the word:',  help:'Pick the correct Slovak word',             meta:'Language: English' }
 };
 
-let lang='ru',score=0,total=0,current=null,pool=[...ITEMS];
+/* === состояние === */
+let lang='ru', score=0, total=ITEMS.length, current=null, pool=[...ITEMS];
 
-function pick(n,arr){const a=[...arr];const out=[];while(out.length<n&&a.length){out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);}return out;}
+const elGrid  = document.getElementById('grid');
+const elPrompt= document.getElementById('prompt');
+const elHint  = document.getElementById('hint');
+const elMeta  = document.getElementById('meta');
+const elScore = document.getElementById('score');
+const elToast = document.getElementById('toast');
 
-// --- озвучка через Google Translate TTS (с запасным вариантом speechSynthesis)
-function playTTS_SK(text){
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=sk&client=tw-ob`;
-  const audio = new Audio(url);
-  audio.play().catch(()=>{
-    // fallback — если браузер запретил автоплей / TTS блокируется
-    if('speechSynthesis' in window){
-      const u=new SpeechSynthesisUtterance(text);
-      u.lang='sk-SK';
-      speechSynthesis.cancel(); speechSynthesis.speak(u);
-    }
+function setLang(code){
+  lang = code;
+  document.querySelectorAll('.pill').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang===code);
   });
+  elMeta.textContent = UI[lang].meta;
+  elHint.textContent = UI[lang].help;
+  newRound(true);
 }
 
-function setLang(l){
-  lang=l;
-  document.querySelectorAll('#lang .pill').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
-  document.getElementById('meta').textContent=UI[l].meta;
-  document.getElementById('subhint').textContent=UI[l].help;
-  score=0; total=0; pool=[...ITEMS];
-  newRound();
-}
-
-function newRound(){
-  if(pool.length<4) pool=[...ITEMS];
-  const options = pick(4, pool);
-  current = options[Math.floor(Math.random()*options.length)];
-  total++;
-  render(options);
-}
-
-function render(options){
-  const g=document.getElementById('grid');
-  g.innerHTML='';
-  document.getElementById('prompt').textContent = `${UI[lang].find}: “${current[lang]}”`;
-  document.getElementById('score').textContent = `${score} / ${total-1}`;
-
-  options.forEach((opt,i)=>{
-    const el=document.createElement('div');
-    el.className='card';
-    el.style.animationDelay=`${i*60}ms`;
-    const imgId=`img_${i}_${Date.now()}`;
-    el.innerHTML=`
-      <div class="media">
-        <img id="${imgId}" class="photo" alt="${opt.sk}">
-        <div class="fallback">${opt.emoji}</div>
-      </div>
-      <div class="sk">${opt.sk}</div>
-    `;
-    const img=el.querySelector('.photo'), fb=el.querySelector('.fallback');
-    img.src=opt.img;
-    img.onload=()=>{ img.style.display='block'; fb.style.display='none'; };
-    img.onerror=()=>{ img.style.display='none'; fb.style.display='block'; };
-
-    el.addEventListener('click',()=>{
-      if(el.classList.contains('correct')) return;
-      if(opt.sk===current.sk){
-        el.classList.add('correct');
-        score++;
-        document.getElementById('score').textContent = `${score} / ${total-1}`;
-        playTTS_SK(current.sk);
-        toast('✔ ' + opt.sk);
-        setTimeout(newRound, 700); // авто-переход
-      }else{
-        el.classList.add('wrong');
-        setTimeout(()=>el.classList.remove('wrong'),300);
-      }
-    });
-    g.appendChild(el);
-  });
-}
-
-function toast(m){
-  const t=document.getElementById('toast');
-  t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 800);
-}
-
-document.querySelectorAll('#lang .pill').forEach(b=> b.addEventListener('click', ()=> setLang(b.dataset.lang)));
-setLang('ru');
-// --- улучшенная озвучка слова на словацком ---
-// --- улучшенная озвучка слова на словацком ---
-async function speakSK(text){
-  const want = [
-    'microsoft filip',
-    'microsoft laura',
-    'google slovak',
-    'zuzana',
-    'slovak (slovakia)'
-  ];
-
-  function pick(voices){
-    const v = voices || [];
-    const byLang = v.filter(x => (x.lang||'').toLowerCase().startsWith('sk'));
-    if (byLang.length){
-      const name = byLang.find(x => want.some(w => (x.name||'').toLowerCase().includes(w)));
-      return name || byLang[0];
-    }
-    return v.find(x => (x.name||'').toLowerCase().includes('slovak')) || null;
+function pick(n, arr){
+  const src = [...arr];
+  const out = [];
+  while (out.length < n && src.length){
+    out.push(src.splice(Math.floor(Math.random()*src.length),1)[0]);
   }
+  return out;
+}
 
-  async function waitVoices(timeout=2000){
-    const step = 100;
-    let passed = 0;
-    let voices = speechSynthesis.getVoices();
-    while ((!voices || !voices.length) && passed < timeout){
-      await new Promise(r => setTimeout(r, step));
-      voices = speechSynthesis.getVoices();
-      passed += step;
-    }
-    return voices || [];
+/* === озвучка слова по-словацки === */
+function speakSK(text){
+  // 1) пробуем системные хорошие голоса
+  const prefer = ['Microsoft Filip','Google Slovak'];
+  const voices = (typeof speechSynthesis!=='undefined') ? speechSynthesis.getVoices() : [];
+  let voice = null;
+  if (voices && voices.length){
+    voice = voices.find(v => prefer.some(p => v.name && v.name.toLowerCase().includes(p.toLowerCase())))
+          voices.find(v => /sk|slovak/i.test(v.lang||'')  /slovak/i.test(v.name||''));
   }
-
-  try{
-    if (!('speechSynthesis' in window)) throw new Error('no_speech_api');
-    speechSynthesis.cancel();
-
-    const voices = await waitVoices(2500);
-    const voice  = pick(voices);
-
-    if (!voice) throw new Error('no_sk_voice');
-
+  if (voice){
     const u = new SpeechSynthesisUtterance(text);
-    u.lang   = 'sk-SK';
-    u.voice  = voice;
-    u.rate   = 0.95;
-    u.pitch  = 1.0;
-    u.volume = 1.0;
-
+    u.voice = voice;
+    u.lang  = voice.lang || 'sk-SK';
+    u.rate = 0.95;
+    u.pitch = 1.0;
+    speechSynthesis.cancel();
     speechSynthesis.speak(u);
     return;
-  }catch(e){
-    const url = 'https://translate.google.com/translate_tts?ie=UTF-8&q='
-                + encodeURIComponent(text) + '&tl=sk&client=tw-ob';
-    new Audio(url).play().catch(()=>{});
   }
+  // 2) резерв — аудио через Google Translate TTS
+  const url = 'https://translate.google.com/translate_tts?ie=UTF-8&q='
+              + encodeURIComponent(text) + '&tl=sk&client=tw-ob';
+  const audio = new Audio(url);
+  audio.play().catch(()=>{});
 }
+
+function toast(msg){
+  elToast.textContent = msg;
+  elToast.classList.add('show');
+  setTimeout(()=>elToast.classList.remove('show'), 900);
+}
+
+function newRound(first=false){
+  elGrid.innerHTML = '';
+  if (!pool.length){ pool = [...ITEMS]; score=0; }
+  current = pool.splice(Math.floor(Math.random()*pool.length),1)[0];
+
+  const opts = [current, ...pick(3, ITEMS.filter(x=>x!==current))].sort(()=>Math.random()-0.5);
+
+  elPrompt.textContent = ${UI[lang].find} “${current[lang]}”;
+  elScore.textContent  = ${score} / ${total};
+
+  opts.forEach(opt=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="photo"><img src="${opt.img}" alt=""></div>
+      <div class="title">${opt.sk}</div>
+    `;
+    card.onclick = ()=>{
+      if (opt===current){
+        card.classList.add('ok');
+        score++;
+        elScore.textContent = ${score} / ${total};
+        speakSK(current.sk);
+        toast('✔ ' + opt.sk);
+        setTimeout(newRound, 700);
+      }else{
+        card.classList.add('wrong');
+        setTimeout(()=>card.classList.remove('wrong'), 350);
+      }
+    };
+    elGrid.appendChild(card);
+  });
+}
+
+/* === события === */
+document.querySelectorAll('.pill').forEach(b=>{
+  b.addEventListener('click', ()=> setLang(b.dataset.lang));
+});
+
+// в некоторых браузерах голоса подгружаются асинхронно
+if (typeof speechSynthesis!=='undefined'){
+  speechSynthesis.onvoiceschanged = ()=>{};
+}
+
+// старт
+setLang('ru');
 </script>
 </body>
 </html>
-
+    
