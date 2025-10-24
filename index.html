@@ -7,6 +7,54 @@
     background: linear-gradient(180deg, #FFF8C9 0%, #F3F8C1 100%) !important;
   }
 </style>
+  <style>
+  .btns {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+    margin:20px 0;
+  }
+
+  .pill {
+    display:block;
+    width:min(92vw, 560px);
+    margin:0 auto;
+    padding:14px 18px;
+    border-radius:14px;
+    color:#fff;
+    font-weight:700;
+    font-size:17px;
+    line-height:1.25;
+    text-align:center;
+    text-decoration:none;
+    box-shadow:0 6px 14px rgba(0,0,0,.12);
+    transition:.25s;
+  }
+
+  .pill small {
+    display:block;
+    font-size:14px;
+    font-weight:400;
+    opacity:.95;
+    margin-top:4px;
+  }
+
+  .pill:hover {
+    transform:translateY(-1px);
+    box-shadow:0 10px 20px rgba(0,0,0,.16);
+  }
+
+  .red   { background:#e63946; }
+  .cyan  { background:#00bcd4; }
+  .green { background:#4caf50; }
+
+  .content p, .content h1, .content h2 {
+    max-width: 900px;
+    margin: 0 auto 0.8rem;
+    padding: 0 12px;
+  }
+</style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
