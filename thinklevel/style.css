@@ -15,7 +15,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("./assets/neurons-bg.jpg") center/cover no-repeat fixed;
+ background: url("./neurons-bg.jpg") center/cover no-repeat fixed;
   filter: brightness(0.55) saturate(1.2);
   z-index: -2;
 }
