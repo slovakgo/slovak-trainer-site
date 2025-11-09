@@ -1,39 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ThinkLevel — тест</title>
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <section id="intro" class="card">
-    <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
-    <p class="lead">Введите e-mail, чтобы начать. Результат покажем на экране и пришлём на почту автоматически.</p>
-    <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
-      <input id="email" name="email" type="email" placeholder="Ваш e-mail" required />
-      <button type="submit" class="btn primary">Старт</button>
-    </form>
-    <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
-  </section>
+  <div class="bg"></div>
+  <div class="bg-overlay"></div>
 
-  <section id="quiz" class="card hidden">
-    <div class="top">
-      <div class="bar"><span id="bar"></span></div>
-      <div class="count">Вопрос <span id="qIdx">1</span> / <span id="qTotal">25</span></div>
-    </div>
-    <h2 id="qText" class="question"></h2>
-    <div id="answers" class="answers"></div>
-  </section>
+  <div class="container">
+    <section id="intro" class="card">
+      <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
+      <p class="lead">Введите e-mail, чтобы начать. Результат покажем на экране и отправим на почту автоматически.</p>
+      <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
+        <input id="email" name="email" type="email" placeholder="Ваш e-mail" required>
+        <button type="submit" class="btn primary">Старт</button>
+      </form>
+      <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
+    </section>
 
-  <section id="result" class="card hidden">
-    <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
-    <p id="resultText" class="lead">Результат отправлен на почту.</p>
-    <button id="restart" class="btn ghost">Пройти заново</button>
-  </section>
-</div>
-<script src="script.js"></script>
+    <section id="quiz" class="card hidden">
+      <div class="top">
+        <div class="bar"><span id="bar"></span></div>
+        <div class="count">Вопрос <span id="qIdx">1</span> / <span id="qTotal">25</span></div>
+      </div>
+      <h2 id="qText" class="question">...</h2>
+      <div id="answers" class="answers"></div>
+    </section>
+
+    <section id="checkpoint" class="card hidden">
+      <div class="cp-title">Промежуточный прогресс</div>
+      <div id="cpGrid" class="cp-grid">...</div>
+      <button id="continueBtn" class="btn ghost">Продолжить</button>
+    </section>
+
+    <section id="result" class="card hidden">
+      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
+      <p class="lead" id="resultText">Готово! Результат отправлен на почту.</p>
+      <button id="restart" class="btn ghost">Пройти заново</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

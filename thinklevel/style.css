@@ -1,112 +1,40 @@
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
   color: #e8eeff;
-  background-color: #0a1020; /* запасной фон */
+  background: #0a1020;
   overflow-x: hidden;
 }
-/* ФОН НЕЙРОНЫ */
-body::before{
-  content:"";
+.bg {
   position: fixed;
   inset: 0;
-  background: url("neurons-bg.jpg") center/cover no-repeat;
-  filter: brightness(0.6) saturate(1.1);
-  z-index: -1;           /* фон уходит за контент */
+  background: url('neurons-bg.jpg') center/cover no-repeat;
+  filter: brightness(0.55) saturate(1.1);
+  z-index: -2;
 }
-/* Мягкое затемнение поверх фото */
-.bg-overlay{
+.bg-overlay {
   position: fixed;
   inset: 0;
-  background: radial-gradient(80% 60% at 50% 60%,
-               rgba(10,16,28,.35), rgba(10,16,28,.85));
-  z-index: 0;
-  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(16,26,48,.35), rgba(10,16,32,.85));
+  z-index: -1;
 }
-
-
-.hidden {
-  display: none !important;
-}
-
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
+.container { max-width: 980px; margin: 40px auto; padding: 20px; }
 .card {
-  background: rgba(22, 28, 48, 0.65);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  padding: 25px;
-  margin: 20px 0;
-  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+  background: rgba(14,22,40,.65);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 24px;
+  backdrop-filter: blur(8px);
+  margin: 18px 0;
 }
-
-/* Кнопка “Старт” */
-button, .btn {
-  background: linear-gradient(135deg, #7dd0ff, #b38bff);
-  border: none;
-  color: #fff;
-  padding: 12px 28px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.25s ease;
+.brand { font-size: 36px; color: #9fc1ff; }
+.lead { font-size: 18px; margin: 10px 0 16px; }
+input[type=email] {
+  width: 100%; padding: 16px 18px; border-radius: 12px;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+  color: #e8eeff;
 }
-
-button:hover, .btn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-input[type="email"] {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #4e4e8a;
-  background: rgba(255,255,255,0.05);
-  color: #fff;
-  margin-bottom: 16px;
-  font-size: 1rem;
-}
-
-h1, h2, h3, h4, h5 {
-  color: #aadbff;
-  text-align: center;
-}
-
-/* Прогресс */
-.bar {
-  height: 8px;
-  background: linear-gradient(90deg, #7dd0ff, #b38bff);
-  border-radius: 4px;
-  margin-bottom: 12px;
-  transition: width 0.3s;
-}
-
-.count {
-  font-size: 0.9rem;
-  text-align: right;
-  color: #cfd8ff;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 10px;
-  }
-
-  .card {
-    padding: 18px;
-  }
-
-  button, .btn {
-    width: 100%;
-  }
-}
+.btn { padding: 14px 22px; border-radius: 14px; cursor: pointer; font-weight: 600; }
+.btn.primary { background: linear-gradient(90deg, #7cc7ff, #b08cff); border: none; color: #0b0f1d; }
+.hidden { display: none !important; }

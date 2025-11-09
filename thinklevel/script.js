@@ -1,105 +1,96 @@
-/* === ThinkLevel Script === */
+const intro = document.getElementById('intro');
+const emailForm = document.getElementById('emailForm');
+const emailInput = document.getElementById('email');
+const quiz = document.getElementById('quiz');
+const qText = document.getElementById('qText');
+const answers = document.getElementById('answers');
+const bar = document.getElementById('bar');
+const qIdxSpan = document.getElementById('qIdx');
+const qTotalSpan = document.getElementById('qTotal');
+const checkpoint = document.getElementById('checkpoint');
+const cpGrid = document.getElementById('cpGrid');
+const continueBtn = document.getElementById('continueBtn');
+const result = document.getElementById('result');
+const resultText = document.getElementById('resultText');
+const restartBtn = document.getElementById('restart');
 
-const preloader = document.getElementById("preloader");
-const container = document.querySelector(".container");
-const intro = document.getElementById("intro");
-const quiz = document.getElementById("quiz");
-const resultSection = document.getElementById("result");
-const qText = document.getElementById("qText");
-const answersBox = document.getElementById("answers");
-const qIndex = document.getElementById("qIdx");
-const qTotal = document.getElementById("qTotal");
-
-let current = 0;
-let score = 0;
-let email = "";
-
-/* === 25 ВОПРОСОВ === */
 const questions = [
-  { question: "Какое число продолжит ряд: 3, 6, 18, 72, ?", answers: ["144", "216", "288", "324"], correct: 1 },
-  { question: "Найдите лишнее слово: апельсин, яблоко, банан, картофель", answers: ["апельсин", "яблоко", "банан", "картофель"], correct: 3 },
-  { question: "Продолжите ряд: ПН, ВТ, СР, ЧТ, ...", answers: ["ПТ", "СБ", "ВС", "ПН"], correct: 0 },
-  { question: "Если все розы — цветы, а некоторые цветы быстро вянут, то:", answers: ["Все розы быстро вянут", "Некоторые розы быстро вянут", "Никакие розы не вянут", "Розы не цветы"], correct: 1 },
-  { question: "Что тяжелее: 1 кг железа или 1 кг ваты?", answers: ["Железо", "Вата", "Одинаково", "Невозможно определить"], correct: 2 },
-  { question: "В комнате 3 кошки. Каждая видит 3 кошки. Сколько всего кошек?", answers: ["3", "4", "6", "9"], correct: 1 },
-  { question: "Если два карандаша стоят 10 центов, сколько стоят 10 карандашей?", answers: ["40 центов", "50 центов", "1 доллар", "1 евро"], correct: 1 },
-  { question: "Продолжите последовательность: 2, 4, 8, 16, ...", answers: ["20", "24", "30", "32"], correct: 3 },
-  { question: "Если завтра после завтра — суббота, то какой сегодня день?", answers: ["Среда", "Четверг", "Пятница", "Суббота"], correct: 0 },
-  { question: "Сколько углов у пятиугольника?", answers: ["4", "5", "6", "8"], correct: 1 },
-  { question: "Если квадрат имеет сторону 4 см, чему равна его площадь?", answers: ["8", "12", "16", "20"], correct: 2 },
-  { question: "Что идёт после числа 99?", answers: ["100", "101", "999", "0"], correct: 0 },
-  { question: "Кто старше: дедушка твоего отца или отец твоего дедушки?", answers: ["Дедушка отца", "Отец дедушки", "Оба ровесники", "Невозможно сказать"], correct: 1 },
-  { question: "Если одно яйцо варится 5 минут, то сколько будут вариться 5 яиц?", answers: ["5 минут", "10 минут", "25 минут", "1 час"], correct: 0 },
-  { question: "Найдите лишнее число: 2, 4, 8, 16, 24, 32", answers: ["2", "4", "8", "24"], correct: 3 },
-  { question: "Продолжите логический ряд: 1, 1, 2, 3, 5, 8, ...", answers: ["11", "12", "13", "15"], correct: 2 },
-  { question: "Какое слово будет третьим, если слова упорядочить по алфавиту: дом, ананас, ёж, борщ?", answers: ["борщ", "дом", "ёж", "ананас"], correct: 0 },
-  { question: "Если все студенты читают книги, а Иван студент, то:", answers: ["Иван не читает книги", "Иван читает книги", "Иван не студент", "Неизвестно"], correct: 1 },
-  { question: "Продолжите последовательность: А, Б, В, Г, ...", answers: ["Е", "Ж", "Д", "З"], correct: 2 },
-  { question: "Какое из слов не относится к остальным: луна, солнце, звезда, планета?", answers: ["луна", "солнце", "звезда", "планета"], correct: 3 },
-  { question: "Сколько минут в 3 часах?", answers: ["120", "150", "180", "240"], correct: 2 },
-  { question: "Какое число следующее после 11, если считать только нечётные?", answers: ["12", "13", "15", "17"], correct: 1 },
-  { question: "Если кошка ловит 1 мышь за 3 минуты, то за 15 минут поймает:", answers: ["3", "4", "5", "6"], correct: 3 },
-  { question: "Что получится, если смешать жёлтый и синий цвета?", answers: ["Оранжевый", "Зелёный", "Фиолетовый", "Красный"], correct: 1 },
-  { question: "Сколько будет 9 × 9?", answers: ["72", "81", "99", "108"], correct: 1 }
+  {q:'Какое число продолжит ряд: 3, 6, 18, 72, ?', a:['144','216','288','360'], c:1},
+  {q:'Что лишнее: книга, тетрадь, карандаш, ручка?', a:['Книга','Тетрадь','Карандаш','Ручка'], c:0},
+  {q:'Сколько углов у пятиугольника?', a:['4','5','6','7'], c:1},
+  {q:'Если все розы — цветы, а некоторые цветы — красные, означает ли это, что все розы красные?', a:['Да','Нет'], c:1},
+  {q:'Найдите закономерность: 2, 3, 5, 8, 13, ?', a:['18','20','21','22'], c:2},
+  {q:'Какое слово образует анаграмму слова «КОДЕР»?', a:['ДРОКЕ','РЕДОК','КЕДОР','РЕКОД'], c:3},
+  {q:'Продолжите ряд: П, В, С, Ч, П, ?', a:['С','Ш','Ч','В'], c:0},
+  {q:'Сколько секунд в 3 часах?', a:['10 800','3 600','1 800','12 800'], c:0},
+  {q:'Какая фигура имеет наибольшее число осей симметрии?', a:['Квадрат','Прямоугольник','Ромб','Трапеция'], c:0},
+  {q:'Если вчера было завтра, то какой день сегодня?', a:['Понедельник','Среда','Пятница','Воскресенье'], c:3},
+  {q:'Сколько пятерок в числе 55555?', a:['3','4','5','6'], c:2},
+  {q:'Что лишнее: автобус, поезд, велосипед, самолёт?', a:['Автобус','Поезд','Велосипед','Самолёт'], c:2},
+  {q:'Чему равно 15% от 240?', a:['24','30','36','42'], c:2},
+  {q:'В слове «НЕЙРОН» какая буква вторая?', a:['Й','Е','Н','Р'], c:1},
+  {q:'Сколько дней в невисокосном году?', a:['365','366','364','360'], c:0},
+  {q:'Продолжите ряд: 1, 4, 9, 16, ?', a:['20','24','25','36'], c:2},
+  {q:'Укажите синоним слова «быстрый»:', a:['Резвый','Медлительный','Неторопливый','Ленивый'], c:0},
+  {q:'Сколько нулей в числе миллион?', a:['4','5','6','7'], c:2},
+  {q:'Если А > B и B > C, то верно ли, что A > C?', a:['Да','Нет'], c:0},
+  {q:'Какое слово можно получить из букв: И, Л, О, Г, К?', a:['ЛИГОК','ГОЛИК','ЛОГИК','КОЛИГ'], c:2},
+  {q:'Запомните: 4A9B. Какой код был?', a:['4A9B','4B9A','49AB','A49B'], c:0},
+  {q:'Запомните: 7, 2, 9, 4. Число на третьей позиции?', a:['7','2','9','4'], c:2},
+  {q:'Сколько градусов в прямом угле?', a:['45','90','120','180'], c:1},
+  {q:'На сколько больше 3×7, чем 4×4?', a:['1','3','5','7'], c:2},
+  {q:'Что лишнее: март, июнь, август, ноябрь?', a:['Март','Июнь','Август','Ноябрь'], c:3}
 ];
 
-qTotal.textContent = questions.length;
+qTotalSpan.textContent = questions.length;
 
-/* === ОТОБРАЖЕНИЕ ВОПРОСОВ === */
-function showQuestion() {
-  const q = questions[current];
-  qText.textContent = q.question;
-  qIndex.textContent = current + 1;
-  answersBox.innerHTML = "";
-  q.answers.
-    forEach((a, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = a;
-    btn.className = "answer";
-    btn.onclick = () => checkAnswer(i);
-    answersBox.appendChild(btn);
-  });
-}
+let current = 0, score = 0;
 
-/* === ПРОВЕРКА ОТВЕТОВ === */
-function checkAnswer(i) {
-  if (i === questions[current].correct) score++;
-  current++;
-  if (current < questions.length) showQuestion();
-  else finishQuiz();
-}
-
-/* === ОКОНЧАНИЕ ТЕСТА === */
-function finishQuiz() {
-  quiz.classList.add("hidden");
-  resultSection.classList.remove("hidden");
-  document.getElementById("resultText").innerHTML = `
-    <h2>Тест завершён!</h2>
-    <p>Результат: ${score} из ${questions.length}.</p>
-    <p>Результат отправлен на ваш e-mail.</p>
-  `;
-  sendResult();
-}
-
-/* === ОТПРАВКА НА EMAIL === */
-function sendResult() {
-  fetch("https://formspree.io/f/mzypjkjo", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: email,
-      message: Результат ThinkLevel: ${score} из ${questions.length}
-    })
-  });
-}
-
-/* === НАЧАЛО === */
-document.getElementById("emailForm").addEventListener("submit", e => {
+emailForm.addEventListener('submit', async e => {
   e.preventDefault();
-  email = e.target.email.value;
-  intro.classList.add("hidden");
-  quiz.classList.remove("hidden");
-  current = 0;
-  score = 0;
-  showQuestion();
+  intro.classList.add('hidden');
+  quiz.classList.remove('hidden');
+  render();
 });
+
+function render() {
+  const q = questions[current];
+  qIdxSpan.textContent = current + 1;
+  bar.style.width = (current / questions.length * 100) + '%';
+  qText.textContent = q.q;
+  answers.innerHTML = '';
+  q.a.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.textContent = t;
+    b.onclick = () => choose(i);
+    answers.appendChild(b);
+  });
+}
+
+function choose(i) {
+  if (i === questions[current].c) score++;
+  current++;
+  if (current % 5 === 0 && current < questions.length) return checkpointScreen();
+  if (current < questions.length) return render();
+  finish();
+}
+
+function checkpointScreen() {
+  quiz.classList.add('hidden');
+  checkpoint.classList.remove('hidden');
+  cpGrid.innerHTML = `<div>Пройдено ${current}/25</div>`;
+}
+continueBtn.onclick = () => {
+  checkpoint.classList.add('hidden');
+  quiz.classList.remove('hidden');
+  render();
+};
+
+function finish() {
+  quiz.classList.add('hidden');
+  result.classList.remove('hidden');
+  const percent = Math.round(score / questions.length * 100);
+  resultText.textContent = `Результат: ${score} из 25 (${percent}%)`;
+}
+
+restartBtn.onclick = () => location.reload();
