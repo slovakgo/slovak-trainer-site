@@ -1,56 +1,64 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ThinkLevel — тест эффективности мозга</title>
+<title>ThinkLevel — Brain Efficiency Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="neon-bg"></div>
 <div class="wrap">
-  <div class="card" id="email-step">
-    <h1><span class="emoji">🧠</span> ThinkLevel</h1>
-    <p class="lead">Введите e-mail — отправим результат на почту, а тест начнётся сразу.</p>
+  <header class="hero">
+    <div class="logo">🧠 ThinkLevel</div>
+    <div class="subtitle">Профессиональный тест эффективности мозга</div>
+  </header>
+
+  <section class="card" id="email-step">
+    <h1>Начать тест</h1>
+    <p class="lead">Введите e-mail — результат придёт на почту, тест стартует сразу.</p>
     <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST" novalidate>
       <label class="label" for="email">Ваш e-mail</label>
-      <input type="email" name="email" id="email" placeholder="you@example.com" required>
-      <button class="btn btn--wide" type="submit">Начать тест</button>
+      <input id="email" name="email" type="email" placeholder="you@example.com" required>
+      <button class="btn btn--primary btn--wide" type="submit">Старт</button>
+      <p class="muted tiny">> 1 000 пользователей уже получили свои результаты</p>
     </form>
-    <p class="muted small">Более 1 000 человек уже прошли этот тест</p>
-  </div>
+  </section>
 
-  <div class="card hidden" id="test-step">
-    <div class="progress"><div class="bar" id="bar"></div></div>
-    <div class="counter" id="counter">Вопрос 1 из 25</div>
-    <div class="q-card">
-      <div class="q-title" id="question">Здесь будет вопрос…</div>
-      <div class="answers" id="answers"></div>
+  <section class="card hidden" id="test-step">
+    <div class="topline">
+      <div class="counter" id="counter">Вопрос 1 из 25</div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
     </div>
-  </div>
+    <div class="q-title" id="question">…</div>
+    <div class="answers" id="answers"></div>
+  </section>
 
-  <div class="card hidden" id="checkpoint">
-    <div class="cp-title">Промежуточный отчёт</div>
-    <div class="cp-gauge">
-      <div class="cp-ring"><div id="cp-value">0%</div></div>
-    </div>
+  <section class="card hidden center" id="checkpoint">
+    <div class="cp-title">Промежуточный прогресс</div>
+    <div class="cp-ring"><div class="cp-value" id="cp-value">0%</div></div>
     <p class="muted" id="cp-text">Идёт расчёт…</p>
-    <button class="btn btn--wide" id="cp-continue">Продолжить</button>
-  </div>
+    <button class="btn btn--primary btn--wide" id="cp-continue">Продолжить</button>
+  </section>
 
-  <div class="card hidden result" id="result-step">
-    <h2>Ваш результат</h2>
+  <section class="card hidden center result" id="result-step">
+    <h2>Итог ThinkLevel</h2>
     <div class="score" id="score">0%</div>
     <div class="tag" id="tier">—</div>
     <p class="lead" id="summary">Идёт подсчёт…</p>
     <hr class="hr">
-    <button class="btn btn--wide" id="btn-send">Отправить результат на e-mail</button>
-    <p class="muted small">Письмо придёт на указанный адрес. Если нет — проверьте «Спам».</p>
-    <a class="btn btn--ghost" href="/">Вернуться на сайт</a>
-  </div>
+    <button class="btn btn--primary btn--wide" id="btn-send">Отправить результат на e-mail</button>
+    <p class="muted tiny">Письмо отправим на указанный e-mail. Если не пришло — проверьте Спам.</p>
+    <a href="/" class="btn btn--ghost">Вернуться на сайт</a>
+  </section>
 </div>
+
+<script>
+window.THINKLEVEL_PACKED = "W3sicSI6ICLQn9C+0YHQu9C10LTQvtCy0LDRgtC10LvRjNC90L7RgdGC0Yw6IDMsIDYsIDE4LCA3Miwg4oCmINCn0YLQviDQtNCw0LvRjNGI0LU/IiwgImEiOiBbIjE0NCIsICIyMTYiLCAiMjg4IiwgIjM2MCJdLCAiYyI6IDF9LCB7InEiOiAi0J3QsNC50LTQuNGC0LUg0LvQuNGI0L3QtdC1OiA3LzE0LCA5LzI3LCA1LzEwLCAxMS8zMyIsICJhIjogWyI3LzE0IiwgIjkvMjciLCAiNS8xMCIsICIxMS8zMyJdLCAiYyI6IDF9LCB7InEiOiAi0KHRg9C80LzQsCDRg9Cz0LvQvtCyINCy0YvQv9GD0LrQu9C+0LPQviBuLdGD0LPQvtC70YzQvdC40LrQsCDRgNCw0LLQvdCwIDE4MDDCsC4g0KfQtdC80YMg0YDQsNCy0L3QviBuPyIsICJhIjogWyIxMCIsICIxMSIsICIxMiIsICIxMyJdLCAiYyI6IDJ9LCB7InEiOiAi0JDQvdCw0LvQvtCz0LjQuDog0J/QldCg0JjQnNCV0KLQoCA6INCT0KDQkNCd0JjQptCQID0g0J/Qm9Ce0KnQkNCU0KwgOiA/IiwgImEiOiBbItCi0JXQoNCg0JjQotCe0KDQmNCvIiwgItCf0J7QktCV0KDQpdCd0J7QodCi0KwiLCAi0J7QkdCq0IHQnCIsICLQpNCY0JPQo9Cg0JAiXSwgImMiOiAxfSwgeyJxIjogItCj0YHQu9C+0LLQuNC1OiDQtdGB0LvQuCBYIOKAlCDQv9GA0L7RgdGC0L7QtSwg0YLQviBYINC90LXRh9GR0YLQvdC+0LUuINCa0LDQutC+0LUg0YPRgtCy0LXRgNC20LTQtdC90LjQtSDQstC10YDQvdC+PyIsICJhIjogWyLQldGB0LvQuCDRh9C40YHQu9C+INC90LXRh9GR0YLQvdC+0LUsINGC0L4g0L7QvdC+INC/0YDQvtGB0YLQvtC1IiwgItCh0YDQtdC00Lgg0YfRkdGC0L3Ri9GFINC10YHRgtGMINC/0YDQvtGB0YLRi9C1IiwgItCd0Lgg0L7QtNC90L4g0L/RgNC+0YHRgtC+0LUg0L3QtSDRh9GR0YLQvdC+0LUiLCAiMiDigJQg0LjRgdC60LvRjtGH0LXQvdC40LUiXSwgImMiOiAzfSwgeyJxIjogItCa0YPQsSDRgNCw0LfQsdC40LvQuCDQvdCwIDY0INGA0LDQstC90YvRhSDQvNCw0LvRi9GFINC60YPQsdCwLiDQodC60L7Qu9GM0LrQviDQvNCw0LvRi9GFINC60YPQsdC+0LIg0LjQvNC10Y7RgiDRgNC+0LLQvdC+INC00LLQtSDQvtC60YDQsNGI0LXQvdC90YvQtSDQs9GA0LDQvdC4LCDQtdGB0LvQuCDQsdC+0LvRjNGI0L7QuSDQutGD0LEg0L/QvtC60YDQsNGI0LXQvSDRgdC90LDRgNGD0LbQuD8iLCAiYSI6IFsiOCIsICIxMiIsICIyNCIsICIzMiJdLCAiYyI6IDJ9LCB7InEiOiAi0KDRj9C0OiBBLCBDLCBGLCBKLCBPLCDigKYg0KHQu9C10LTRg9GO0YnQsNGPINCx0YPQutCy0LA/IiwgImEiOiBbIlUiLCAiViIsICJXIiwgIlgiXSwgImMiOiAwfSwgeyJxIjogItCSINC80LXRiNC60LUgNSDQsdC10LvRi9GFLCA0INGH0ZHRgNC90YvRhSwgMyDQutGA0LDRgdC90YvRhSDRiNCw0YDQsC4g0JLQtdGA0L7Rj9GC0L3QvtGB0YLRjCDQstGL0YLQsNGJ0LjRgtGMINC90LUg0YfRkdGA0L3Ri9C5PyIsICJhIjogWyI0LzEyIiwgIjgvMTIiLCAiOS8xMiIsICIoNSszKS8xMiJdLCAiYyI6IDJ9LCB7InEiOiAi0KHQu9C+0LPQvtCy0LDRjyDQv9C10YDQtdGB0YLQsNC90L7QstC60LA6INCa0JDQoNCi0JAg4oaSID8gKNGB0LzQtdC90LAg0LzQtdGB0YLQsNC80LggMeKGlDMsIDLihpQ0LCA1INC+0YHRgtCw0ZHRgtGB0Y8pIiwgImEiOiBbItCg0JDQmtCQ0KIiLCAi0JrQotCQ0KDQkCIsICLQotCQ0JrQoNCQIiwgItCa0JDQoNCi0JAiXSwgImMiOiAyfSwgeyJxIjogItCb0L7Qs9C40LrQsDog0JLRgdC1INC80LDRgtC10LzQsNGC0LjQutC4IOKAlCDRgtC+0YfQvdGLLiDQndC10LrQvtGC0L7RgNGL0LUg0YLQvtGH0L3Ri9C1IOKAlCDQv9C10LTQsNC90YLRiy4g0JrQsNC60L7QtSDQstC10YDQvdC+PyIsICJhIjogWyLQktGB0LUg0L/QtdC00LDQvdGC0Ysg4oCUINC80LDRgtC10LzQsNGC0LjQutC4IiwgItCd0LXQutC+0YLQvtGA0YvQtSDQvNCw0YLQtdC80LDRgtC40LrQuCDigJQg0L/QtdC00LDQvdGC0YsiLCAi0J3QuCDQvtC00LjQvSDQv9C10LTQsNC90YIg0L3QtSDQvNCw0YLQtdC80LDRgtC40LoiLCAi0J/QtdC00LDQvdGC0Ysg0Lgg0LzQsNGC0LXQvNCw0YLQuNC60Lgg4oCUINC90LXQv9C10YDQtdGB0LXQutCw0Y7RidC40LXRgdGPIl0sICJjIjogMX0sIHsicSI6ICLQp9C10LzRgyDRgNCw0LLQvdC+IDJeeCA9IDEyOCA/IiwgImEiOiBbIjYiLCAiNyIsICI4IiwgIjkiXSwgImMiOiAxfSwgeyJxIjogItCo0LjRhNGAOiDQt9Cw0LzQtdC90LjRgtC1INCx0YPQutCy0Ysg0LjRhSDQvdC+0LzQtdGA0LDQvNC4OiBEPTQsIEU9NSwgQT0xLiDQp9C10LzRgyDRgNCw0LLQvdC+IEQrReKIkkE/IiwgImEiOiBbIjYiLCAiNyIsICI4IiwgIjkiXSwgImMiOiAyfSwgeyJxIjogItCc0LjQvdC40LzRg9C8INGE0YPQvdC60YbQuNC4IGYoeCk9fHjiiJIzfCt8eCsxfCDQtNC+0YHRgtC40LPQsNC10YLRgdGPINC/0YDQuCB4ID0iLCAiYSI6IFsi4oiSMSIsICIwIiwgIjEiLCAiMyJdLCAiYyI6IDF9LCB7InEiOiAi0JPRgNCw0YQ6INC10YHQu9C4INC40Lcg0LvRjtCx0L7QuSDQstC10YDRiNC40L3RiyDQs9GA0LDRhNCwINGB0YLQtdC/0LXQvdGMINC90LXRh9GR0YLQvdCwLCDRgtC+INC60L7Qu9C40YfQtdGB0YLQstC+INGC0LDQutC40YUg0LLQtdGA0YjQuNC94oCmIiwgImEiOiBbItCy0YHQtdCz0LTQsCDRh9GR0YLQvdC+IiwgItCy0YHQtdCz0LTQsCDQvdC10YfRkdGC0L3QviIsICLQvNC+0LbQtdGCINCx0YvRgtGMINC70Y7QsdGL0LwiLCAi0L3Rg9C70LXQstC+0LUiXSwgImMiOiAwfSwgeyJxIjogItCQ0L3QsNCz0YDQsNC80LzQsC3RgdC70L7QstC+OiDCq9Ch0JDQotCY0KDQkMK7ICsg0L7QtNC90LAg0LHRg9C60LLQsCwg0L/QvtC70YPRh9C40YLRgdGPINC80YPQt9GL0LrQsNC70YzQvdGL0Lkg0YLQtdGA0LzQuNC9LiIsICJhIjogWyLQkNCg0KLQmNCh0KIiLCAi0KHQmNCi0JDQoNCQIiwgItCQ0KDQmNCe0JfQniIsICLQkNCg0KLQmNCX0JzQkCJdLCAiYyI6IDJ9LCB7InEiOiAi0KHQutC+0LvRjNC60L4g0YbQtdC70YvRhSDRgNC10YjQtdC90LjQuSDRgyB8eOKIkjV8PDMgPyIsICJhIjogWyI1IiwgIjYiLCAiNyIsICI4Il0sICJjIjogMn0sIHsicSI6ICLQn9C+0YHQu9C10LTQvtCy0LDRgtC10LvRjNC90L7RgdGC0Yw6IDEsIDIsIDQsIDcsIDExLCAxNiwg4oCmINCd0LDQudC00LjRgtC1INGB0LvQtdC00YPRjtGJ0LXQtS4iLCAiYSI6IFsiMjAiLCAiMjEiLCAiMjIiLCAiMjMiXSwgImMiOiAzfSwgeyJxIjogItCa0LDQutC+0LUg0YfQuNGB0LvQviDQu9C40YjQvdC10LU6IDEyMSwgMTQ0LCAxNjksIDE5NiwgMjIxIiwgImEiOiBbIjE0NCIsICIxNjkiLCAiMTk2IiwgIjIyMSJdLCAiYyI6IDN9LCB7InEiOiAi0JDQvdCw0LvQvtCz0LjQuDog0KTQo9Cd0JrQptCY0K8gOiDQkNCg0JPQo9Cc0JXQndCiID0g0JzQndCe0JbQldCh0KLQktCeIDogPyIsICJhIjogWyLQrdCb0JXQnNCV0J3QoiIsICLQn9Ce0JTQnNCd0J7QltCV0KHQotCS0J4iLCAi0J7QkdCq0JXQlNCY0J3QldCd0JjQlSIsICLQmtCQ0KDQlNCY0J3QkNCb0KzQndCe0KHQotCsIl0sICJjIjogMH0sIHsicSI6ICLQodC60L7RgNC+0YHRgtGMINGH0YLQtdC90LjRjyDQstGL0YDQvtGB0LvQsCDRgSAyNDAg0LTQviAzMDAg0YHQu9C+0LIv0LzQuNC9LiDQndCwINGB0LrQvtC70YzQutC+INC/0YDQvtGG0LXQvdGC0L7QsiDRgNC+0YHRgj8iLCAiYSI6IFsiMjAlIiwgIjI1JSIsICIzMCUiLCAiNjAg0YHQu9C+0LIv0LzQuNC9Il0sICJjIjogMX0sIHsicSI6ICLQnNCw0YLRgNC40YbQsCAyw5cyOiBkZXQgW1szLCBrXSxbMiwgNV1dPTEuINCd0LDQudC00LjRgtC1IGsuIiwgImEiOiBbIjciLCAiMTMiLCAi4oiSNyIsICLiiJIxMyJdLCAiYyI6IDJ9LCB7InEiOiAi0KDRj9C0OiAyLCAzLCA1LCA5LCAxNywgMzMsIOKApiDQodC70LXQtNGD0Y7RidC10LUg0YfQuNGB0LvQvj8iLCAiYSI6IFsiNDkiLCAiNTciLCAiNjUiLCAiODEiXSwgImMiOiAxfSwgeyJxIjogItCSINC60LLQsNC00YDQsNGCINCy0L/QuNGB0LDQvSDQutGA0YPQsy4g0J7RgtC90L7RiNC10L3QuNC1INC/0LvQvtGJ0LDQtNC10Lkg0LrRgNGD0LPQsCDQuCDQutCy0LDQtNGA0LDRgtCwINGA0LDQstC90L4iLCAiYSI6IFsiz4AvNCIsICI0L8+AIiwgIs+ALzIiLCAiMi/PgCJdLCAiYyI6IDB9LCB7InEiOiAi0JvQvtCz0LjQutCwOiDQldGB0LvQuCDRgdC10LPQvtC00L3RjyDRgdGA0LXQtNCwLCDRgtC+INGH0LXRgNC10LcgMTAwINC00L3QtdC5INCx0YPQtNC10YIiLCAiYSI6IFsi0JLQvtGB0LrRgNC10YHQtdC90YzQtSIsICLQn9C+0L3QtdC00LXQu9GM0L3QuNC6IiwgItCS0YLQvtGA0L3QuNC6IiwgItCh0YDQtdC00LAiXSwgImMiOiAyfSwgeyJxIjogItCh0LrQvtC70YzQutC+INGB0L/QvtGB0L7QsdC+0LIg0YPQv9C+0YDRj9C00L7Rh9C40YLRjCDQsdGD0LrQstGLINGB0LvQvtCy0LAgwqvQndCe0KDQnNCQwrssINC10YHQu9C4INCx0YPQutCy0Ysg0L3QtSDQv9C+0LLRgtC+0YDRj9GO0YLRgdGPPyIsICJhIjogWyI2MCIsICIxMjAiLCAiMjQiLCAiMzAiXSwgImMiOiAwfV0=";
+</script>
 <script src="script.js"></script>
 </body>
 </html>
