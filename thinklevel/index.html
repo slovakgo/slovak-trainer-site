@@ -1,55 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ThinkLevel — тест эффективности мозга</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="preload" href="assets/neurons.svg" as="image">
 </head>
 <body>
+  <div class="bg-neurons"></div>
   <div class="wrap">
-    <header class="hero glass">
-      <h1>🧠 ThinkLevel</h1>
-      <p>Введите e‑mail, чтобы начать. Результат придёт на почту автоматически.</p>
-      <form id="startForm" class="email-form" action="https://formspree.io/f/mzzypjko" method="POST">
-        <input type="email" name="email" id="email" placeholder="Ваш e‑mail" required>
+    <header class="hero card">
+      <h1 class="logo">🧠 ThinkLevel</h1>
+      <p class="sub">Введите e‑mail, чтобы начать. Результат покажем на экране и пришлём на почту автоматически.</p>
+
+      <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST" novalidate>
+        <input type="email" name="email" id="emailInput" placeholder="Ваш e‑mail" autocomplete="email" required>
         <button id="startBtn" type="submit">Старт</button>
+        <p class="trust">> 1 000 пользователей уже получили свои результаты</p>
       </form>
-      <p class="trust">&gt; 1 000 пользователей уже получили свои результаты</p>
     </header>
 
-    <main class="panel glass hidden" id="testPanel">
-      <div class="topline">
-        <div class="qmeta">
-          <span id="qLabel">Вопрос 1 из 25</span>
-        </div>
-        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+    <main id="test" class="card hidden">
+      <div class="top">
+        <div class="bar"><div id="barFill"></div></div>
+        <p id="qCount" class="muted">Вопрос 1 из 25</p>
       </div>
-
-      <h2 id="question" class="question"></h2>
+      <h2 id="question"></h2>
       <div id="answers" class="answers"></div>
 
       <section id="checkpoint" class="checkpoint hidden">
         <h3>Промежуточный прогресс</h3>
-        <div class="rings">
-          <div class="ring"><span id="ring1">0/5</span><small>Логика</small></div>
-          <div class="ring"><span id="ring2">0/10</span><small>Шаблоны</small></div>
-          <div class="ring"><span id="ring3">0/15</span><small>Математика</small></div>
-          <div class="ring"><span id="ring4">0/20</span><small>Память</small></div>
-          <div class="ring"><span id="ring5">0/25</span><small>Итог</small></div>
-        </div>
-        <button id="continueBtn" class="continue">Продолжить</button>
+        <ul id="checkpointList"></ul>
+        <button id="continueBtn" class="ghost">Продолжить</button>
       </section>
     </main>
 
-    <section class="result glass hidden" id="resultPanel">
+    <section id="result" class="card hidden">
       <h2>Готово!</h2>
-      <p id="scoreText"></p>
-      <button id="restart" class="secondary">Пройти заново</button>
+      <p id="resultText" class="lead"></p>
+      <div id="breakdown"></div>
+      <button id="restartBtn" class="ghost">Пройти заново</button>
     </section>
+
+    <footer class="foot muted">
+      <span>© ThinkLevel</span>
+    </footer>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

@@ -1,88 +1,175 @@
-const FORM_ENDPOINT = "https://formspree.io/f/mzzypjko";
-const TOTAL = 25;
-const PACK_B64 = "W3sicSI6ICLQn9GA0L7QtNC+0LvQttC40YLQtSDRgNGP0LQ6IDMsIDYsIDE4LCA3Miwg4oCmIiwgImEiOiBbIjE0NCIsICIyMTYiLCAiMjg4IiwgIjM2MCJdLCAiYyI6IDF9LCB7InEiOiAi0KPQutCw0LbQuNGC0LUg0LvQuNGI0L3QtdC1INGB0LvQvtCy0L46INC60L3QuNCz0LAsINGC0LXRgtGA0LDQtNGMLCDQutCw0YDQsNC90LTQsNGILCDRgNGD0YfQutCwIiwgImEiOiBbItCa0L3QuNCz0LAiLCAi0KLQtdGC0YDQsNC00YwiLCAi0JrQsNGA0LDQvdC00LDRiCIsICLQoNGD0YfQutCwIl0sICJjIjogMH0sIHsicSI6ICLQmtCw0LrQvtC1INGH0LjRgdC70L4g0LvQuNGI0L3QtdC1OiAyOCwgNDksIDY0LCA4MSwgMTAwIiwgImEiOiBbIjI4IiwgIjQ5IiwgIjY0IiwgIjgxIiwgIjEwMCJdLCAiYyI6IDB9LCB7InEiOiAi0KHQutC+0LvRjNC60L4g0YPQs9C70L7QsiDRgyDRgtGA0ZHRhSDRgNCw0LLQvdGL0YUg0LrQstCw0LTRgNCw0YLQvtCyINCy0LzQtdGB0YLQtT8iLCAiYSI6IFsiNCIsICI2IiwgIjgiLCAiMTIiXSwgImMiOiAzfSwgeyJxIjogItCV0YHQu9C4INC60LDQttC00YPRjiDQvNC40L3Rg9GC0YMg0YfQuNGB0LvQviDRg9C00LLQsNC40LLQsNC10YLRgdGPLCDRh9C10YDQtdC3INGB0LrQvtC70YzQutC+INC80LjQvdGD0YIg0LjQtyAxINC/0L7Qu9GD0YfQuNGC0YHRjyAyNTY/IiwgImEiOiBbIjYiLCAiNyIsICI4IiwgIjkiXSwgImMiOiAyfSwgeyJxIjogItCa0LDQutCw0Y8g0YTQuNCz0YPRgNCwINC/0L7Qu9GD0YfQuNGC0YHRjyDQv9GA0Lgg0L/QtdGA0LXRgdC10YfQtdC90LjQuCDQtNCy0YPRhSDQvtC60YDRg9C20L3QvtGB0YLQtdC5PyIsICJhIjogWyLQntC60YDRg9C20L3QvtGB0YLRjCIsICLQotC+0YfQutCwIiwgItCe0LLQsNC7IiwgItCU0LLQtSDRgtC+0YfQutC4Il0sICJjIjogM30sIHsicSI6ICLQm9C+0LTQutCwINC/0L4g0YLQtdGH0LXQvdC40Y4g0LjQtNGR0YIgMzAg0LrQvC/Rhywg0L/RgNC+0YLQuNCyIOKAlCAxMCDQutC8L9GHLiDQodC60L7RgNC+0YHRgtGMINGC0LXRh9C10L3QuNGPPyIsICJhIjogWyI1IiwgIjEwIiwgIjE1IiwgIjIwIl0sICJjIjogMX0sIHsicSI6ICLQn9GA0L7QtNC+0LvQttC40YLQtTogQSwgQywgRiwgSiwgTywg4oCmIiwgImEiOiBbIlQiLCAiVSIsICJWIiwgIlciXSwgImMiOiAwfSwgeyJxIjogItCh0YDQtdC00L3QtdC1INCw0YDQuNGE0LzQtdGC0LjRh9C10YHQutC+0LUg0L/Rj9GC0Lgg0YfQuNGB0LXQuyDRgNCw0LLQvdC+IDEyLiDQodGD0LzQvNCwINCy0YHQtdGFINC/0Y/RgtC4PyIsICJhIjogWyIxMiIsICIyNCIsICI0OCIsICI2MCJdLCAiYyI6IDN9LCB7InEiOiAi0JLQtdGA0L7Rj9GC0L3QvtGB0YLRjCDQvtGA0LvQsCDQsiDQvdC10YfQtdGB0YLQvdC+0Lkg0LzQvtC90LXRgtC1IDAuNi4g0JLQtdGA0L7Rj9GC0L3QvtGB0YLRjCDQtNCy0YPRhSDQvtGA0LvQvtCyINC/0L7QtNGA0Y/QtD8iLCAiYSI6IFsiMC4xMiIsICIwLjI0IiwgIjAuMzYiLCAiMC42Il0sICJjIjogMn0sIHsicSI6ICLQodC60L7Qu9GM0LrQviDQvdC10YfRkdGC0L3Ri9GFINC00LLRg9C30L3QsNGH0L3Ri9GFINGH0LjRgdC10Ls/IiwgImEiOiBbIjQ1IiwgIjUwIiwgIjkwIiwgIjEwMCJdLCAiYyI6IDB9LCB7InEiOiAi0JvQvtCz0LjQutCwOiDQstGB0LUgWiDigJQgWS4g0J3QtdC60L7RgtC+0YDRi9C1IFkg4oCUIFguINCh0LvQtdC00YPQtdGCINC70LgsINGH0YLQviDQvdC10LrQvtGC0L7RgNGL0LUgWiDigJQgWD8iLCAiYSI6IFsi0JTQsCIsICLQndC10YIiLCAi0JjQvdC+0LPQtNCwIiwgItCd0LXQu9GM0LfRjyDQvtC/0YDQtdC00LXQu9C40YLRjCJdLCAiYyI6IDN9LCB7InEiOiAi0KHRg9C80LzQsCDRg9Cz0LvQvtCyINCy0YvQv9GD0LrQu9C+0LPQviDQv9GP0YLQuNGD0LPQvtC70YzQvdC40LrQsD8iLCAiYSI6IFsiMzYwwrAiLCAiNDUwwrAiLCAiNTQwwrAiLCAiNzIwwrAiXSwgImMiOiAyfSwgeyJxIjogItCV0YHQu9C4IDJ4ICsgMyA9IDE5LCB4ID0gPyIsICJhIjogWyI2IiwgIjciLCAiOCIsICI5Il0sICJjIjogMX0sIHsicSI6ICLQktGA0LXQvNGPINGA0LXQsNC60YbQuNC4OiAwLjMg0YHQtdC6IOKAlCDRjdGC0L4g0YHQutC+0LvRjNC60L4g0LzQuNC70LvQuNGB0LXQutGD0L3QtD8iLCAiYSI6IFsiMzAiLCAiMzAwIiwgIjMwMDAiLCAiMC4zIl0sICJjIjogMX0sIHsicSI6ICLQndCw0LnQtNC40YLQtSDRgdC70LXQtNGD0Y7RidC10LU6IDEsIDQsIDksIDE2LCDigKYiLCAiYSI6IFsiMjAiLCAiMjQiLCAiMjUiLCAiMzYiXSwgImMiOiAyfSwgeyJxIjogItCh0LrQvtC70YzQutC+INGA0LDQt9C70LjRh9C90YvRhSDQsNC90LDQs9GA0LDQvNC8INGDINGB0LvQvtCy0LAgwqvQotCV0KHQosK7ICjQstGB0LUg0LHRg9C60LLRiyDRgNCw0LfQu9C40YfQuNC80YspPyIsICJhIjogWyI2IiwgIjEyIiwgIjI0IiwgIjEyMCJdLCAiYyI6IDJ9LCB7InEiOiAi0JzQuNC90LjQvNGD0Lwg0YTRg9C90LrRhtC40LggeSA9ICh44oCTMinCsiArIDMg0YDQsNCy0LXQveKApiIsICJhIjogWyLigJMyIiwgIjAiLCAiMiIsICIzIl0sICJjIjogM30sIHsicSI6ICLQldGB0LvQuCDRgdC10LPQvtC00L3RjyDRgdGA0LXQtNCwLCDRgtC+INGH0LXRgNC10LcgMTAwINC00L3QtdC5INCx0YPQtNC10YLigKYiLCAiYSI6IFsi0JLQvtGB0LrRgNC10YHQtdC90YzQtSIsICLQn9C+0L3QtdC00LXQu9GM0L3QuNC6IiwgItCS0YLQvtGA0L3QuNC6IiwgItCh0YDQtdC00LAiXSwgImMiOiAxfSwgeyJxIjogItCf0YDQvtC00L7Qu9C20LjRgtC1OiAyLCAzLCA1LCA5LCAxNywg4oCmIiwgImEiOiBbIjMzIiwgIjMxIiwgIjI5IiwgIjI1Il0sICJjIjogMn0sIHsicSI6ICLQkiDRj9GJ0LjQutC1IDMg0LHQtdC70YvRhSDQuCAyINGH0ZHRgNC90YvRhSDRiNCw0YDQsC4g0JLQtdGA0L7Rj9GC0L3QvtGB0YLRjCDQtNC+0YHRgtCw0YLRjCDQsdC10LvRi9C5PyIsICJhIjogWyIyLzUiLCAiMy81IiwgIjEvMiIsICIzLzEwIl0sICJjIjogMX0sIHsicSI6ICLQodC60L7Qu9GM0LrQviDQv9C10YDQtdGB0YLQsNC90L7QstC+0Log0YMgNSDRgNCw0LfQu9C40YfQvdGL0YUg0L/RgNC10LTQvNC10YLQvtCyPyIsICJhIjogWyIxMCIsICIyNSIsICI2MCIsICIxMjAiXSwgImMiOiAzfSwgeyJxIjogItCg0LXRiNC40YLQtTogNyEgLyA1ISA9IiwgImEiOiBbIjciLCAiNDIiLCAiMjEwIiwgIjg0MCJdLCAiYyI6IDF9LCB7InEiOiAi0JzQtdC00LjQsNC90LAg0L3QsNCx0L7RgNCwICgyLCA1LCA3LCAxMiwgMTQpPyIsICJhIjogWyI1IiwgIjciLCAiMTIiLCAiOS41Il0sICJjIjogMX0sIHsicSI6ICLQp9GC0L4g0LHQvtC70YzRiNC1OiBsbihlwrMpINC40LvQuCAzIGxuKGUpPyIsICJhIjogWyLQoNCw0LLQvdGLIiwgItCf0LXRgNCy0L7QtSIsICLQktGC0L7RgNC+0LUiLCAi0J3QtdC70YzQt9GPINGB0YDQsNCy0L3QuNGC0YwiXSwgImMiOiAwfV0=";
+// ThinkLevel — front-end логика
+const form = document.getElementById('emailForm');
+const emailInput = document.getElementById('emailInput');
+const startBtn = document.getElementById('startBtn');
+const testEl = document.getElementById('test');
+const qCountEl = document.getElementById('qCount');
+const questionEl = document.getElementById('question');
+const answersEl = document.getElementById('answers');
+const barFill = document.getElementById('barFill');
+const checkpointEl = document.getElementById('checkpoint');
+const checkpointList = document.getElementById('checkpointList');
+const continueBtn = document.getElementById('continueBtn');
+const resultEl = document.getElementById('result');
+const resultText = document.getElementById('resultText');
+const breakdownEl = document.getElementById('breakdown');
+const restartBtn = document.getElementById('restartBtn');
 
-let data = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(PACK_B64), c=>c.charCodeAt(0))));
+let current = 0;
+let score = 0;
+let userEmail = "";
+const sectionSize = 5;
 
-const startForm = document.getElementById('startForm');
-const emailInput = document.getElementById('email');
-const testPanel  = document.getElementById('testPanel');
-const qLabel     = document.getElementById('qLabel');
-const qText      = document.getElementById('question');
-const answersBox = document.getElementById('answers');
-const barFill    = document.getElementById('barFill');
-const cpPanel    = document.getElementById('checkpoint');
-const ring1=document.getElementById('ring1'), ring2=document.getElementById('ring2'), ring3=document.getElementById('ring3'), ring4=document.getElementById('ring4'), ring5=document.getElementById('ring5');
-const continueBtn= document.getElementById('continueBtn');
-const resultPanel= document.getElementById('resultPanel');
-const scoreText  = document.getElementById('scoreText');
-const restartBtn = document.getElementById('restart');
+// Блок вопросов (25)
+const questions = [
+  {cat:'Логика', q:'Какое число продолжит ряд: 3, 6, 18, 72, ?', a:['144','216','288','360'], c:1},
+  {cat:'Логика', q:'Выберите лишнее: книга, тетрадь, карандаш, ручка', a:['Книга','Тетрадь','Карандаш','Ручка'], c:1},
+  {cat:'Логика', q:'Если ВСЕ Z — X, а некоторые X — Y, верно ли, что некоторые Z — Y?', a:['Да','Нет','Недостаточно данных','Только если все X — Y'], c:2},
+  {cat:'Логика', q:'Анаграмма к слову «СТИХ»', a:['ТИХС','ХИТС','СИТХ','ХИСТ'], c:3},
+  {cat:'Логика', q:'Сколько прямых углов в кубе?', a:['8','12','24','48'], c:2},
 
-let current=0, score=0, emailSent="";
+  {cat:'Шаблоны', q:'Найдите следующую фигуру (мысленно): ◻︎ ▲ ◻︎ ▲ ◻︎ ?', a:['◻︎','▲','●','◆'], c:1},
+  {cat:'Шаблоны', q:'Последовательность букв: A, C, F, J, O, ?', a:['U','T','V','W'], c:0},
+  {cat:'Шаблоны', q:'Закончен ли ряд: 2, 3, 5, 8, 12, 17, ?', a:['23','24','25','26'], c:1},
+  {cat:'Шаблоны', q:'Какой день недели будет через 63 дня, если сегодня понедельник?', a:['Среда','Четверг','Пятница','Суббота'], c:2},
+  {cat:'Шаблоны', q:'Сколько пересечений у трёх попарно пересекающихся окружностей?', a:['3','6','12','0'], c:1},
 
-startForm.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  if(!emailInput.checkValidity()) return;
-  emailSent = emailInput.value.trim();
-  try{
-    await fetch(FORM_ENDPOINT, { method:"POST", headers:{ "Accept":"application/json" }, body: new URLSearchParams({email:emailSent, event:"start"}) });
-  }catch(_){}
-  startForm.parentElement.classList.add('hidden');
-  testPanel.classList.remove('hidden');
-  showQuestion();
-});
+  {cat:'Математика', q:'Сколько будет 14% от 350?', a:['42','45','47','49'], c:0},
+  {cat:'Математика', q:'(2^5 · 2^3) / 2^4 = ?', a:['2^3','2^4','2^5','2^6'], c:2},
+  {cat:'Математика', q:'Среднее арифметическое чисел 10, 14, 16, 20 равно:', a:['14','15','15.5','16'], c:3},
+  {cat:'Математика', q:'Решите: 7x − 3 = 4x + 18', a:['x=5','x=6','x=7','x=8'], c:1},
+  {cat:'Математика', q:'Сколько секунд в 2.5 часах?', a:['7200','8100','8400','9000'], c:2},
 
+  {cat:'Память', q:'Запомните: «клен, море, 47, фиолетовый». Что было вторым?', a:['фиолетовый','клен','море','47'], c:2},
+  {cat:'Память', q:'Запомните: 9-4-1-7-3. Через секунду: какое третье число?', a:['1','7','3','4'], c:0},
+  {cat:'Память', q:'Запомните порядок: 🐶 🐱 🐭 🐹. Какой второй?', a:['🐱','🐶','🐭','🐹'], c:0},
+  {cat:'Память', q:'Слово было «НЕФРИТ». Какая 4-я буква?', a:['Р','Ф','Е','И'], c:0},
+  {cat:'Память', q:'Что из списка не называлось раньше: лампа, карта, флейта, сова?', a:['карта','сова','флейта','лампа'], c:1},
+
+  {cat:'Скорость', q:'Как быстро: найдите сумму 39+48', a:['86','87','88','89'], c:2},
+  {cat:'Скорость', q:'Синоним к слову «непоколебимый»', a:['уступчивый','твёрдый','мягкий','сомнительный'], c:1},
+  {cat:'Скорость', q:'Сколько букв «Н» в «длинношеее»?', a:['1','2','3','4'], c:1},
+  {cat:'Скорость', q:'Что лишнее: янтарь, сапфир, гранит, опал', a:['янтарь','сапфир','гранит','опал'], c:2},
+  {cat:'Скорость', q:'Быстро: 15% от 80', a:['10','11','12','13'], c:2},
+];
+
+const total = questions.length;
+const buckets = {};
+
+// показать вопрос
 function showQuestion(){
-  const q = data[current];
-  qLabel.textContent = `Вопрос ${current+1} из ${TOTAL}`;
-  qText.textContent = q.q;
-  answersBox.innerHTML = "";
-  q.a.forEach((opt, idx)=>{
+  const q = questions[current];
+  qCountEl.textContent = `Вопрос ${current+1} из ${total}`;
+  questionEl.textContent = q.q;
+  barFill.style.width = `${Math.round((current)/total*100)}%`;
+
+  answersEl.innerHTML = "";
+  q.a.forEach((ans, idx) => {
     const btn = document.createElement('button');
-    btn.textContent = opt;
-    btn.onclick = ()=>pick(idx);
-    answersBox.appendChild(btn);
+    btn.textContent = ans;
+    btn.onclick = () => onAnswer(idx);
+    answersEl.appendChild(btn);
   });
-  const pct = Math.round((current)/TOTAL*100);
-  barFill.style.width = pct + '%';
-  if(current>0 && (current)%5===0){
-    updateRings();
-    cpPanel.classList.remove('hidden');
-    answersBox.classList.add('hidden');
+}
+
+// ответ
+function onAnswer(idx){
+  const q = questions[current];
+  if(!buckets[q.cat]) buckets[q.cat] = {right:0,total:0};
+  buckets[q.cat].total++;
+  if(idx === q.c){ score++; buckets[q.cat].right++; }
+
+  current++;
+
+  // каждые 5 вопросов — чекпоинт
+  if(current>0 && current % sectionSize === 0 && current < total){
+    showCheckpoint();
+    return;
+  }
+
+  if(current < total){
+    showQuestion();
   }else{
-    cpPanel.classList.add('hidden');
-    answersBox.classList.remove('hidden');
+    finish();
   }
 }
 
-continueBtn.onclick = ()=>{
-  cpPanel.classList.add('hidden');
-  answersBox.classList.remove('hidden');
+function showCheckpoint(){
+  checkpointList.innerHTML = "";
+  Object.entries(buckets).forEach(([cat, v])=>{
+    const li = document.createElement('li');
+    const p = Math.round(100*(v.right/(v.total||1)));
+    li.innerHTML = `<strong>${cat}</strong>: ${v.right}/${v.total} — ${p}%`;
+    checkpointList.appendChild(li);
+  });
+  checkpointEl.classList.remove('hidden');
+  answersEl.classList.add('hidden');
+  questionEl.classList.add('hidden');
 }
 
-function updateRings(){
-  ring1.textContent = `${Math.min(score,5)}/5`;
-  ring2.textContent = `${Math.min(score,10)}/10`;
-  ring3.textContent = `${Math.min(score,15)}/15`;
-  ring4.textContent = `${Math.min(score,20)}/20`;
-  ring5.textContent = `${Math.min(score,25)}/25`;
-}
-
-function pick(idx){
-  if(idx === data[current].c) score++;
-  current++;
-  if(current>=TOTAL) return finish();
+continueBtn.addEventListener('click', ()=>{
+  checkpointEl.classList.add('hidden');
+  answersEl.classList.remove('hidden');
+  questionEl.classList.remove('hidden');
   showQuestion();
-}
+});
 
-async function finish(){
-  testPanel.classList.add('hidden');
-  resultPanel.classList.remove('hidden');
-  const percent = Math.round(score/TOTAL*100);
-  scoreText.textContent = `Ваш результат: ${score} из ${TOTAL} (${percent}%).`;
+// стартуем после отправки формы
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const email = emailInput.value.trim();
+  if(!email){ emailInput.focus(); return; }
+  userEmail = email;
+
   try{
-    await fetch(FORM_ENDPOINT, { method:"POST", headers:{ "Accept":"application/json" }, body: new URLSearchParams({email:emailSent, score:score, total:TOTAL, percent:percent, event:"result"}) });
-  }catch(_){}
+    const fd = new FormData();
+    fd.append('email', email);
+    fd.append('event', 'start');
+    await fetch(form.action, { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+  }catch(err){
+    console.warn('Не удалось отправить начало теста:', err);
+  }
+
+  form.classList.add('hidden');
+  testEl.classList.remove('hidden');
+  current = 0; score = 0;
+  Object.keys(buckets).forEach(k=>delete buckets[k]);
+  showQuestion();
+});
+
+function finish(){
+  barFill.style.width = '100%';
+  testEl.classList.add('hidden');
+  resultEl.classList.remove('hidden');
+
+  const percent = Math.round(100*score/total);
+  resultText.textContent = `Ваш результат: ${score} из ${total} (${percent}%).`;
+
+  const frag = document.createDocumentFragment();
+  Object.entries(buckets).forEach(([cat,v])=>{
+    const p = Math.round(100*(v.right/(v.total||1)));
+    const div = document.createElement('div');
+    div.className = 'muted';
+    div.textContent = `${cat}: ${v.right}/${v.total} — ${p}%`;
+    frag.appendChild(div);
+  });
+  breakdownEl.innerHTML = "";
+  breakdownEl.appendChild(frag);
+
+  // Письмо с результатом пользователю
+  if(userEmail){
+    const fd = new FormData();
+    fd.append('email', userEmail);
+    fd.append('event', 'result');
+    fd.append('score', `${score}/${total}`);
+    fd.append('percent', `${Math.round(100*score/total)}`);
+    try{
+      fetch(form.action, { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+    }catch(e){ console.warn('Не удалось отправить результат:', e); }
+  }
 }
 
-restartBtn.onclick = ()=>window.location.reload();
+restartBtn.addEventListener('click', ()=>{
+  resultEl.classList.add('hidden');
+  form.classList.remove('hidden');
+});
