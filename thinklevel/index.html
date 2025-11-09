@@ -44,7 +44,18 @@
   <div class="container" id="email-step">
     <h1>🧠 ThinkLevel</h1>
     <p>Чтобы пройти тест, введите вашу электронную почту:</p>
-   <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
+<form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
+  <input type="email" name="email" placeholder="Ваш e-mail"
+         style="padding:10px;width:100%;border-radius:6px;border:1px solid #ccc;margin-bottom:10px;">
+  <div style="display:flex;gap:10px;justify-content:center;">
+    <button type="submit" style="background:#00b894;color:white;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;">
+      Начать тест
+    </button>
+    <button type="button" id="skipBtn" style="background:#9aa0a6;color:white;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;">
+      Пропустить
+    </button>
+  </div>
+</form>
       <input type="email" name="email" placeholder="Ваш e-mail" required style="padding:10px;width:100%;border-radius:6px;border:1px solid #ccc;margin-bottom:10px;">
       <button type="submit">Начать тест</button>
     </form>
@@ -78,6 +89,11 @@
   let current = 0, score = 0;
 
   form.addEventListener("submit", async (e) => {
+    // Если пользователь нажал "Пропустить"
+document.getElementById('skipBtn').addEventListener('click', () => {
+  emailStep.classList.add('hidden');
+  startTest();
+});
     e.preventDefault(); // не уходим на Formspree
     // Отправляем e-mail на Formspree в фоне
     try {
