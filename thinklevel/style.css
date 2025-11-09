@@ -1,57 +1,39 @@
+* { box-sizing: border-box; }
 body {
-  background-image: url('neurons-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #fff;
-  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: #e8eeff;
+  background: #0a1020;
 }
-*{box-sizing:border-box}
-:root{
-  --bg:#0b1020;
-  --text:#e8ecff;
-  --muted:#a8b3d8;
-  --panel:#101a3b;
-  --panel2:#0e1635;
-  --a1:#7aa2ff; --a2:#b07dff; --a3:#46d8ff;
+.hidden { display: none !important; }
+.bg {
+  position: fixed; inset: 0;
+  background: url('neurons-bg.jpg') center/cover no-repeat;
+  z-index: -1;
+  filter: brightness(0.6);
 }
-html,body{height:100%}
-body{margin:0;color:var(--text);background:var(--bg);
-  font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;overflow-x:hidden}
-#bg{position:fixed;inset:0;z-index:-2;background:url('assets/neurons-bg.jpg') center/cover no-repeat;
-  transform:translateZ(0) scale(1.05); filter:saturate(1.1) brightness(.85)}
-.overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg, rgba(80,100,200,.20), rgba(40,160,220,.18))}
-.container{max-width:900px;margin:clamp(12px,4vw,28px) auto;padding:16px}
-.card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)), var(--panel);
-  border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:24px 22px; box-shadow:0 10px 40px #0008}
-.brand{margin:0 0 6px; font-size:36px; font-weight:800; letter-spacing:.3px;
-  background:linear-gradient(90deg,var(--a3),var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent}
-.brand.small{font-size:30px}
-.emoji{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35)); margin-right:8px}
-.lead{font-size:18px; opacity:.96; margin:8px 0 16px}
-.muted{color:var(--muted); margin:6px 0 0; font-size:14px}
-
-.email-form{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.email-form input{flex:1; min-width:260px; padding:14px 16px; border-radius:12px;
-  border:1px solid #2b3a6a; background:#0b1330; color:var(--text); outline:none}
-.btn{cursor:pointer; border-radius:12px; padding:12px 18px; border:1px solid #2b3a6a; color:var(--text); background:#0e173a}
-.btn.primary{border:0; background:linear-gradient(90deg,var(--a3),var(--a2),var(--a1)); color:#06122a; font-weight:800}
-
-.top{display:flex; align-items:center; gap:14px; margin:4px 0 12px}
-.bar{flex:1; height:10px; border-radius:10px; background:#16214a; overflow:hidden; border:1px solid #263572}
-.bar span{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--a3),var(--a2)); box-shadow:0 0 16px #6ea2ff; transition:width .25s ease}
-.count{color:#cfd7ff; font-weight:700}
-
-.question{font-size:28px; margin:10px 0 14px}
-.answers{display:grid; gap:12px}
-.answers button{text-align:left; width:100%; padding:16px 18px; border-radius:14px;
-  background:#0d1633; border:1px solid #2a3768; color:var(--text)}
-.answers button:hover{background:#111c42; border-color:#4054a6}
-
-.checkpoint{margin-top:16px; padding:16px; border-radius:14px; background:#0b1330; border:1px dashed #2b3a72}
-.cp-title{font-weight:800; color:#d5ddff; margin-bottom:8px}
-.cp-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
-.cp-grid .pill{background:#0e1638; border:1px solid #2a386c; border-radius:999px; padding:8px 10px; color:#b6c2ff; text-align:center; font-size:13px}
-
-@media (max-width:640px){ .brand{font-size:32px} .question{font-size:24px} }
+.container { max-width: 900px; margin: auto; padding: 20px; }
+.card {
+  background: rgba(20, 25, 50, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+.btn.primary {
+  background: linear-gradient(135deg, #6ee7ff, #b38bff);
+  color: #000;
+}
+.btn.ghost {
+  border: 1px solid #a0b0ff;
+  color: #e0e8ff;
+  background: transparent;
+}
+.bar { height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: #9ac0ff; width: 0%; transition: width 0.3s; }
