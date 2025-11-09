@@ -1,238 +1,56 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ThinkLevel — тест эффективности мозга</title>
-<link rel="icon" href="/favicon-32.png">
-<style>
-  :root{
-    --bg:#fffef8;
-    --card:#ffffff;
-    --text:#222;
-    --muted:#6b7280;
-    --accent:#12b886; /* фирменный зелёный */
-    --accent-dark:#0fa372;
-    --gray:#e5e7eb;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;background:var(--bg);color:var(--text);
-    font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
-  }
-  .wrap{max-width:840px;margin:0 auto;padding:28px 16px 60px}
-  .card{
-    background:var(--card);border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,.05);
-    padding:22px 18px;
-  }
-  h1{font-size:28px;margin:10px 0 14px;display:flex;gap:10px;align-items:center}
-  h1 .emoji{font-size:26px}
-  p.lead{font-size:18px;color:var(--muted);margin-top:0}
-  input[type="email"]{
-    width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--gray);
-    outline:none;font-size:16px;margin:10px 0 14px
-  }
-  .btn{
-    display:inline-block;border:none;border-radius:10px;padding:12px 18px;
-    background:var(--accent);color:#fff;font-weight:700;cursor:pointer;
-    transition:.15s transform ease,.15s background ease;
-  }
-  .btn:active{transform:translateY(1px)}
-  .btn:disabled{opacity:.6;cursor:not-allowed}
-  .btn--ghost{background:#9aa0a6}
-  .btn--wide{width:100%}
-
-  .progress{height:10px;background:#f1f5f9;border-radius:999px;overflow:hidden;margin:6px 0 14px}
-  .bar{height:100%;width:0;background:var(--accent);transition:width .25s ease}
-
-  .q-card{padding:8px 6px}
-  .q-title{font-size:20px;font-weight:700;margin:8px 0 14px}
-  .answers{display:grid;gap:10px}
-  .answer{
-    padding:12px;border:1px solid var(--gray);border-radius:10px;background:#fff;text-align:left;
-    cursor:pointer;font-weight:600
-  }
-  .answer:hover{border-color:#cbd5e1}
-  .answer.correct{border-color:#22c55e;background:#ecfdf5}
-  .answer.wrong{border-color:#ef4444;background:#fef2f2}
-
-  .comment{margin-top:16px;border:1px dashed #d1d5db;border-radius:12px;padding:12px;background:#fcfdfd}
-  .comment label{display:block;font-weight:700;margin-bottom:6px}
-  .comment textarea{width:100%;min-height:64px;border:1px solid var(--gray);border-radius:10px;padding:10px;resize:vertical}
-
-  .result h2{margin:6px 0 8px;font-size:24px}
-  .score{font-size:40px;font-weight:800}
-  .tag{display:inline-block;background:#eef2ff;color:#4338ca;border-radius:999px;padding:6px 10px;font-weight:700}
-  .muted{color:var(--muted)}
-  .hidden{display:none}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" id="email-step">
-      <h1><span class="emoji">🧠</span> ThinkLevel</h1>
-      <p class="lead">Введите e‑mail — результат придёт на почту, а тест начнётся сразу.</p>
-      <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
-        <input type="email" name="email" placeholder="Ваш e‑mail" required />
-        <button class="btn btn--wide" type="submit">Начать тест</button>
-      </form>
-    </div>
+<div class="wrap">
+  <div class="card" id="email-step">
+    <h1><span class="emoji">🧠</span> ThinkLevel</h1>
+    <p class="lead">Введите e-mail — отправим результат на почту, а тест начнётся сразу.</p>
+    <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST" novalidate>
+      <label class="label" for="email">Ваш e-mail</label>
+      <input type="email" name="email" id="email" placeholder="you@example.com" required>
+      <button class="btn btn--wide" type="submit">Начать тест</button>
+    </form>
+    <p class="muted small">Более 1 000 человек уже прошли этот тест</p>
+  </div>
 
-    <div class="card hidden" id="test-step">
-      <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
-      <div class="muted" id="counter">Вопрос 1 из 25</div>
-
-      <div class="q-card">
-        <div class="q-title" id="question">Здесь будет вопрос…</div>
-        <div class="answers" id="answers"></div>
-      </div>
-
-      <div class="comment hidden" id="comment-block">
-        <label for="comment">Короткий комментарий (необязательно)</label>
-        <textarea id="comment" placeholder="Напишите, что показалось лёгким или сложным…"></textarea>
-      </div>
-    </div>
-
-    <div class="card hidden result" id="result-step">
-      <h2>Ваш результат</h2>
-      <div class="score" id="score">0%</div>
-      <div class="tag" id="tier">—</div>
-      <p class="lead" id="summary">Идёт подсчёт…</p>
-      <hr style="border:none;height:1px;background:#eee;margin:18px 0">
-      <form id="sendResult" action="https://formspree.io/f/mzzypjko" method="POST">
-        <input type="hidden" name="result_percent" id="res_percent">
-        <input type="hidden" name="result_tier" id="res_tier">
-        <input type="hidden" name="result_text" id="res_text">
-        <button type="submit" class="btn btn--wide">Отправить результат на e‑mail</button>
-      </form>
-      <p class="muted" style="margin-top:10px">Более 1 000 человек уже прошли этот тест.</p>
-      <a class="btn btn--ghost" href="/">Вернуться на сайт</a>
+  <div class="card hidden" id="test-step">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="counter" id="counter">Вопрос 1 из 25</div>
+    <div class="q-card">
+      <div class="q-title" id="question">Здесь будет вопрос…</div>
+      <div class="answers" id="answers"></div>
     </div>
   </div>
 
-<script>
-  const emailStep  = document.getElementById('email-step');
-  const testStep   = document.getElementById('test-step');
-  const resultStep = document.getElementById('result-step');
-  const form       = document.getElementById('emailForm');
+  <div class="card hidden" id="checkpoint">
+    <div class="cp-title">Промежуточный отчёт</div>
+    <div class="cp-gauge">
+      <div class="cp-ring"><div id="cp-value">0%</div></div>
+    </div>
+    <p class="muted" id="cp-text">Идёт расчёт…</p>
+    <button class="btn btn--wide" id="cp-continue">Продолжить</button>
+  </div>
 
-  const qTitle   = document.getElementById('question');
-  const answers  = document.getElementById('answers');
-  const bar      = document.getElementById('bar');
-  const counter  = document.getElementById('counter');
-  const commentBlock = document.getElementById('comment-block');
-
-  const questions = [
-    {q:"Какое число лишнее: 2, 4, 8, 16, 24, 32?", a:["8","16","24","32"], c:2},
-    {q:"Что лишнее: книга, тетрадь, карандаш, ручка?", a:["Книга","Тетрадь","Карандаш","Ручка"], c:2},
-    {q:"Сколько секунд в 4 минутах?", a:["120","180","240","300"], c:2},
-    {q:"Какое слово не подходит: кот, собака, воробей, тигр?", a:["Кот","Собака","Воробей","Тигр"], c:2},
-    {q:"Что получится: (12 − 5) × 3 = ?", a:["18","19","21","27"], c:2},
-    {q:"Последовательность: 1, 1, 2, 3, 5, 8, ?", a:["10","11","12","13"], c:3},
-    {q:"Антоним к слову «медленный»", a:["Тихий","Быстрый","Толстый","Крепкий"], c:1},
-    {q:"Найдите лишнее: квадрат, круг, ромб, треугольник", a:["Квадрат","Круг","Ромб","Треугольник"], c:1},
-    {q:"Продолжите ряд: ПН, ВТ, СР, ?", a:["ЧТ","ПТ","СБ","ВС"], c:0},
-    {q:"Если все A — B, и все B — C, то все A — ?", a:["C","B","A","ни одно"], c:0},
-    {q:"Сколько углов у шестиугольника?", a:["5","6","7","8"], c:1},
-    {q:"Выберите анаграмму слова «КРОНА»", a:["КОРА","КОРЖ","КРОНА","НОРКА"], c:3},
-    {q:"Сумма: 7 + 9 × 2 = ?", a:["32","25","23","20"], c:2},
-    {q:"Часы показывают 15:00. Через 150 минут будет:", a:["16:30","17:30","18:00","18:30"], c:1},
-    {q:"Лишнее: север, юг, восток, вверх", a:["Север","Юг","Восток","Вверх"], c:3},
-    {q:"Что лишнее: лимон, апельсин, мандарин, груша", a:["Лимон","Апельсин","Мандарин","Груша"], c:3},
-    {q:"Продолжите: 5, 10, 20, 40, ?", a:["45","60","70","80"], c:3},
-    {q:"Синоним к слову «быстрый»", a:["Шустрый","Тяжёлый","Мягкий","Глухой"], c:0},
-    {q:"Сколько чётных чисел среди: 3, 6, 9, 12, 15, 18?", a:["2","3","4","5"], c:1},
-    {q:"Сколько градусов в прямом угле?", a:["45","90","120","180"], c:1},
-    {q:"Выберите лишнее: стекло, дерево, пластик, соль", a:["Стекло","Дерево","Пластик","Соль"], c:3},
-    {q:"(6 + 8) ÷ 2 = ?", a:["6","7","8","9"], c:2},
-    {q:"Какое слово образует пару с «вопрос»:", a:["Ответ","Доверие","Надежда","Радость"], c:0},
-    {q:"Какое число должно стоять вместо ?: 3, 6, 12, 24, ?", a:["36","42","44","48"], c:3},
-    {q:"Лишнее: январь, февраль, время, март", a:["Январь","Февраль","Время","Март"], c:2},
-  ];
-
-  let i = 0, score = 0;
-
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    try{
-      await fetch(form.action, { method:'POST', headers:{'Accept':'application/json'}, body:new FormData(form) });
-    }catch(err){ console.log('Formspree error:', err); }
-    emailStep.classList.add('hidden');
-    startTest();
-  });
-
-  function startTest(){
-    testStep.classList.remove('hidden');
-    i = 0; score = 0;
-    showQuestion();
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  function showQuestion(){
-    const total = questions.length;
-    counter.textContent = `Вопрос ${i+1} из ${total}`;
-    bar.style.width = `${Math.round((i)/total*100)}%`;
-
-    if ((i>0) && (i % 5 === 0)) commentBlock.classList.remove('hidden');
-    else commentBlock.classList.add('hidden');
-
-    const q = questions[i];
-    qTitle.textContent = q.q;
-    answers.innerHTML = '';
-
-    q.a.forEach((text,idx)=>{
-      const btn = document.createElement('button');
-      btn.className = 'answer';
-      btn.type = 'button';
-      btn.textContent = text;
-      btn.onclick = ()=> pick(idx);
-      answers.appendChild(btn);
-    });
-  }
-
-  function pick(idx){
-    const q = questions[i];
-    const nodes = Array.from(document.querySelectorAll('.answer'));
-    nodes.forEach((n,k)=>{
-      n.onclick = null;
-      if (k === q.c) n.classList.add('correct');
-      if (k === idx && idx !== q.c) n.classList.add('wrong');
-    });
-    if (idx === q.c) score++;
-
-    setTimeout(()=>{
-      i++;
-      if (i < questions.length) showQuestion();
-      else finish();
-    }, 450);
-  }
-
-  function finish(){
-    bar.style.width = '100%';
-    testStep.classList.add('hidden');
-    resultStep.classList.remove('hidden');
-
-    const percent = Math.round(score / questions.length * 100);
-    const scoreEl = document.getElementById('score');
-    const tierEl  = document.getElementById('tier');
-    const sumEl   = document.getElementById('summary');
-
-    scoreEl.textContent = percent + '%';
-
-    let tier, text;
-    if (percent >= 90){ tier = '⚡ Уровень: Продвинутый'; text = 'Отличная скорость обработки и точность решений. Вы быстро схватываете закономерности и удерживаете внимание.'; }
-    else if (percent >= 75){ tier = '✨ Уровень: Сильный'; text = 'Хороший баланс скорости и точности. Пара сложных задач сбила темп — но общий профиль уверенный.'; }
-    else if (percent >= 60){ tier = '🌱 Уровень: Базовый+'; text = 'Неплохой результат. Тренируйте внимание и работу с шаблонами — прогресс придёт быстро.'; }
-    else { tier = '🔧 Уровень: Стартовый'; text = 'Отличная точка входа. 5–10 минут в день на память, внимание и логику — и кривая пойдёт вверх.'; }
-
-    tierEl.textContent = tier;
-    sumEl.textContent  = text;
-
-    document.getElementById('res_percent').value = percent + '%';
-    document.getElementById('res_tier').value = tier;
-    document.getElementById('res_text').value = text;
-  }
-</script>
+  <div class="card hidden result" id="result-step">
+    <h2>Ваш результат</h2>
+    <div class="score" id="score">0%</div>
+    <div class="tag" id="tier">—</div>
+    <p class="lead" id="summary">Идёт подсчёт…</p>
+    <hr class="hr">
+    <button class="btn btn--wide" id="btn-send">Отправить результат на e-mail</button>
+    <p class="muted small">Письмо придёт на указанный адрес. Если нет — проверьте «Спам».</p>
+    <a class="btn btn--ghost" href="/">Вернуться на сайт</a>
+  </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
