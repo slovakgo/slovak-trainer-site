@@ -1,96 +1,161 @@
-const intro = document.getElementById('intro');
-const emailForm = document.getElementById('emailForm');
-const emailInput = document.getElementById('email');
-const quiz = document.getElementById('quiz');
-const qText = document.getElementById('qText');
-const answers = document.getElementById('answers');
-const bar = document.getElementById('bar');
-const qIdxSpan = document.getElementById('qIdx');
-const qTotalSpan = document.getElementById('qTotal');
-const checkpoint = document.getElementById('checkpoint');
-const cpGrid = document.getElementById('cpGrid');
-const continueBtn = document.getElementById('continueBtn');
-const result = document.getElementById('result');
-const resultText = document.getElementById('resultText');
-const restartBtn = document.getElementById('restart');
+// === ThinkLevel Script ===
 
-const questions = [
-  {q:'Какое число продолжит ряд: 3, 6, 18, 72, ?', a:['144','216','288','360'], c:1},
-  {q:'Что лишнее: книга, тетрадь, карандаш, ручка?', a:['Книга','Тетрадь','Карандаш','Ручка'], c:0},
-  {q:'Сколько углов у пятиугольника?', a:['4','5','6','7'], c:1},
-  {q:'Если все розы — цветы, а некоторые цветы — красные, означает ли это, что все розы красные?', a:['Да','Нет'], c:1},
-  {q:'Найдите закономерность: 2, 3, 5, 8, 13, ?', a:['18','20','21','22'], c:2},
-  {q:'Какое слово образует анаграмму слова «КОДЕР»?', a:['ДРОКЕ','РЕДОК','КЕДОР','РЕКОД'], c:3},
-  {q:'Продолжите ряд: П, В, С, Ч, П, ?', a:['С','Ш','Ч','В'], c:0},
-  {q:'Сколько секунд в 3 часах?', a:['10 800','3 600','1 800','12 800'], c:0},
-  {q:'Какая фигура имеет наибольшее число осей симметрии?', a:['Квадрат','Прямоугольник','Ромб','Трапеция'], c:0},
-  {q:'Если вчера было завтра, то какой день сегодня?', a:['Понедельник','Среда','Пятница','Воскресенье'], c:3},
-  {q:'Сколько пятерок в числе 55555?', a:['3','4','5','6'], c:2},
-  {q:'Что лишнее: автобус, поезд, велосипед, самолёт?', a:['Автобус','Поезд','Велосипед','Самолёт'], c:2},
-  {q:'Чему равно 15% от 240?', a:['24','30','36','42'], c:2},
-  {q:'В слове «НЕЙРОН» какая буква вторая?', a:['Й','Е','Н','Р'], c:1},
-  {q:'Сколько дней в невисокосном году?', a:['365','366','364','360'], c:0},
-  {q:'Продолжите ряд: 1, 4, 9, 16, ?', a:['20','24','25','36'], c:2},
-  {q:'Укажите синоним слова «быстрый»:', a:['Резвый','Медлительный','Неторопливый','Ленивый'], c:0},
-  {q:'Сколько нулей в числе миллион?', a:['4','5','6','7'], c:2},
-  {q:'Если А > B и B > C, то верно ли, что A > C?', a:['Да','Нет'], c:0},
-  {q:'Какое слово можно получить из букв: И, Л, О, Г, К?', a:['ЛИГОК','ГОЛИК','ЛОГИК','КОЛИГ'], c:2},
-  {q:'Запомните: 4A9B. Какой код был?', a:['4A9B','4B9A','49AB','A49B'], c:0},
-  {q:'Запомните: 7, 2, 9, 4. Число на третьей позиции?', a:['7','2','9','4'], c:2},
-  {q:'Сколько градусов в прямом угле?', a:['45','90','120','180'], c:1},
-  {q:'На сколько больше 3×7, чем 4×4?', a:['1','3','5','7'], c:2},
-  {q:'Что лишнее: март, июнь, август, ноябрь?', a:['Март','Июнь','Август','Ноябрь'], c:3}
+// DOM
+const container = document.querySelector(".container");
+const intro = document.getElementById("intro");
+const quiz = document.getElementById("quiz");
+const result = document.getElementById("result");
+const qText = document.getElementById("qText");
+const answers = document.getElementById("answers");
+const emailForm = document.getElementById("emailForm");
+const qIdxEl = document.getElementById("qIdx");
+const qTotalEl = document.getElementById("qTotal");
+const bar = document.getElementById("bar");
+const cp = document.getElementById("checkpoint");
+const cpGrid = document.getElementById("cpGrid");
+const contBtn = document.getElementById("continueBtn");
+const restartBtn = document.getElementById("restart");
+const resultText = document.getElementById("resultText");
+
+const FORMSPREE = "https://formspree.io/f/mzzypjko";
+
+// Пул вопросов (25) — логика, математика, память, внимание
+const Q = [
+  {t:"mcq", q:"Какое число продолжит ряд: 3, 6, 18, 72, ?", a:["144","216","288","360"], c:1},
+  {t:"mcq", q:"Что лишнее: книга, тетрадь, карандаш, ручка?", a:["Книга","Тетрадь","Карандаш","Ручка"], c:0},
+  {t:"mcq", q:"Сколько углов у трёх треугольников?", a:["6","9","3","12"], c:1},
+  {t:"mcq", q:"Сколько секунд в 2,5 минутах?", a:["120","130","150","180"], c:2},
+  {t:"mem",  q:"Запомните: 7, 2, 9, 4.", ask:"Число на третьей позиции?", a:["7","2","9","4"], c:2},
+
+  {t:"mcq", q:"Сколько букв в слове «мозг»?", a:["3","4","5","6"], c:1},
+  {t:"mcq", q:"Если сегодня среда, через 3 дня будет…", a:["Четверг","Пятница","Суббота","Воскресенье"], c:2},
+  {t:"mcq", q:"Какой месяц лишний: март, июнь, август, ноябрь?", a:["Март","Июнь","Август","Ноябрь"], c:1},
+  {t:"mcq", q:"Сколько будет 15 × 7?", a:["95","100","105","110"], c:2},
+  {t:"mem",  q:"Запомните код: 4А9В.", ask:"Какой код был?", a:["4А9В","4В9А","49АВ","А49В"], c:0},
+
+  {t:"mcq", q:"Сколько десятков в числе 420?", a:["4","42","40","14"], c:2},
+  {t:"mcq", q:"Что лишнее: квадрат, круг, ромб, прямоугольник?", a:["Квадрат","Круг","Ромб","Прямоугольник"], c:1},
+  {t:"mcq", q:"Выбери синоним к слову «умный»:", a:["Сообразительный","Твёрдый","Громкий","Солнечный"], c:0},
+  {t:"mcq", q:"Сколько чётных чисел между 10 и 20?", a:["4","5","6","7"], c:2},
+  {t:"mem",  q:"Запомните: НЕЙРОН", ask:"Какая буква была второй?", a:["Й","Е","Н","Р"], c:1},
+
+  {t:"mcq", q:"Если у треугольника увеличить все стороны в 2 раза, площадь увеличится в…", a:["2 раза","3 раза","4 раза","6 раз"], c:2},
+  {t:"mcq", q:"Сколько букв «С» в слове «приспособиться»?", a:["2","3","4","5"], c:1},
+  {t:"mcq", q:"Реши: (18−5)×3", a:["33","36","39","41"], c:1},
+  {t:"mcq", q:"Сколько дней в невисокосном году?", a:["365","366","364","360"], c:0},
+  {t:"mem",  q:"Запомните: 5 → ◻, 8 → △, 2 → ○", ask:"Какой символ у числа 8?", a:["◻","△","○","—"], c:1},
+
+  {t:"mcq", q:"Если вчера было завтра, то какой день сегодня?", a:["Понедельник","Среда","Пятница","Воскресенье"], c:3},
+  {t:"mcq", q:"Продолжи ряд: 2, 4, 8, 16, …", a:["18","24","32","36"], c:2},
+  {t:"mcq", q:"Найдите лишнее: 3, 9, 27, 81, 243, 729, 1000?", a:["81","243","729","1000"], c:3},
+  {t:"mcq", q:"Что тяжелее: 1 кг железа или 1 кг пуха?", a:["Железо","Пух","Одинаково","Зависит от ветра"], c:2},
+  {t:"mcq", q:"Сколько слогов в слове «нейросеть»?", a:["2","3","4","5"], c:1}
 ];
 
-qTotalSpan.textContent = questions.length;
+qTotalEl.textContent = Q.length;
 
-let current = 0, score = 0;
+let current = 0;
+let score = 0;
+let userEmail = "";
 
-emailForm.addEventListener('submit', async e => {
+// старт: отправляем «старт» в formspree и переходим к тесту
+emailForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  intro.classList.add('hidden');
-  quiz.classList.remove('hidden');
+  const fd = new FormData(emailForm);
+  userEmail = (fd.get("email") || "").trim();
+  try{
+    await fetch(FORMSPREE, { method:"POST", headers:{Accept:"application/json"}, body:fd });
+  }catch(_){ /* ок, идём дальше даже при оффлайне */ }
+  intro.classList.add("hidden");
+  quiz.classList.remove("hidden");
   render();
 });
 
-function render() {
-  const q = questions[current];
-  qIdxSpan.textContent = current + 1;
-  bar.style.width = (current / questions.length * 100) + '%';
-  qText.textContent = q.q;
-  answers.innerHTML = '';
-  q.a.forEach((t, i) => {
-    const b = document.createElement('button');
-    b.textContent = t;
-    b.onclick = () => choose(i);
-    answers.appendChild(b);
+function render(){
+  const q = Q[current];
+  qIdxEl.textContent = current+1;
+  bar.style.width = Math.round(((current)/Q.length)*100) + "%";
+
+  // память: сначала показываем «запомните…», затем через 1.5с заменяем вопросом
+  if(q.t === "mem"){
+    qText.textContent = q.q;
+    answers.innerHTML = ""; // блокируем выбор, пока запоминает
+    setTimeout(() => {
+      showOptions(q.ask, q.a);
+    }, 1500);
+  } else {
+    showOptions(q.q, q.a);
+  }
+
+  // чекпоинт после каждого 5-го вопроса, кроме последнего блока
+  if((current>0) && ((current+1)%5===0) && current < Q.length-1){
+    showCheckpoint();
+  }else{
+    cp.classList.add("hidden");
+  }
+}
+
+function showOptions(text, options){
+  qText.textContent = text;
+  answers.innerHTML = "";
+  options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.textContent = opt;
+    btn.onclick = () => select(i);
+    answers.appendChild(btn);
   });
 }
 
-function choose(i) {
-  if (i === questions[current].c) score++;
+function select(i){
+  const q = Q[current];
+  if(i === q.c) score++;
+  next();
+}
+
+function next(){
   current++;
-  if (current % 5 === 0 && current < questions.length) return checkpointScreen();
-  if (current < questions.length) return render();
-  finish();
+  if(current >= Q.length){
+    finish();
+  }else{
+    render();
+  }
 }
 
-function checkpointScreen() {
-  quiz.classList.add('hidden');
-  checkpoint.classList.remove('hidden');
-  cpGrid.innerHTML = `<div>Пройдено ${current}/25</div>`;
-}
-continueBtn.onclick = () => {
-  checkpoint.classList.add('hidden');
-  quiz.classList.remove('hidden');
-  render();
-};
-
-function finish() {
-  quiz.classList.add('hidden');
-  result.classList.remove('hidden');
-  const percent = Math.round(score / questions.length * 100);
-  resultText.textContent = `Результат: ${score} из 25 (${percent}%)`;
+function showCheckpoint(){
+  cp.classList.remove("hidden");
+  // мини-оценка по блокам 5/10/15/20
+  const block = Math.floor(current/5); // 1..4
+  const label = ["Логика","Математика","Память","Внимание"][ (block-1) % 4 ] || "Прогресс";
+  cpGrid.innerHTML = "";
+  const pill = document.createElement("div");
+  pill.className = "cp-pill";
+  pill.textContent = `${label}: ${current}/25`;
+  cpGrid.appendChild(pill);
+  contBtn.onclick = () => { cp.classList.add("hidden"); };
 }
 
-restartBtn.onclick = () => location.reload();
+// завершение: отправляем результат через formspree и показываем краткое сообщение
+async function finish(){
+  quiz.classList.add("hidden");
+  result.classList.remove("hidden");
+  bar.style.width = "100%";
+
+  resultText.textContent = "Спасибо за прохождение!";
+
+  const fd = new FormData();
+  fd.append("email", userEmail || "unknown@example.com");
+  fd.append("message", `Ваш результат: ${score} из ${Q.length} ( ${Math.round(score/Q.length*100)}% ).`);
+  fd.append("event", "result_pro");
+
+  try{
+    await fetch(FORMSPREE, { method:"POST", headers:{Accept:"application/json"}, body:fd });
+  }catch(_){ /* молча */ }
+
+  restartBtn.onclick = () => {
+    current = 0; score = 0;
+    result.classList.add("hidden");
+    intro.classList.remove("hidden");
+    emailForm.reset();
+  };
+}

@@ -1,40 +1,88 @@
 * { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  color: #e8eeff;
-  background: #0a1020;
-  overflow-x: hidden;
+:root{
+  --ink:#e8eeff;
+  --ink-d:#bcd0ff;
+  --bg:#0a1020;
+  --card:rgba(22,28,45,.86);
+  --accent1:#63d0ff;
+  --accent2:#a78bff;
+  --muted:#9aa7c5;
+  --pill:#0f1730;
+  --pill-on:#142041;
+  --shadow:0 20px 60px rgba(5,8,20,.4);
 }
-.bg {
-  position: fixed;
-  inset: 0;
-  background: url('neurons-bg.jpg') center/cover no-repeat;
-  filter: brightness(0.55) saturate(1.1);
-  z-index: -2;
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  color:var(--ink);
+  background:#0a1020; /* запасной цвет */
+  overflow-x:hidden;
 }
-.bg-overlay {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(16,26,48,.35), rgba(10,16,32,.85));
-  z-index: -1;
+
+/* ФОТОФОН НЕЙРОНЫ */
+.bg{
+  position:fixed; inset:0;
+  background:url('neurons-bg.jpg') center/cover no-repeat;
+  filter:brightness(.55) saturate(1.15);
+  z-index:-2;
 }
-.container { max-width: 980px; margin: 40px auto; padding: 20px; }
-.card {
-  background: rgba(14,22,40,.65);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 18px;
-  padding: 24px;
+.bg-overlay{
+  position:fixed; inset:0;
+  background: radial-gradient(1000px 600px at 50% 60%, rgba(16,26,43,.0), rgba(10,16,32,.85));
+  z-index:-1;
+}
+
+.hidden{ display:none !important; }
+
+.container{ max-width:980px; margin:auto; padding:28px; }
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  margin:18px 0;
   backdrop-filter: blur(8px);
-  margin: 18px 0;
 }
-.brand { font-size: 36px; color: #9fc1ff; }
-.lead { font-size: 18px; margin: 10px 0 16px; }
-input[type=email] {
-  width: 100%; padding: 16px 18px; border-radius: 12px;
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
-  color: #e8eeff;
+.brand{ margin:0 0 8px; font-size:36px; letter-spacing:.5px; }
+.emoji{margin-right:6px;}
+.lead{ margin:8px 0 22px; color:var(--ink); font-size:18px; line-height:1.5; }
+.muted{ margin-top:16px; color:var(--muted); }
+
+/* формы */
+#email{ 
+  width:100%; font-size:18px; padding:16px 18px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.08); background:#0b1430; color:var(--ink);
+  outline:none; margin-bottom:14px;
 }
-.btn { padding: 14px 22px; border-radius: 14px; cursor: pointer; font-weight: 600; }
-.btn.primary { background: linear-gradient(90deg, #7cc7ff, #b08cff); border: none; color: #0b0f1d; }
-.hidden { display: none !important; }
+.btn{ border:0; cursor:pointer; border-radius:14px; padding:14px 18px; font-weight:700; }
+.btn.primary{
+  background:linear-gradient(90deg, var(--accent1), var(--accent2));
+  color:#081028; box-shadow:0 10px 24px rgba(99,208,255,.25);
+}
+.btn.ghost{ background:#0f1730; color:var(--ink-d); border:1px solid rgba(255,255,255,.08); }
+
+/* тест */
+.top{ display:flex; align-items:center; gap:14px; }
+.bar{ flex:1; height:10px; background:#0f1730; border-radius:99px; overflow:hidden; }
+.bar>span{ display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent1), var(--accent2)); }
+.count{ color:var(--ink-d); font-weight:700; }
+.question{ margin:18px 0 14px; font-size:28px; line-height:1.25; }
+
+.answers{ display:grid; gap:12px; }
+.answers .opt{
+  background:var(--pill); border:1px solid rgba(255,255,255,.08);
+  padding:14px 16px; border-radius:12px; cursor:pointer; font-weight:700; color:var(--ink);
+}
+.answers .opt:hover{ background:var(--pill-on); }
+
+/* чекпоинт */
+.checkpoint{ margin-top:16px; border-top:1px dashed rgba(255,255,255,.12); padding-top:16px; }
+.cp-title{ font-size:22px; font-weight:800; margin-bottom:8px; }
+.cp-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+.cp-pill{ background:#0f1730; padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.08); color:var(--ink-d); }
+
+@media (max-width:640px){
+  .brand{font-size:32px}
+  .question{font-size:24px}
+}
