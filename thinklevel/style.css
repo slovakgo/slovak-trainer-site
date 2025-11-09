@@ -1,40 +1,90 @@
-
-*{box-sizing:border-box}
 :root{
-  --bg1:#0b1020; --bg2:#101631;
-  --neon1:#6ee7ff; --neon2:#8b5cf6; --neon3:#22c55e; --text:#e6ebff; --muted:#95a3c7;
+  --bg:#0c1222;
+  --glass: rgba(12,18,34,0.55);
+  --stroke: rgba(255,255,255,0.12);
+  --txt:#e9f1ff;
+  --muted:#a7b1c6;
+  --primary1:#21d4fd;
+  --primary2:#b721ff;
+  --accent:#00ffa3;
 }
-body{margin:0;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-.neon-bg:before,.neon-bg:after{content:"";position:fixed;inset:-20% -20% auto auto;width:60vmax;height:60vmax;filter:blur(60px);opacity:.35;background:radial-gradient(closest-side,rgba(110,231,255,.6),transparent 60%)}
-.neon-bg:after{left:-20%;top:40%;background:radial-gradient(closest-side,rgba(139,92,246,.55),transparent 60%)}
-.wrap{max-width:960px;margin:0 auto;padding:28px 16px 80px}
-.hero{padding:8px 4px 14px}
-.logo{font-size:28px;font-weight:900;letter-spacing:.4px}
-.subtitle{color:var(--muted)}
-.card{background:rgba(17,24,39,.6);backdrop-filter:blur(8px);border:1px solid rgba(148,163,184,.18);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:22px 18px;margin:14px 0}
-.center{text-align:center}
-h1{margin:0 0 6px;font-size:26px}
-h2{margin:0 0 8px}
-.lead{color:#c8d3ff;margin:4px 0 14px}
-.tiny{font-size:12px;color:var(--muted)}
-.label{display:block;margin:10px 0 6px;font-weight:800}
-input[type=email]{width:100%;padding:14px;border:1px solid rgba(148,163,184,.35);border-radius:12px;background:rgba(8,10,18,.6);color:#fff;outline:none}
-.btn{display:inline-block;border:none;border-radius:12px;padding:12px 16px;cursor:pointer;font-weight:900;letter-spacing:.3px;transition:transform .12s ease,box-shadow .12s ease}
-.btn--primary{background:linear-gradient(135deg,var(--neon1),var(--neon2));color:#0b1020;box-shadow:0 8px 24px rgba(139,92,246,.4)}
-.btn--primary:active{transform:translateY(1px)}
-.btn--ghost{background:transparent;color:#cbd5ff;border:1px solid rgba(148,163,184,.35)}
-.btn--wide{width:100%;margin-top:10px}
-.progress{height:10px;border-radius:999px;background:rgba(203,213,255,.2);overflow:hidden}
-.bar{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#eab308,#f97316,#ef4444);transition:width .25s ease}
-.topline{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;margin-bottom:12px}
-.counter{font-weight:800;opacity:.9}
-.q-title{font-size:22px;font-weight:900;margin:8px 0 14px}
-.answers{display:grid;gap:10px}
-.answer{background:rgba(255,255,255,.04);border:1px solid rgba(148,163,184,.28);color:#e8edff;border-radius:14px;padding:14px;text-align:left;cursor:pointer;font-weight:800;transition:transform .12s ease,border-color .12s ease,background .12s ease}
-.answer:hover{transform:translateY(-1px);border-color:rgba(139,92,246,.6);background:rgba(139,92,246,.08)}
-.cp-title{font-weight:900;font-size:22px}
-.cp-ring{--p:0%;width:150px;height:150px;margin:8px auto;border-radius:50%;background:conic-gradient(#22c55e var(--p),rgba(148,163,184,.18) 0);display:grid;place-items:center;border:8px solid rgba(255,255,255,.06)}
-.cp-value{font-weight:900;font-size:28px}
-.result .score{font-size:52px;font-weight:900}
-.tag{display:inline-block;margin-top:6px;background:rgba(110,231,255,.18);color:#6ee7ff;border:1px solid rgba(110,231,255,.5);border-radius:999px;padding:6px 12px;font-weight:900}
-.hr{border:none;height:1px;background:rgba(148,163,184,.25);margin:16px 0}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, 'Noto Sans', 'Helvetica Neue', sans-serif;
+  color:var(--txt);
+  background: radial-gradient(1200px 800px at 70% -10%, #1b2a52 0%, #0c1222 55%) no-repeat, var(--bg);
+  background-attachment: fixed;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background: url('assets/neurons.svg') center/cover no-repeat;
+  opacity:.25; pointer-events:none; filter:contrast(110%) saturate(120%);
+}
+.wrap{max-width:980px; margin:32px auto; padding:12px;}
+.hidden{display:none}
+
+.glass{
+  background: var(--glass);
+  border:1px solid var(--stroke);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border-radius:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+.hero{padding:24px 24px 16px; margin-bottom:18px}
+.hero h1{margin:0 0 8px; font-size:32px}
+.hero p{margin:6px 0 10px; color:var(--muted)}
+
+.email-form{display:flex; gap:10px; flex-wrap:wrap}
+.email-form input{
+  flex:1; min-width:220px;
+  padding:14px 16px; border-radius:12px; border:1px solid var(--stroke);
+  background: rgba(255,255,255,.06); color:var(--txt); outline:none;
+}
+.email-form button{
+  padding:14px 18px; border-radius:12px; border:0; cursor:pointer;
+  font-weight:700; color:#0b0f1a;
+  background: linear-gradient(90deg, var(--primary1), var(--primary2));
+  box-shadow: 0 10px 22px rgba(33,212,253,.25);
+}
+.trust{font-size:14px; color:var(--muted)}
+
+.panel{padding:20px}
+.topline{display:flex; align-items:center; gap:16px}
+.qmeta{font-weight:600}
+.bar{flex:1; height:10px; border-radius:8px; background:#13203c; overflow:hidden; border:1px solid var(--stroke)}
+.bar-fill{height:100%; width:0%; background: linear-gradient(90deg, var(--primary1), var(--primary2));}
+
+.question{font-size:26px; line-height:1.25; margin:18px 0 16px}
+.answers{display:grid; gap:12px}
+.answers button{
+  text-align:left; width:100%;
+  padding:14px 16px; border-radius:12px; border:1px solid var(--stroke);
+  font-weight:600; color:var(--txt);
+  background: rgba(255,255,255,.04);
+  cursor:pointer; transition:.15s transform ease, .15s background ease;
+}
+.answers button:hover{transform:translateY(-1px); background: rgba(255,255,255,.06)}
+.answers button:active{transform:translateY(0) scale(.99)}
+
+.checkpoint{margin-top:22px; padding:16px}
+.rings{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin:6px 0 10px}
+.ring{
+  padding:12px; border-radius:12px; text-align:center;
+  border:1px dashed var(--stroke); background: rgba(255,255,255,.03)
+}
+.ring span{font-weight:800; font-size:18px; display:block}
+.ring small{color:var(--muted)}
+
+.continue{margin-top:8px; padding:12px 16px; border-radius:12px; border:1px solid var(--stroke); background:rgba(255,255,255,.07); color:var(--txt); cursor:pointer}
+
+.result{padding:24px; text-align:center}
+.secondary{padding:12px 16px; border-radius:12px; border:1px solid var(--stroke); background:transparent; color:var(--txt); cursor:pointer}
+
+@media (max-width:560px){
+  .question{font-size:22px}
+}
