@@ -1,175 +1,331 @@
-/* === ThinkLevel Style === */
+Татьяна, [09.11.2025 19:12]
+/* === ThinkLevel Script === */
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-  color: #f0f0f0;
-  overflow-x: hidden;
+// Элементы
+const preloader = document.getElementById("preloader");
+const container = document.querySelector(".container");
+const intro = document.getElementById("intro");
+const quiz = document.getElementById("quiz");
+const resultSection = document.getElementById("result");
+const questionText = document.getElementById("question-text");
+const answersContainer = document.getElementById("answers");
+const emailForm = document.getElementById("emailForm");
+const scoreText = document.getElementById("score");
+const restartBtn = document.getElementById("restart");
+
+// Звуковой эффект
+const clickSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_8763ec9b14.mp3?filename=click-124467.mp3");
+
+// Примерные вопросы (можно менять)
+const questions = [
+  {
+    question: "1. Что будет, если разделить 30 пополам и прибавить 10?",
+    answers: ["25", "40", "30", "35"],
+    correct: 2
+  },
+  {
+    question: "2. Какое слово лишнее: Мозг, Мысль, Сознание, Апельсин?",
+    answers: ["Сознание", "Мозг", "Апельсин", "Мысль"],
+    correct: 2
+  },
+  {
+    question: "3. Если все розы — цветы, а некоторые цветы — красные, значит ли это, что все розы красные?",
+    answers: ["Да", "Нет"],
+    correct: 1
+  },
+  {
+    question: "4. Продолжи ряд: 2, 4, 8, 16, ...",
+    answers: ["18", "24", "32", "36"],
+    correct: 2
+  },
+  {
+    question: "5. Найди закономерность: О, Д, Т, Ч, П, ...",
+    answers: ["С", "Ш", "Ш", "С"],
+    correct: 0
+  },
+  {
+    question: "6. Сколько углов у трёх треугольников?",
+    answers: ["6", "9", "3", "12"],
+    correct: 1
+  },
+  {
+    question: "7. Если вчера было завтра, то какой день сегодня?",
+    answers: ["Понедельник", "Воскресенье", "Суббота", "Пятница"],
+    correct: 1
+  },
+  {
+    question: "8. Что тяжелее: 1 кг железа или 1 кг пуха?",
+    answers: ["Железо", "Пух", "Одинаково", "Зависит от ветра"],
+    correct: 2
+  },
+  {
+    question: "9. Какое число лишнее: 3, 9, 27, 81, 243, 729, 1000?",
+    answers: ["243", "1000", "27", "729"],
+    correct: 1
+  },
+  {
+    question: "10. Что получится, если к слову 'ум' добавить 'ник'?",
+    answers: ["Умник", "Ничего", "Логика", "Мозг"],
+    correct: 0
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let userEmail = "";
+
+// === Загрузка страницы ===
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    preloader.style.display = "none";
+    container.classList.remove("hidden");
+  }, 3000);
+});
+
+// === Старт по вводу email ===
+emailForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  userEmail = document.getElementById("email").value;
+  intro.classList.add("hidden");
+  quiz.classList.remove("hidden");
+  showQuestion();
+});
+
+// === Показ вопроса ===
+function showQuestion() {
+  const q = questions[currentQuestion];
+  questionText.textContent = q.question;
+  answersContainer.innerHTML = "";
+
+  q.answers.forEach((ans, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = ans;
+    btn.addEventListener("click", () => {
+      clickSound.play();
+      handleAnswer(i);
+    });
+    answersContainer.appendChild(btn);
+  });
 }
 
-/* Пульсирующий экран загрузки */
-#preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, #0a0f2d 40%, #05081b 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  color: #a7bfff;
-  z-index: 9999;
-  animation: fadeOut 1s ease 2.5s forwards;
+// === Проверка ответа ===
+function handleAnswer(i) {
+  if (i === questions[currentQuestion].correct) score++;
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
 }
 
-#preloader .logo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  animation: pulse 1.5s infinite;
+// === Результат ===
+function showResult() {
+  quiz.classList.add("hidden");
+  resultSection.classList.remove("hidden");
+  scoreText.textContent = Ваш результат: ${score} из ${questions.length};
+
+  // Отправка через Formspree
+  fetch("https://formspree.io/f/mzzypjko", {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: userEmail,
+      message: Результат теста ThinkLevel: ${score} из ${questions.length}
+    })
+  });
 }
 
-#preloader p {
-  font-size: 1rem;
-  opacity: 0.8;
+// === Сброс ===
+restartBtn.addEventListener("click", () => {
+  resultSection.classList.add("hidden");
+  intro.classList.remove("hidden");
+  currentQuestion = 0;
+  score = 0;
+});
+
+Татьяна, [09.11.2025 19:23]
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ThinkLevel — тест эффективности мозга</title>
+  <link rel="preload" href="images/neuron-bg.jpg" as="image">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="parallax" aria-hidden="true"></div>
+
+  <div id="app">
+
+    <section id="loader" class="screen center">
+      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
+      <p class="muted">запускается…</p>
+    </section>
+
+    <section id="intro" class="screen hidden">
+      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
+      <p class="lead">Введите e-mail, чтобы начать. Результат покажем на экране и пришлём на почту автоматически.</p>
+
+      <form id="emailForm" class="email-form" novalidate>
+        <input type="email" id="email" name="email" placeholder="Ваш e-mail" required>
+        <button type="submit" class="btn primary">Старт</button>
+      </form>
+
+      <p class="muted small">&gt; 1000 пользователей уже получили свои результаты</p>
+    </section>
+
+    <section id="quiz" class="screen hidden">
+      <div class="meta">
+        <div class="progress">
+          <div class="bar" id="progressBar" style="width:0%"></div>
+        </div>
+        <div class="counter"><span id="qNum">Вопрос 1</span> из <span id="qTotal">25</span></div>
+      </div>
+
+      <h2 id="question" class="question"></h2>
+
+      <div id="answers" class="answers"></div>
+
+      <div id="checkpoint" class="checkpoint hidden">
+        <div class="cp-title">Промежуточный прогресс</div>
+        <div class="cp-grid" id="cpGrid"></div>
+        <button id="continueBtn" class="btn ghost">Продолжить</button>
+      </div>
+    </section>
+
+    <section id="result" class="screen hidden">
+      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
+      <p id="resultText" class="lead"></p>
+      <p class="muted">Результат отправлен на почту.</p>
+      <button id="restart" class="btn ghost">Пройти заново</button>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+Татьяна, [09.11.2025 19:24]
+:root{
+  --bg:#0b1020;
+  --card:#0f1530cc;
+  --card-solid:#151b3a;
+  --text:#e8ecff;
+  --muted:#a8b2d1;
+  --accent1:#7aa2ff;
+  --accent2:#a476ff;
+  --accent3:#36d0ff;
+  --btn:#4cc8ff;
+  --btn2:#6d87ff;
+  --ok:#2ee59d;
+  --warn:#ffd166;
+  --danger:#ff6b6b;
+  --radius:18px;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.05); opacity: 1; }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+  color:var(--text);
+  background:var(--bg);
+  overflow-x:hidden;
 }
 
-@keyframes fadeOut {
-  to { opacity: 0; visibility: hidden; }
+.parallax{
+  position:fixed; inset:0;
+  background:url("images/neuron-bg.jpg") center/cover no-repeat fixed;
+  transform:translateZ(0);
+  will-change:transform;
+  filter:saturate(1.05) brightness(.9);
+  z-index:0;
 }
 
-/* Основной фон (нейроны) */
-#background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 110%;
-  height: 110%;
-  background: radial-gradient(circle at 50% 50%, rgba(32,50,100,0.4), rgba(5,8,30,1)),
-              url('https://images.unsplash.com/photo-1581091870633-88e7c83d61a1?auto=format&fit=crop&w=1500&q=80');
-  background-size: cover;
-  background-position: center;
-  animation: parallaxMove 15s linear infinite alternate;
-  z-index: -1;
-  filter: brightness(0.8);
+#app{position:relative; z-index:1; min-height:100vh; padding:24px}
+
+.screen{
+  max-width:900px; margin:0 auto;
+  background:linear-gradient(180deg, var(--card) 0%, #0d1230aa 100%);
+  backdrop-filter: blur(8px);
+  box-shadow:var(--shadow);
+  border-radius:var(--radius);
+  padding:28px 22px;
 }
 
-@keyframes parallaxMove {
-  from { transform: translateY(0); }
-  to { transform: translateY(15px); }
+.center{display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh}
+.hidden{display:none}
+
+.brand{
+  margin:0 0 6px; letter-spacing:.3px;
+  font-size:40px; font-weight:800;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  -webkit-background-clip:text; background-clip:text; color:transparent
+}
+.brand .emoji{filter:drop-shadow(0 2px 6px rgba(0,0,0,.25)); margin-right:10px}
+
+.lead{font-size:18px; line-height:1.5; margin:8px 0 18px}
+.small{font-size:12px}
+.muted{color:var(--muted); opacity:.9}
+
+.email-form{display:flex; gap:12px; flex-wrap:wrap}
+.email-form input{
+  flex:1 1 280px; min-height:54px;
+  border-radius:14px; border:1px solid #2a325c;
+  padding:0 16px; color:var(--text); background:#0a0f28;
+  outline:none; box-shadow:inset 0 0 0 9999px transparent;
+}
+.email-form input:focus{border-color:#5770ff; box-shadow:0 0 0 4px #5770ff22}
+
+.btn{
+  min-height:54px; padding:0 22px; border-radius:14px;
+  border:0; cursor:pointer; font-weight:700; letter-spacing:.2px;
+}
+.primary{
+  background:linear-gradient(90deg,var(--btn),var(--btn2));
+  color:#081030; box-shadow:0 8px 24px #5e7cff44;
+}
+.ghost{
+  background:transparent; color:var(--text);
+  border:1px solid #2c3560;
 }
 
-/* Контейнер */
-.container {
-  max-width: 600px;
-  margin: 80px auto;
-  padding: 30px;
-  background: rgba(10, 15, 45, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.4);
-  text-align: center;
-  transition: opacity 0.8s ease;
-}
+.meta{display:flex; align-items:center; gap:12px; margin-bottom:16px}
+.progress{flex:1; background:#1b2146; border-radius:999px; height:10px; overflow:hidden}
+.bar{height:100%; background:linear-gradient(90deg,var(--accent3),var(--accent2)); width:0%}
+.counter{font-weight:700; color:#cdd6ff}
 
-.hidden {
-  display: none !important;
-}
+.question{font-size:28px; margin:10px 0 16px}
 
-/* Заголовки */
-.title {
-  font-size: 2.2rem;
-  margin-bottom: 0.2rem;
-  color: #b1c6ff;
-  letter-spacing: 0.5px;
+.answers{display:grid; gap:12px}
+.answers .option{
+  border-radius:14px; background:#0c1333; border:1px solid #26305f;
+  padding:16px; cursor:pointer; transition:transform .05s ease, border-color .15s ease, background .15s ease;
 }
+.answers .option:hover{transform:translateY(-1px); border-color:#3a4da5}
+.answers .option.correct{border-color:var(--ok)}
+.answers .option.wrong{border-color:var(--danger)}
 
-.subtitle {
-  font-size: 1.2rem;
-  color: #7da4ff;
-  margin-bottom: 1.5rem;
+.checkpoint{
+  margin-top:18px; padding:16px; border-radius:14px;
+  background:#0b1232; border:1px dashed #334078
 }
+.cp-title{font-weight:800; margin-bottom:10px}
+.cp-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
+.cp-pill{padding:8px 10px; border-radius:999px; text-align:center; font-size:13px; background:#0e163a}
+.cp-pill.good{border:1px solid #1faa99; color:#b7ffe5}
+.cp-pill.avg{border:1px solid #8b7bff; color:#dcd6ff}
+.cp-pill.low{border:1px solid #ff9aa2; color:#ffe3e5}
 
-/* Кнопки и поля */
-input[type="email"] {
-  width: 70%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  margin-bottom: 10px;
-  background: rgba(255,255,255,0.1);
-  color: white;
-}
+#result .lead{font-size:20px}
 
-button {
-  background: linear-gradient(90deg, #6b9eff, #a97cff);
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  font-weight: 600;
-  padding: 12px 20px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: linear-gradient(90deg, #7ca8ff, #b98eff);
-}
-
-/* Вопросы */
-#question-text {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
-  animation: fadeIn 0.8s ease;
-}
-
-#answers button {
-  width: 100%;
-  margin: 5px 0;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.1);
-  font-size: 1rem;
-  padding: 12px;
-  transition: all 0.3s;
-}
-
-#answers button:hover {
-  background: rgba(255,255,255,0.15);
-  transform: scale(1.02);
-}
-
-/* Результат */
-#result h2 {
-  font-size: 1.8rem;
-  color: #b5c8ff;
-  margin-bottom: 10px;
-}
-
-.sent {
-  color: #9bc8ff;
-  opacity: 0.9;
-  font-size: 1rem;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  font-size: 0.8rem;
-  opacity: 0.6;
-  margin: 30px 0;
-}
-
-/* Плавное появление */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@media (max-width:640px){
+  .brand{font-size:34px}
+  .question{font-size:24px}
+  .cp-grid{grid-template-columns:repeat(2,1fr)}
 }
