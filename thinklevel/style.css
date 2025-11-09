@@ -1,3 +1,12 @@
+body {
+  background-image: url('neurons-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
 *{box-sizing:border-box}
 :root{
   --bg:#0b1020;
