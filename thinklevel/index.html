@@ -1,46 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ThinkLevel — Тест эффективности мозга</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThinkLevel — тест эффективности мозга</title>
   <link rel="preload" href="assets/neurons-bg.jpg" as="image">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Параллакс‑фон -->
-  <div id="parallax">
-    <div class="layer layer-back"></div>
-    <div class="layer layer-mid"></div>
-    <div class="layer layer-front"></div>
-  </div>
+  <div id="bg" aria-hidden="true"></div>
+  <div class="overlay" aria-hidden="true"></div>
 
   <main class="container">
-    <!-- Стартовый блок (исчезает после старта) -->
     <section id="intro" class="card">
       <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
       <p class="lead">Введите e‑mail, чтобы начать. Результат покажем на экране и пришлём на почту автоматически.</p>
       <form id="emailForm" class="email-form" action="https://formspree.io/f/mzzypjko" method="POST">
-        <input id="email" name="email" type="email" inputmode="email" placeholder="Ваш e‑mail" required />
-        <button class="btn" type="submit">Старт</button>
-        <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
-        <input type="hidden" name="_subject" value="ThinkLevel — старт"/>
-        <input type="hidden" name="_language" value="ru"/>
-        <input type="hidden" name="event" value="start_pro"/>
-        <input type="hidden" name="_template" value="table"/>
+        <input id="email" name="email" type="email" placeholder="Ваш e‑mail" required>
+        <button type="submit" class="btn primary">Старт</button>
       </form>
+      <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
     </section>
 
-    <!-- Экран теста -->
     <section id="quiz" class="card hidden">
-      <div class="bar">
-        <div id="progress" class="progress"></div>
-        <div id="qcount" class="qcount">Вопрос 1 из 25</div>
+      <div class="top">
+        <div class="bar"><span id="bar"></span></div>
+        <div class="count">Вопрос <span id="qIdx">1</span> / <span id="qTotal">25</span></div>
       </div>
-      <h2 id="question" class="question"></h2>
+      <h2 id="qText" class="question"></h2>
       <div id="answers" class="answers"></div>
 
-      <!-- Промежуточный прогресс (после каждого 5‑го вопроса) -->
       <section id="checkpoint" class="checkpoint hidden">
         <div class="cp-title">Промежуточный прогресс</div>
         <div id="cpGrid" class="cp-grid"></div>
@@ -48,11 +37,9 @@
       </section>
     </section>
 
-    <!-- Экран результата -->
     <section id="result" class="card hidden">
-      <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
-      <p id="resultText" class="lead"></p>
-      <p class="muted">Результат отправлен на почту.</p>
+      <h1 class="brand small"><span class="emoji">🧠</span> ThinkLevel</h1>
+      <p class="lead" id="finalMsg">Результат отправлен на вашу почту 💌</p>
       <button id="restart" class="btn ghost">Пройти заново</button>
     </section>
   </main>
