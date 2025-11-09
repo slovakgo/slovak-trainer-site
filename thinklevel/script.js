@@ -1,166 +1,191 @@
-const emailForm = document.getElementById('emailForm');
+/* === ThinkLevel (RU) === */
+// Элементы
+const layers = document.querySelectorAll('.layer');
+const container = document.querySelector('.container');
 const intro = document.getElementById('intro');
 const quiz = document.getElementById('quiz');
-const result = document.getElementById('result');
-const qEl = document.getElementById('question');
-const aWrap = document.getElementById('answers');
-const bar = document.getElementById('bar');
-const qnumEl = document.getElementById('qnum');
-const qtotalEl = document.getElementById('qtotal');
-const stimulus = document.getElementById('stimulus');
-const cp = document.getElementById('checkpoint');
+const resultSection = document.getElementById('result');
+const questionText = document.getElementById('question');
+const answersContainer = document.getElementById('answers');
+const emailForm = document.getElementById('emailForm');
+const progressBar = document.getElementById('progress');
+const qcount = document.getElementById('qcount');
+const checkpoint = document.getElementById('checkpoint');
 const cpGrid = document.getElementById('cpGrid');
 const continueBtn = document.getElementById('continueBtn');
-const resText = document.getElementById('resText');
+const resultText = document.getElementById('resultText');
 const restartBtn = document.getElementById('restart');
 
-const TOTAL = 25;
-qtotalEl.textContent = TOTAL;
-
-let email = '';
-let i = 0;
-let ok = 0;
-let buckets = { 'Логика':0, 'Шаблоны':0, 'Математика':0, 'Память':0 };
-
-const qs = [
-  {t:'Продолжите ряд: 2, 5, 11, 23, ?', a:['35','41','47','49'], c:1, g:'Шаблоны'},
-  {t:'Если все A — B. Верно ли: некоторые B — A?', a:['Да','Нет','Неизвестно','Иногда'], c:1, g:'Логика'},
-  {t:'Чему равно (12×7 − 18) ÷ 6 ?', a:['9','10','11','12'], c:2, g:'Математика'},
-  {t:'Запомните: 7A, 9B, 4C. Что было вторым?', a:['7A','9B','4C','7B'], c:1, g:'Память', mem:'7A · 9B · 4C'},
-  {t:'Сколько рёбер у куба?', a:['8','12','16','6'], c:1, g:'Математика'},
-  {t:'Выберите лишнее: мозг, мысль, сознание, апельсин', a:['мозг','мысль','сознание','апельсин'], c:3, g:'Логика'},
-  {t:'Какое число продолжит: 3, 6, 18, 72, ?', a:['144','216','288','360'], c:2, g:'Шаблоны'},
-  {t:'Если вчера было завтра, то сегодня…', a:['Пятница','Суббота','Воскресенье','Понедельник'], c:2, g:'Логика'},
-  {t:'Сколько секунд в 12 минутах?', a:['720','600','640','560'], c:0, g:'Математика'},
-  {t:'Запомните: ♦ ◼ △ ◼ ♦. Какая фигура была третьей?', a:['♦','◼','△','○'], c:2, g:'Память', mem:'♦  ◼  △  ◼  ♦'},
-
-  {t:'Какое число лишнее: 3, 9, 27, 81, 243, 1000', a:['243','1000','27','81'], c:1, g:'Логика'},
-  {t:'Продолжите: A, C, F, J, O, ?', a:['T','U','V','W'], c:0, g:'Шаблоны'},
-  {t:'Наименьшее простое число > 20', a:['21','22','23','25'], c:2, g:'Математика'},
-  {t:'Запомните: 5-2-9-5-2. Какая 3‑я цифра?', a:['5','2','9','6'], c:2, g:'Память', mem:'5‑2‑9‑5‑2'},
-  {t:'Сколько углов у трёх треугольников?', a:['6','9','12','3'], c:1, g:'Математика'},
-  {t:'Если ни один P не Q, а некоторые Q — R, то некоторые R не P?', a:['Да','Нет'], c:0, g:'Логика'},
-  {t:'Что дальше: ⬜⬛⬛, ⬜⬜⬛, ⬜⬜⬜, ?', a:['⬛⬜⬜','⬜⬛⬜','⬜⬜⬛','⬛⬛⬜'], c:1, g:'Шаблоны'},
-  {t:'Сколько процентов от 480 составляет 15%?', a:['62','72','78','84'], c:1, g:'Математика'},
-  {t:'Запомните слово: КОРИДОР. Какая буква 5‑я?', a:['И','Д','О','Р'], c:1, g:'Память', mem:'К О Р И Д О Р'},
-  {t:'Чему равна сумма углов треугольника в радианах?', a:['π','2π','π/2','3π/2'], c:0, g:'Математика'},
-
-  {t:'Продолжите: 4, 6, 9, 13, 18, ?', a:['22','24','25','27'], c:3, g:'Шаблоны'},
-  {t:'Какой день через 100 дней от среды?', a:['Понедельник','Вторник','Среда','Четверг'], c:3, g:'Логика'},
-  {t:'Найдите корни: x² − 9x + 18 = 0', a:['2 и 9','3 и 6','1 и 18','−3 и −6'], c:1, g:'Математика'},
-  {t:'Запомните: 9, 4, 1, 7, 3. Какое число 2‑е?', a:['9','4','1','7'], c:1, g:'Память', mem:'9  4  1  7  3'},
-  {t:'Что будет дальше: ▲ ● ▲ ● ?', a:['▲','●','■','◆'], c:0, g:'Шаблоны'}
-];
-
-function parallax(e){
-  const x = (e.clientX / innerWidth - .5) * 10;
-  const y = (e.clientY / innerHeight - .5) * 10;
-  document.getElementById('bg').style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
-}
-document.addEventListener('mousemove', parallax);
-
-emailForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const v = (document.getElementById('email').value || '').trim();
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return alert('Введите корректный e‑mail');
-  email = v;
-  intro.classList.add('hidden');
-  quiz.classList.remove('hidden');
-  render();
+// Параллакс
+let px=0, py=0;
+window.addEventListener('mousemove', (e)=>{
+  const x = (e.clientX / window.innerWidth) - 0.5;
+  const y = (e.clientY / window.innerHeight) - 0.5;
+  px += (x - px) * 0.08;
+  py += (y - py) * 0.08;
+  layers[0].style.transform = `translate(${px*-12}px, ${py*-12}px) scale(1.1)`;
+  layers[1].style.transform = `translate(${px*8}px, ${py*8}px)`;
+  layers[2].style.transform = `translate(${px*16}px, ${py*16}px)`;
 });
 
-function render(){
-  if(i>=TOTAL){ return finish(); }
-  const q = qs[i];
-  qnumEl.textContent = (i+1);
-  bar.style.width = Math.max(3, Math.round(i/TOTAL*100)) + '%';
+// Категории и счет
+let current = 0, score = 0;
+const bucketScore = { logic:0, patterns:0, math:0, memory:0 };
 
-  aWrap.innerHTML = '';
-  qEl.textContent = '';
-  stimulus.classList.add('hidden');
-  if(q.mem){
-    stimulus.textContent = q.mem;
-    stimulus.classList.remove('hidden');
-    setTimeout(()=>{
-      stimulus.classList.add('hidden');
-      qEl.textContent = q.t;
-      renderAnswers(q);
-    }, 1800);
-  }else{
-    qEl.textContent = q.t;
-    renderAnswers(q);
-  }
+// Вопросы (25). Убран спорный вопрос про карандаш/ручку.
+const Q = [
+  { t:'math', q:'Какое число продолжит ряд: 3, 6, 18, 72, ?', a:['144','216','288','360'], c:1 },
+  { t:'logic', q:'Какое слово лишнее: Мозг, Мысль, Сознание, Апельсин?', a:['Сознание','Мозг','Апельсин','Мысль'], c:2 },
+  { t:'memory', mode:'remember', prompt:'Запомните: 4А9В', question:'Какой код был?', a:['4А9В','4В9А','49АВ','А49В'], c:0, ms:1600 },
+  { t:'patterns', q:'Продолжи ряд: 2, 4, 8, 16, ...', a:['18','24','32','36'], c:2 },
+  { t:'logic', q:'Что лишнее: автобус, поезд, велосипед, самолёт?', a:['Автобус','Поезд','Велосипед','Самолёт'], c:2 },
+  { t:'math', q:'Сколько углов у трёх треугольников?', a:['6','9','3','12'], c:1 },
+  { t:'memory', mode:'remember', prompt:'Запомните: НОСОК', question:'Какая буква была третьей?', a:['О','С','Н','К'], c:1, ms:1500 },
+  { t:'patterns', q:'Если вчера было завтра, то какой день сегодня?', a:['Понедельник','Воскресенье','Суббота','Пятница'], c:1 },
+  { t:'math', q:'Что тяжелее: 1 кг железа или 1 кг пуха?', a:['Железо','Пух','Одинаково','Зависит от ветра'], c:2 },
+  { t:'patterns', q:'Какое число лишнее: 3, 9, 27, 81, 243, 729, 1000?', a:['729','81','243','1000'], c:3 },
+  { t:'logic', q:'В комнате 4 угла. В каждом углу сидит кот. Напротив каждого кота — ещё 3. Сколько всего котов?', a:['3','4','5','8'], c:1 },
+  { t:'memory', mode:'remember', prompt:'Запомните: 7, 2, 9, 4', question:'Число на третьей позиции?', a:['7','2','9','4'], c:2, ms:1700 },
+  { t:'math', q:'Сколько секунд в 3 минутах?', a:['120','180','200','240'], c:1 },
+  { t:'patterns', q:'Логотип ThinkLevel — это…', a:['Молекула','Нейрон','Галактика','Кристалл'], c:1 },
+  { t:'logic', q:'Если прибавить к числу его половину, получим 30. Какое число?', a:['15','20','25','40'], c:2 },
+  { t:'memory', mode:'remember', prompt:'Запомните: НЕЙРОН', question:'Какая буква была второй?', a:['Й','Е','Н','Р'], c:1, ms:1500 },
+  { t:'patterns', q:'Продолжи ряд: A, C, F, J, O, …', a:['S','T','U','V'], c:0 },
+  { t:'math', q:'Сколько дней в невисокосном году?', a:['365','366','364','360'], c:0 },
+  { t:'logic', q:'В каком месяце люди меньше всего спят?', a:['Февраль','Январь','Июль','Одинаково'], c:0 },
+  { t:'memory', mode:'remember', prompt:'Запомните: 5♣, K♥', question:'Какая карта была второй?', a:['K♥','5♣','Туз♠','Дама♦'], c:0, ms:1600 },
+  { t:'patterns', q:'Выберите лишнее: △ ◻︎ ◯ ★', a:['△','◻︎','◯','★'], c:3 },
+  { t:'math', q:'Чему равно 15% от 160?', a:['16','20','24','32'], c:2 },
+  { t:'logic', q:'Кто всё время идёт и не приходит?', a:['Почта','Время','Секундамер','Эхо'], c:1 },
+  { t:'memory', mode:'remember', prompt:'Запомните: 3 слова — свет, код, ток', question:'Какого слова НЕ было?', a:['ток','код','свет','цвет'], c:3, ms:1800 },
+  { t:'patterns', q:'Найдите закономерность: О, Д, Т, Ч, П, …', a:['С','Ш','Щ','С\''], c:0 }
+];
 
-  if(i>0 && i%5===0){
-    cp.classList.remove('hidden');
-    cpGrid.innerHTML = '';
-    Object.entries(buckets).forEach(([k,v])=>{
-      const pill = document.createElement('div');
-      pill.className = 'cp-pill';
-      pill.textContent = `${k}: ${v}`;
-      cpGrid.appendChild(pill);
-    });
-  }else{
-    cp.classList.add('hidden');
-  }
+function updateProgress(){
+  const pct = Math.round((current / Q.length) * 100);
+  progressBar.style.width = pct + '%';
+  qcount.textContent = `Вопрос ${current+1} из ${Q.length}`;
 }
 
-continueBtn?.addEventListener('click', ()=> cp.classList.add('hidden'));
-
-function renderAnswers(q){
-  q.a.forEach((text, idx)=>{
-    const b = document.createElement('button');
-    b.textContent = text;
-    b.onclick = ()=> choose(idx);
-    aWrap.appendChild(b);
+function fillCheckpoint(){
+  cpGrid.innerHTML = '';
+  const items = [
+    ['Логика', bucketScore.logic],
+    ['Шаблоны', bucketScore.patterns],
+    ['Математика', bucketScore.math],
+    ['Память', bucketScore.memory],
+  ];
+  items.forEach(([label,val])=>{
+    const d = document.createElement('div');
+    d.className='pill'; d.innerHTML = `<b>${label}:</b> ${val}`;
+    cpGrid.appendChild(d);
   });
 }
 
-function choose(idx){
-  const q = qs[i];
-  if(idx===q.c){ ok++; buckets[q.g] = (buckets[q.g]||0)+1; }
-  i++; render();
+function showQuestion(){
+  updateProgress();
+  checkpoint.classList.add('hidden');
+  const q = Q[current];
+  questionText.textContent = q.q || '';
+  answersContainer.innerHTML = '';
+
+  // Режим запоминания
+  if(q.mode === 'remember'){
+    questionText.textContent = q.prompt;
+    answersContainer.innerHTML = '<div class="muted">Запоминайте…</div>';
+    setTimeout(()=>{
+      questionText.textContent = q.question;
+      renderAnswers(q);
+    }, q.ms || 1500);
+  }else{
+    renderAnswers(q);
+  }
 }
 
-function levelByScore(p){
-  if(p>=90) return 'Очень высокий';
-  if(p>=75) return 'Выше среднего';
-  if(p>=55) return 'Средний';
-  return 'Нужна тренировка';
+function renderAnswers(q){
+  answersContainer.innerHTML = '';
+  q.a.forEach((ans, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'btn-answer';
+    btn.textContent = ans;
+    btn.onclick = ()=>checkAnswer(idx);
+    answersContainer.appendChild(btn);
+  });
 }
 
-async function finish(){
+function checkAnswer(i){
+  const q = Q[current];
+  if(i === q.c){
+    score++;
+    bucketScore[q.t]++;
+  }
+  current++;
+  if(current % 5 === 0 && current < Q.length){
+    fillCheckpoint();
+    checkpoint.classList.remove('hidden');
+    return;
+  }
+  if(current < Q.length){
+    showQuestion();
+  }else{
+    finishTest();
+  }
+}
+
+continueBtn.addEventListener('click', ()=>{
+  showQuestion();
+});
+
+function finishTest(){
   quiz.classList.add('hidden');
-  result.classList.remove('hidden');
-  bar.style.width = '100%';
-  const pct = Math.round(ok/TOTAL*100);
-  const level = levelByScore(pct);
-  const msg = `Ваш результат: ${pct}% (правильных ответов: ${ok} из ${TOTAL}). Уровень: ${level}.`;
-  resText.textContent = msg;
+  resultSection.classList.remove('hidden');
+  const percent = Math.round((score / Q.length) * 100);
+  const message = [
+    `Ваш результат: ${percent}% (правильных ответов: ${score} из ${Q.length}).`,
+    '',
+    'Разбор по разделам:',
+    `• Логика: ${bucketScore.logic}`,
+    `• Шаблоны: ${bucketScore.patterns}`,
+    `• Математика: ${bucketScore.math}`,
+    `• Память: ${bucketScore.memory}`,
+    '',
+    'Спасибо, что прошли ThinkLevel! Вы молодец — продолжайте тренировки, и ваш мозг скажет вам спасибо.'
+  ].join('\n');
+  resultText.textContent = message;
 
-  const motivation = `Здравствуйте!
-Вы завершили тест ThinkLevel — интеллектуальный инструмент для оценки внимания, памяти и логики.
-
-Ваш результат: ${ok} из ${TOTAL}
-Уровень: ${level}
-
-Это отличный шаг к развитию когнитивных навыков. Для максимального прогресса попробуйте 10–15 минут в день уделять коротким задачам на память и закономерности.
-
-Помните: интеллект — это мышца. Развивайте её регулярно 💪
-Команда ThinkLevel`;
-
-  try{
-    await fetch('https://formspree.io/f/mzzypjko', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: new URLSearchParams({
-        email: email,
-        _replyto: email,
-        message: motivation,
-        subject: 'Ваш результат в тесте ThinkLevel'
-      })
-    });
-  }catch(e){}
+  // Отправка результата на Formspree: участнику и копия вам (в кабинете Formspree включите автоответ).
+  const email = (document.getElementById('email').value || '').trim();
+  const formData = new FormData();
+  formData.append('email', email);
+  formData.append('message', message);
+  formData.append('_subject', 'ThinkLevel — ваш результат');
+  formData.append('_language', 'ru');
+  fetch('https://formspree.io/f/mzzypjko', {
+    method:'POST',
+    headers:{ 'Accept':'application/json' },
+    body: formData
+  }).catch(()=>{});
 }
 
-restartBtn.addEventListener('click', ()=> location.reload());
+restartBtn.addEventListener('click', ()=>{
+  // Сброс
+  current=0; score=0;
+  bucketScore.logic=bucketScore.patterns=bucketScore.math=bucketScore.memory=0;
+  resultSection.classList.add('hidden');
+  intro.classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+// Старт: скрываем intro, показываем тест и отправляем старт на Formspree
+emailForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(emailForm);
+  try{
+    await fetch(emailForm.action, { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+  }catch{}
+  intro.classList.add('hidden');
+  quiz.classList.remove('hidden');
+  current=0; score=0;
+  bucketScore.logic=bucketScore.patterns=bucketScore.math=bucketScore.memory=0;
+  showQuestion();
+});

@@ -1,45 +1,111 @@
-*{box-sizing:border-box}
+/* ===== ThinkLevel — стили (RU) ===== */
 :root{
-  --bg:#0b1020;
-  --text:#e8ecff;
-  --muted:#a8b3d8;
-  --panel:#0f1730cc;
-  --panel2:#0b1330;
-  --a1:#7aa2ff; --a2:#b07dff; --a3:#46d8ff;
-  --good:#34d399; --bad:#ff6b6b;
+  --bg:#0b1430;
+  --card:#111a3b;
+  --card-2:#0f1735;
+  --text:#e7ecff;
+  --muted:#96a0c8;
+  --brand:#9ec2ff;
+  --accent1:#7ad1ff;
+  --accent2:#b38bff;
+  --ok:#68ffb1;
+  --warn:#ffd36a;
+  --btn-grad: linear-gradient(135deg, var(--accent1), var(--accent2));
 }
+*{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;color:var(--text);background:var(--bg);
-  font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  color:var(--text);
+  background: var(--bg);
+  overflow-x:hidden;
 }
-#bg{position:fixed;inset:0;z-index:-2;background:url('images/neuron-bg.jpg') center/cover no-repeat;transform:translateZ(0);filter:saturate(1.1) brightness(.9)}
-.overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(100,120,255,.22),rgba(40,180,255,.18))}
-.wrap{max-width:920px;margin:clamp(10px,3vw,24px) auto;padding:16px}
-.card{background:linear-gradient(180deg,var(--panel) 0%, #0b1234aa 100%);border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px);padding:24px 22px;margin:14px 0}
-.hidden{display:none !important}
-.brand{margin:0 0 6px;font-size:38px;font-weight:800;letter-spacing:.3px;background:linear-gradient(90deg,var(--a3),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.brand .emoji{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));margin-right:8px}
-.lead{font-size:18px;opacity:.96;margin:8px 0 16px}
-.muted{color:var(--muted);margin:6px 0 0;font-size:14px}
-.email-form{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.email-form input{flex:1;min-width:260px;padding:14px 16px;border-radius:12px;border:1px solid #2b3a6a;background:#0b1330;color:var(--text);outline:none;box-shadow:inset 0 1px 0 #ffffff10}
-.btn{cursor:pointer;border-radius:12px;padding:12px 20px;border:1px solid #2b3a6a;color:var(--text);background:#0e173a}
-.btn.primary{border:0;background:linear-gradient(90deg,var(--a3),var(--a2),var(--a1));color:#06122a;font-weight:800}
-.top{display:flex;align-items:center;gap:14px;margin:4px 0 12px}
-.bar{flex:1;height:10px;border-radius:10px;background:#16214a;overflow:hidden;border:1px solid #263572}
-.bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--a3),var(--a2));box-shadow:0 0 16px #6ea2ff;transition:width .25s ease}
-.count{color:#cfd7ff;font-weight:700}
-.question{font-size:28px;margin:10px 0 14px}
-.answers{display:grid;gap:12px}
-.answers button{text-align:left;width:100%;padding:16px 18px;border-radius:14px;background:#0d1633;border:1px solid #2a3768;color:var(--text)}
-.answers button:hover{background:#111c42;border-color:#4054a6}
-.answers button.correct{outline:2px solid var(--good)}
-.answers button.wrong{outline:2px solid var(--bad)}
-.stimulus{display:flex;align-items:center;justify-content:center;background:#0e173a;border:1px dashed #2e3a70;border-radius:12px;color:#d7e2ff;font-weight:800;letter-spacing:.6px;padding:18px;margin:6px 0 10px;font-size:22px}
-.checkpoint{margin-top:16px;padding:16px;border-radius:14px;background:#0b1330;border:1px dashed #2b3a72}
-.cp-title{font-weight:800;color:#d5ddff;margin-bottom:8px}
-.cp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.cp-pill{background:#0e1638;border:1px solid #2a386c;border-radius:999px;padding:8px 10px;color:#b6c2ff;text-align:center;font-size:13px}
-footer{text-align:center;opacity:.6;font-size:12px;margin:10px 0}
-@media (max-width:640px){.brand{font-size:32px}.question{font-size:24px}.cp-grid{grid-template-columns:repeat(2,1fr)}}
+.container{
+  position:relative;
+  max-width:820px;
+  margin: 40px auto;
+  padding: 0 16px;
+  z-index:2;
+}
+.hidden{display:none}
+
+#parallax{
+  position:fixed; inset:0; z-index:0; overflow:hidden;
+  pointer-events:none;
+}
+.layer{position:absolute; inset:-10%; background-size:cover; background-position:center; filter:saturate(1.1)}
+.layer-back{ background-image:url('assets/neurons-bg.jpg'); transform:translateZ(0) scale(1.1); opacity:.35; }
+.layer-mid{ background-image:radial-gradient(ellipse at center, rgba(126,168,255,.12), transparent 60%);
+  opacity:.6; mix-blend-mode:screen; }
+.layer-front{ background-image:radial-gradient(ellipse at 30% 20%, rgba(255,165,255,.08), transparent 50%);
+  opacity:.6; }
+
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)), var(--card);
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow: 0 20px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+  border-radius:20px;
+  padding:24px;
+  backdrop-filter: blur(8px);
+}
+.brand{font-size:32px; letter-spacing:.4px; margin:0 0 8px}
+.emoji{filter:saturate(1.2); margin-right:8px}
+.lead{font-size:18px; color:var(--text); opacity:.96; margin:6px 0 16px}
+.muted{color:var(--muted); font-size:14px; margin:8px 0 0}
+
+.email-form{display:flex; gap:12px; flex-wrap:wrap}
+.email-form input{
+  flex:1 1 320px;
+  height:48px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: var(--card-2);
+  color:var(--text);
+  padding:0 16px;
+  font-size:16px;
+  outline:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.btn{
+  height:48px; padding:0 20px; border-radius:14px;
+  border:0; color:#0a0f2a; font-weight:700; letter-spacing:.2px;
+  background: var(--btn-grad);
+  box-shadow: 0 8px 24px rgba(124,150,255,.3);
+  cursor:pointer;
+}
+.btn.ghost{
+  background: transparent;
+  color: var(--brand);
+  border:1px solid rgba(158,194,255,.35);
+  box-shadow:none;
+}
+.btn:active{transform:translateY(1px)}
+
+.bar{display:flex; align-items:center; gap:12px; margin:6px 0 10px}
+.progress{height:8px; background:linear-gradient(90deg, var(--accent1), var(--accent2));
+  width:0%; border-radius:999px; box-shadow:0 0 0 1px rgba(255,255,255,.15) inset}
+.qcount{margin-left:auto; font-weight:700; color:#cfe0ff;}
+
+.question{font-size:28px; line-height:1.25; margin:12px 0 14px}
+.answers{display:grid; gap:12px}
+.answers .btn-answer{
+  background: rgba(12,20,48,.75);
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--text);
+  text-align:left;
+  padding:16px 18px;
+  font-size:18px; border-radius:16px;
+  transition:transform .1s ease, background .2s ease;
+}
+.answers .btn-answer:hover{ transform: translateY(-1px); background: rgba(18,28,64,.9); }
+
+.checkpoint{margin-top:16px; padding:16px; border-radius:16px; border:1px dashed rgba(255,255,255,.18); background:rgba(10,16,40,.55)}
+.cp-title{font-weight:800; margin-bottom:8px}
+.cp-grid{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px}
+.pill{padding:10px 12px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); text-align:center}
+.pill b{color:var(--brand)}
+
+@media (max-width:560px){
+  .question{font-size:24px}
+}

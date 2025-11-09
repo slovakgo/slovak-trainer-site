@@ -1,54 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ThinkLevel — тест эффективности мозга</title>
-  <meta name="description" content="Проверьте эффективность мозга: 25 вопросов — результат на экране и на e‑mail.">
-  <link rel="icon" href="favicon.ico">
-  <link rel="preload" href="images/neuron-bg.jpg" as="image">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ThinkLevel — Тест эффективности мозга</title>
+  <link rel="preload" href="assets/neurons-bg.jpg" as="image">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="bg"></div>
-  <div class="overlay"></div>
+  <!-- Параллакс‑фон -->
+  <div id="parallax">
+    <div class="layer layer-back"></div>
+    <div class="layer layer-mid"></div>
+    <div class="layer layer-front"></div>
+  </div>
 
-  <main class="wrap">
+  <main class="container">
+    <!-- Стартовый блок (исчезает после старта) -->
     <section id="intro" class="card">
-      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
+      <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
       <p class="lead">Введите e‑mail, чтобы начать. Результат покажем на экране и пришлём на почту автоматически.</p>
-      <form id="emailForm" class="email-form">
-        <input type="email" id="email" name="email" placeholder="Ваш e‑mail" required>
-        <button type="submit" class="btn primary">Старт</button>
+      <form id="emailForm" class="email-form" action="https://formspree.io/f/mzzypjko" method="POST">
+        <input id="email" name="email" type="email" inputmode="email" placeholder="Ваш e‑mail" required />
+        <button class="btn" type="submit">Старт</button>
+        <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
+        <input type="hidden" name="_subject" value="ThinkLevel — старт"/>
+        <input type="hidden" name="_language" value="ru"/>
+        <input type="hidden" name="event" value="start_pro"/>
+        <input type="hidden" name="_template" value="table"/>
       </form>
-      <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
     </section>
 
-    <section id="quiz" class="card hidden" aria-live="polite">
-      <div class="top">
-        <div class="bar"><span id="bar"></span></div>
-        <div class="count"><span id="qnum">1</span> / <span id="qtotal">25</span></div>
+    <!-- Экран теста -->
+    <section id="quiz" class="card hidden">
+      <div class="bar">
+        <div id="progress" class="progress"></div>
+        <div id="qcount" class="qcount">Вопрос 1 из 25</div>
       </div>
-      <div id="stimulus" class="stimulus hidden"></div>
       <h2 id="question" class="question"></h2>
       <div id="answers" class="answers"></div>
 
+      <!-- Промежуточный прогресс (после каждого 5‑го вопроса) -->
       <section id="checkpoint" class="checkpoint hidden">
         <div class="cp-title">Промежуточный прогресс</div>
-        <div class="cp-grid" id="cpGrid"></div>
+        <div id="cpGrid" class="cp-grid"></div>
         <button id="continueBtn" class="btn ghost">Продолжить</button>
       </section>
     </section>
 
+    <!-- Экран результата -->
     <section id="result" class="card hidden">
-      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
-      <p id="resText" class="lead"></p>
+      <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
+      <p id="resultText" class="lead"></p>
       <p class="muted">Результат отправлен на почту.</p>
       <button id="restart" class="btn ghost">Пройти заново</button>
     </section>
   </main>
-
-  <footer>© ThinkLevel 2025</footer>
 
   <script src="script.js"></script>
 </body>
