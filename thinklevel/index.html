@@ -44,7 +44,7 @@
   <div class="container" id="email-step">
     <h1>🧠 ThinkLevel</h1>
     <p>Чтобы пройти тест, введите вашу электронную почту:</p>
-    <form id="emailForm" action="https://formspree.io/f/mzzyjpko" method="POST">
+   <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
       <input type="email" name="email" placeholder="Ваш e-mail" required style="padding:10px;width:100%;border-radius:6px;border:1px solid #ccc;margin-bottom:10px;">
       <button type="submit">Начать тест</button>
     </form>
@@ -61,62 +61,61 @@
     <p id="result-text"></p>
     <p>✨ Более 1 000 человек уже прошли этот тест!</p>
   </div>
+<script>
+  const emailStep = document.getElementById("email-step");
+  const testStep  = document.getElementById("test-step");
+  const resultStep= document.getElementById("result-step");
+  const form      = document.getElementById("emailForm");
 
-  <script>
-    const emailStep = document.getElementById("email-step");
-    const testStep = document.getElementById("test-step");
-    const resultStep = document.getElementById("result-step");
+  const questions = [
+    {q: "Какое число лишнее: 2, 4, 8, 16, 24, 32?", a: ["8","16","24","32"], correct: 2},
+    {q: "Что лишнее: книга, тетрадь, карандаш, ручка?", a: ["Книга","Тетрадь","Карандаш","Ручка"], correct: 2},
+    {q: "Сколько секунд в 3 минутах?", a: ["60","120","180","240"], correct: 2},
+    {q: "Какое слово не подходит: кот, собака, воробей, тигр?", a: ["Кот","Собака","Воробей","Тигр"], correct: 2},
+    {q: "Что получится, если из 10 вычесть 4, а затем умножить на 2?", a: ["8","10","12","14"], correct: 2}
+  ];
 
-    const questions = [
-      {q: "Какое число лишнее: 2, 4, 8, 16, 24, 32?", a: ["8", "16", "24", "32"], correct: 2},
-      {q: "Что лишнее: книга, тетрадь, карандаш, ручка?", a: ["Книга", "Тетрадь", "Карандаш", "Ручка"], correct: 2},
-      {q: "Сколько секунд в 3 минутах?", a: ["60", "120", "180", "240"], correct: 2},
-      {q: "Какое слово не подходит: кот, собака, воробей, тигр?", a: ["Кот", "Собака", "Воробей", "Тигр"], correct: 2},
-      {q: "Что получится, если из 10 вычесть 4, а затем умножить на 2?", a: ["8", "10", "12", "14"], correct: 2}
-    ];
+  let current = 0, score = 0;
 
-    let current = 0;
-    let score = 0;
-
-    document.getElementById("emailForm").onsubmit = (e) => {
-      e.preventDefault();
-      emailStep.classList.add("hidden");
-      startTest();
-    };
-
-    function startTest() {
-      testStep.classList.remove("hidden");
-      showQuestion();
-    }
-
-    function showQuestion() {
-      const q = questions[current];
-      document.getElementById("question").innerText = q.q;
-      const answersDiv = document.getElementById("answers");
-      answersDiv.innerHTML = "";
-      q.a.forEach((ans, i) => {
-        const btn = document.createElement("button");
-        btn.innerText = ans;
-        btn.onclick = () => checkAnswer(i);
-        btn.style.display = "block";
-        btn.style.margin = "10px auto";
-        answersDiv.appendChild(btn);
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // не уходим на Formspree
+    // Отправляем e-mail на Formspree в фоне
+    try {
+      await fetch(form.action, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: new FormData(form)
       });
+    } catch (err) {
+      console.log("Formspree error:", err);
     }
+    // Запускаем тест на этой же странице
+    emailStep.classList.add("hidden");
+    startTest();
+  });
 
-    function checkAnswer(i) {
-      if (i === questions[current].correct) score++;
-      current++;
-      if (current < questions.length) showQuestion();
-      else finishTest();
-    }
-
-    function finishTest() {
-      testStep.classList.add("hidden");
-      resultStep.classList.remove("hidden");
-      const percent = Math.round((score / questions.length) * 100);
-      document.getElementById("result-text").innerText = Ваш результат: ${percent}% эффективности мозга 🧩;
-    }
-  </script>
+  function startTest(){ testStep.classList.remove("hidden"); showQuestion(); }
+  function showQuestion(){
+    const q = questions[current];
+    document.getElementById("question").innerText = q.q;
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+    q.a.forEach((ans,i)=>{
+      const btn=document.createElement("button");
+      btn.innerText=ans;
+      btn.style.display="block";
+      btn.style.margin="10px auto";
+      btn.onclick=()=>checkAnswer(i);
+      answersDiv.appendChild(btn);
+    });
+  }
+  function checkAnswer(i){ if(i===questions[current].correct) score++; current++; (current<questions.length)?showQuestion():finishTest(); }
+  function finishTest(){
+    testStep.classList.add("hidden"); resultStep.classList.remove("hidden");
+    const percent = Math.round((score/questions.length)*100);
+    document.getElementById("result-text").innerText = Ваш результат: ${percent}% эффективности мозга 🧩;
+  }
+</script>
+  
 </body>
 </html>
