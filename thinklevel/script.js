@@ -142,3 +142,4 @@ async function finish(){
 }
 
 resultText.textContent = "Результат отправлен на почту.";
+emailForm.querySelector("#emailMessage").value = "Пользователь завершил тест ThinkLevel. Результат успешно отправлен на почту.";
