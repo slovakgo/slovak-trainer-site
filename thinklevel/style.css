@@ -11,16 +11,12 @@ body {
 }
 
 /* ✅ ФОН НЕЙРОНЫ */
-body::before {
-  content: "";
+.bg {
   position: fixed;
   inset: 0;
-  background-image: url("neurons-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: url("neurons-bg.jpg") center/cover no-repeat;
   filter: brightness(0.55) saturate(1.2);
-  z-index: -1;
+  z-index: 0;
 }
 
 /* Мягкое затемнение поверх фото */
