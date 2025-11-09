@@ -141,4 +141,4 @@ async function finish(){
   }catch(e){}
 }
 
-restartBtn.addEventListener('click', ()=> location.reload());
+resultText.textContent = "Результат отправлен на почту.";
