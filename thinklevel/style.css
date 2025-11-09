@@ -1,39 +1,111 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: "System-ui", sans-serif;
   color: #e8eeff;
   background: #0a1020;
+  overflow-x: hidden;
 }
-.hidden { display: none !important; }
-.bg {
-  position: fixed; inset: 0;
-  background: url('neurons-bg.jpg') center/cover no-repeat;
+
+/* Фото-фон нейронов */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("./assets/neurons-bg.jpg") center/cover no-repeat fixed;
+  filter: brightness(0.55) saturate(1.2);
+  z-index: -2;
+}
+
+/* Мягкое затемнение поверх фото */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(100% 60% at 50% 0%, rgba(10,16,28,.3), rgba(10,16,28,.85));
   z-index: -1;
-  filter: brightness(0.6);
 }
-.container { max-width: 900px; margin: auto; padding: 20px; }
-.card {
-  background: rgba(20, 25, 50, 0.6);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
+
+.hidden {
+  display: none !important;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
   padding: 20px;
+}
+
+.card {
+  background: rgba(22, 28, 48, 0.65);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  padding: 25px;
   margin: 20px 0;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
 }
-.btn {
-  padding: 10px 20px;
-  border-radius: 10px;
+
+/* Кнопка “Старт” */
+button, .btn {
+  background: linear-gradient(135deg, #7dd0ff, #b38bff);
   border: none;
+  color: #fff;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
   cursor: pointer;
+  transition: 0.25s ease;
 }
-.btn.primary {
-  background: linear-gradient(135deg, #6ee7ff, #b38bff);
-  color: #000;
+
+button:hover, .btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
 }
-.btn.ghost {
-  border: 1px solid #a0b0ff;
-  color: #e0e8ff;
-  background: transparent;
+
+input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #4e4e8a;
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  margin-bottom: 16px;
+  font-size: 1rem;
 }
-.bar { height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
-.bar span { display: block; height: 100%; background: #9ac0ff; width: 0%; transition: width 0.3s; }
+
+h1, h2, h3, h4, h5 {
+  color: #aadbff;
+  text-align: center;
+}
+
+/* Прогресс */
+.bar {
+  height: 8px;
+  background: linear-gradient(90deg, #7dd0ff, #b38bff);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  transition: width 0.3s;
+}
+
+.count {
+  font-size: 0.9rem;
+  text-align: right;
+  color: #cfd8ff;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  button, .btn {
+    width: 100%;
+  }
+}
