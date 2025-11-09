@@ -4,20 +4,23 @@
 
 body {
   margin: 0;
-  font-family: "System-ui", sans-serif;
+  font-family: system-ui, sans-serif;
   color: #e8eeff;
-  background: #0a1020;
+  background-color: #0a1020; /* запасной фон */
   overflow-x: hidden;
 }
 
-/* Фото-фон нейронов */
+/* ✅ ФОН НЕЙРОНЫ */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
- background: url("./neurons-bg.jpg") center/cover no-repeat fixed;
+  background-image: url("neurons-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   filter: brightness(0.55) saturate(1.2);
-  z-index: -2;
+  z-index: -1;
 }
 
 /* Мягкое затемнение поверх фото */
