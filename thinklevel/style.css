@@ -1,74 +1,45 @@
 *{box-sizing:border-box}
 :root{
   --bg:#0b1020;
-  --panel:#0f1730cc;
-  --panel-solid:#0d1633;
-  --text:#e8eeff;
+  --text:#e8ecff;
   --muted:#a8b3d8;
+  --panel:#0f1730cc;
+  --panel2:#0b1330;
   --a1:#7aa2ff; --a2:#b07dff; --a3:#46d8ff;
-  --ok:#34d399; --bad:#ff6b6b;
+  --good:#34d399; --bad:#ff6b6b;
 }
 html,body{height:100%}
 body{
-  margin:0; color:var(--text);
-  font:16px/1.45 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
-  background:var(--bg);
-  overflow-x:hidden;
+  margin:0;color:var(--text);background:var(--bg);
+  font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial
 }
-#bg{
-  position:fixed; inset:0; z-index:-2;
-  background-image: linear-gradient(180deg, rgba(90,60,200,.22), rgba(20,120,180,.18)), url('images/neurons-bg.jpg');
-  background-size:cover; background-position:center;
-  transform:translateZ(0);
-  filter:saturate(1.1) brightness(.9);
-}
-.container{max-width:900px; margin:clamp(12px,4vw,24px) auto; padding:16px}
-.card{
-  background:linear-gradient(180deg, var(--panel) 0%, #0b1234aa 100%);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:24px 22px;
-  box-shadow:0 10px 30px rgba(0,0,0,.35);
-  backdrop-filter: blur(6px);
-}
+#bg{position:fixed;inset:0;z-index:-2;background:url('images/neuron-bg.jpg') center/cover no-repeat;transform:translateZ(0);filter:saturate(1.1) brightness(.9)}
+.overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(100,120,255,.22),rgba(40,180,255,.18))}
+.wrap{max-width:920px;margin:clamp(10px,3vw,24px) auto;padding:16px}
+.card{background:linear-gradient(180deg,var(--panel) 0%, #0b1234aa 100%);border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px);padding:24px 22px;margin:14px 0}
 .hidden{display:none !important}
-.brand{margin:0 0 6px; font-size:38px; font-weight:800; letter-spacing:.3px;
-  background:linear-gradient(90deg,var(--a3),var(--a2));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-}
-.brand.small{font-size:30px}
-.emoji{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35)); margin-right:8px}
-.lead{font-size:18px; opacity:.96; margin:8px 0 16px}
-.muted{color:var(--muted); margin:6px 0 0; font-size:14px}
-
-.email-form{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.email-form input{
-  flex:1; min-width:260px; padding:14px 16px; border-radius:12px;
-  border:1px solid #2b3a6a; background:#0b1330; color:var(--text);
-  outline:none; box-shadow:inset 0 1px 0 #ffffff10;
-}
-.btn{cursor:pointer; border-radius:12px; padding:12px 20px; border:1px solid #2b3a6a; color:var(--text); background:#0e173a}
-.btn.primary{border:0; background:linear-gradient(90deg,var(--a3),var(--a2),var(--a1)); color:#06122a; font-weight:800}
-
-.topline{display:flex; align-items:center; gap:14px; margin:4px 0 12px}
-#progressbar{flex:1; height:10px; border-radius:10px; background:#16214a; overflow:hidden; border:1px solid #263572}
-#progress{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--a3),var(--a2)); box-shadow:0 0 16px #6ea2ff}
-.counter{color:#cfd7ff; font-weight:700}
-
-.question{font-size:28px; margin:10px 0 14px}
-.answers{display:grid; gap:12px}
-.answers button{
-  text-align:left; width:100%; padding:16px 18px; border-radius:14px;
-  background:#0d1633; border:1px solid #2a3768; color:var(--text);
-}
-.answers button:hover{background:#111c42; border-color:#4054a6}
-.answers button.correct{outline:2px solid var(--ok)}
+.brand{margin:0 0 6px;font-size:38px;font-weight:800;letter-spacing:.3px;background:linear-gradient(90deg,var(--a3),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .emoji{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));margin-right:8px}
+.lead{font-size:18px;opacity:.96;margin:8px 0 16px}
+.muted{color:var(--muted);margin:6px 0 0;font-size:14px}
+.email-form{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.email-form input{flex:1;min-width:260px;padding:14px 16px;border-radius:12px;border:1px solid #2b3a6a;background:#0b1330;color:var(--text);outline:none;box-shadow:inset 0 1px 0 #ffffff10}
+.btn{cursor:pointer;border-radius:12px;padding:12px 20px;border:1px solid #2b3a6a;color:var(--text);background:#0e173a}
+.btn.primary{border:0;background:linear-gradient(90deg,var(--a3),var(--a2),var(--a1));color:#06122a;font-weight:800}
+.top{display:flex;align-items:center;gap:14px;margin:4px 0 12px}
+.bar{flex:1;height:10px;border-radius:10px;background:#16214a;overflow:hidden;border:1px solid #263572}
+.bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--a3),var(--a2));box-shadow:0 0 16px #6ea2ff;transition:width .25s ease}
+.count{color:#cfd7ff;font-weight:700}
+.question{font-size:28px;margin:10px 0 14px}
+.answers{display:grid;gap:12px}
+.answers button{text-align:left;width:100%;padding:16px 18px;border-radius:14px;background:#0d1633;border:1px solid #2a3768;color:var(--text)}
+.answers button:hover{background:#111c42;border-color:#4054a6}
+.answers button.correct{outline:2px solid var(--good)}
 .answers button.wrong{outline:2px solid var(--bad)}
-
-.checkpoint{margin-top:16px; padding:16px; border-radius:14px; background:#0b1330; border:1px dashed #2b3a72}
-.cp-title{font-weight:800; color:#d5ddff; margin-bottom:8px}
-.cp-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:8px}
-.cp-grid .pill{background:#0e1638; border:1px solid #2a386c; border-radius:999px; padding:8px 10px; color:#b6c2ff; text-align:center; font-size:13px}
-
-footer{text-align:center; opacity:.6; font-size:12px; margin:10px 0}
-@media (max-width:640px){ .brand{font-size:32px} .question{font-size:24px} }
+.stimulus{display:flex;align-items:center;justify-content:center;background:#0e173a;border:1px dashed #2e3a70;border-radius:12px;color:#d7e2ff;font-weight:800;letter-spacing:.6px;padding:18px;margin:6px 0 10px;font-size:22px}
+.checkpoint{margin-top:16px;padding:16px;border-radius:14px;background:#0b1330;border:1px dashed #2b3a72}
+.cp-title{font-weight:800;color:#d5ddff;margin-bottom:8px}
+.cp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cp-pill{background:#0e1638;border:1px solid #2a386c;border-radius:999px;padding:8px 10px;color:#b6c2ff;text-align:center;font-size:13px}
+footer{text-align:center;opacity:.6;font-size:12px;margin:10px 0}
+@media (max-width:640px){.brand{font-size:32px}.question{font-size:24px}.cp-grid{grid-template-columns:repeat(2,1fr)}}

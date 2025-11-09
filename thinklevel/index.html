@@ -4,31 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ThinkLevel — тест эффективности мозга</title>
-  <meta name="description" content="ThinkLevel — тест эффективности мозга. Пройди 25 вопросов и получи результат на почту.">
+  <meta name="description" content="Проверьте эффективность мозга: 25 вопросов — результат на экране и на e‑mail.">
   <link rel="icon" href="favicon.ico">
-  <link rel="preload" href="images/neurons-bg.jpg" as="image">
+  <link rel="preload" href="images/neuron-bg.jpg" as="image">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="bg"></div>
+  <div class="overlay"></div>
 
-  <main class="container">
+  <main class="wrap">
     <section id="intro" class="card">
-      <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
+      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
       <p class="lead">Введите e‑mail, чтобы начать. Результат покажем на экране и пришлём на почту автоматически.</p>
-      <form id="emailForm" class="email-form" action="https://formspree.io/f/mzzypjko" method="POST">
+      <form id="emailForm" class="email-form">
         <input type="email" id="email" name="email" placeholder="Ваш e‑mail" required>
         <button type="submit" class="btn primary">Старт</button>
       </form>
-      <p class="muted">&gt; 1000 пользователей уже получили свои результаты</p>
+      <p class="muted">&gt; 1 000 пользователей уже получили свои результаты</p>
     </section>
 
-    <section id="quiz" class="card hidden">
-      <div class="topline">
-        <div id="progressbar"><span id="progress"></span></div>
-        <div class="counter">Вопрос <span id="qIdx">1</span> из <span id="qTotal">25</span></div>
+    <section id="quiz" class="card hidden" aria-live="polite">
+      <div class="top">
+        <div class="bar"><span id="bar"></span></div>
+        <div class="count"><span id="qnum">1</span> / <span id="qtotal">25</span></div>
       </div>
-      <h2 id="qText" class="question"></h2>
+      <div id="stimulus" class="stimulus hidden"></div>
+      <h2 id="question" class="question"></h2>
       <div id="answers" class="answers"></div>
 
       <section id="checkpoint" class="checkpoint hidden">
@@ -39,7 +41,7 @@
     </section>
 
     <section id="result" class="card hidden">
-      <h1 class="brand small"><span class="emoji">🧠</span> ThinkLevel</h1>
+      <h1 class="brand"><span class="emoji">🧠</span>ThinkLevel</h1>
       <p id="resText" class="lead"></p>
       <p class="muted">Результат отправлен на почту.</p>
       <button id="restart" class="btn ghost">Пройти заново</button>
