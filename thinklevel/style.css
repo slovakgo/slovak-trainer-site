@@ -9,23 +9,25 @@ body {
   background-color: #0a1020; /* запасной фон */
   overflow-x: hidden;
 }
-
-/* ✅ ФОН НЕЙРОНЫ */
-.bg {
+/* ФОН НЕЙРОНЫ */
+body::before{
+  content:"";
   position: fixed;
   inset: 0;
   background: url("neurons-bg.jpg") center/cover no-repeat;
-  filter: brightness(0.55) saturate(1.2);
-  z-index: 0;
+  filter: brightness(0.6) saturate(1.1);
+  z-index: -1;           /* фон уходит за контент */
 }
-
 /* Мягкое затемнение поверх фото */
-.bg-overlay {
+.bg-overlay{
   position: fixed;
   inset: 0;
-  background: radial-gradient(100% 60% at 50% 0%, rgba(10,16,28,.3), rgba(10,16,28,.85));
-  z-index: -1;
+  background: radial-gradient(80% 60% at 50% 60%,
+               rgba(10,16,28,.35), rgba(10,16,28,.85));
+  z-index: 0;
+  pointer-events: none;
 }
+
 
 .hidden {
   display: none !important;
