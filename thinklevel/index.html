@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThinkLevel — тест</title>
+<link rel="icon" href="favicon.ico"><link rel="stylesheet" href="style.css?v=3">
+</head><body>
+<div class="bg"></div><div class="bg-overlay"></div>
+<main class="container">
+<section id="intro" class="card">
+  <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
+  <p class="lead">Введите e-mail, чтобы начать. Результат покажем на экране и пришлём на почту.</p>
+  <form id="emailForm" action="https://formspree.io/f/mzzypjko" method="POST">
+    <input id="email" name="email" type="email" placeholder="Ваш e-mail" required>
+    <button type="submit" class="btn primary" id="startBtn">Старт</button>
+  </form>
+</section>
+<section id="quiz" class="card hidden" aria-live="polite">
+  <div class="top">
+    <div class="bar"><span id="bar"></span></div>
+    <div class="count">Вопрос <span id="qIdx">1</span> / <span id="qTotal">25</span></div>
+  </div>
+  <h2 id="qText" class="question">...</h2>
+  <div id="answers" class="answers"></div>
+</section>
+<section id="result" class="card hidden">
+  <h1 class="brand"><span class="emoji">🧠</span> ThinkLevel</h1>
+  <p id="resultText" class="lead">Результат отправлен на почту.</p>
+  <button id="restart" class="btn ghost">Пройти заново</button>
+</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>emailjs.init('YOUR_PUBLIC_KEY');</script>
+<script src="script.js?v=3"></script>
+</body></html>
